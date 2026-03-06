@@ -5,7 +5,6 @@ import pg from "pg";
 import path from "path";
 import { fileURLToPath } from "url";
 import multer from "multer";
-import fs from "fs";
 import nodemailer from "nodemailer";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import { JWT } from "google-auth-library";
@@ -92,12 +91,6 @@ async function initGoogleSheets() {
 }
 initGoogleSheets();
 
-// ─── SheetDB (Google Sheets, no code) ────────────────────────────────────────
-// Connect your Sheet → https://sheetdb.io  → copy the API URL
-const SHEETDB_URL = process.env.SHEETDB_URL || "";
-if (SHEETDB_URL) console.log("✅  Google Sheets (SheetDB) ready");
-else             console.log("⚠️   SheetDB not set — sheet skipped (set SHEETDB_URL)");
-
 // ─── Admin Auth ───────────────────────────────────────────────────────────────
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "innobyte@admin2026";
 // Simple in-memory token store (sufficient for a local/small deployment)
@@ -136,7 +129,7 @@ async function sendEmails(
   college: string, dept: string, year: string,
   phone: string, events: any[]
 ) {
-  if (!resend) return;
+  if (!transporter) return;
   const eventList = events.map((e: any) =>
     `<li><b>${e.name}</b>${e.teamName ? ` — Team: <i>${e.teamName}</i>` : ""}${e.count > 1 ? ` (${e.count} members)` : ""}</li>`
   ).join("");
@@ -212,25 +205,9 @@ async function appendToSheet(row: Record<string, string>) {
   }
 }
 
-// ─── File Uploads ─────────────────────────────────────────────────────────────
-const isVercel = !!process.env.VERCEL;
-const uploadDir = isVercel ? "/tmp/uploads" : path.join(__dirname, "uploads");
-
-// Use memoryStorage on Vercel to avoid filesystem issues
-const storage = isVercel 
-  ? multer.memoryStorage() 
-  : multer.diskStorage({
-      destination: (_req, _file, cb) => {
-        if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-        cb(null, uploadDir);
-      },
-      filename: (_req, file, cb) => {
-        const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-        cb(null, `${file.fieldname}-${unique}${path.extname(file.originalname)}`);
-      },
-    });
-
-const upload = multer({ storage });
+// ─── File Uploads (Memory Storage Only) ───────────────────────────────────────
+const storage = multer.memoryStorage();
+const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
 
 // ─── Server ───────────────────────────────────────────────────────────────────
 const app = express();
@@ -238,7 +215,7 @@ export default app;
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
-app.use("/uploads", express.static(uploadDir));
+// No more /uploads static route - images are served as Base64 from DB
 
 // ─── Health check ─────────────────────────────────────────────────────────────
 app.get("/api/health", async (_req, res) => {
@@ -299,17 +276,9 @@ app.post("/api/register", upload.single("paymentScreenshot"), async (req: Reques
     let parsedEvents: any[] = [];
     try { parsedEvents = JSON.parse(events); } catch { parsedEvents = []; }
 
-    const isMemory = !!(req.file && 'buffer' in req.file);
     let paymentScreenshot = null;
-
     if (req.file) {
-      if (isMemory) {
-        // Vercel / Memory Storage mode
-        paymentScreenshot = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
-      } else {
-        // Disk Storage mode
-        paymentScreenshot = `/uploads/${req.file.filename}`;
-      }
+      paymentScreenshot = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
     }
 
     const regId = `INN26-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
