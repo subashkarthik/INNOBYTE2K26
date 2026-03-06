@@ -1,3 +1,5 @@
+// Consolidated Vercel Backend Logic
+// Last Deployment: 2026-03-06
 import express, { Request, Response } from "express";
 import pg from "pg";
 import nodemailer from "nodemailer";
