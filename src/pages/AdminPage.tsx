@@ -263,8 +263,8 @@ const Dashboard = ({ token, onLogout }: { token: string; onLogout: () => void })
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10 text-left">
-                  {['Reg ID','Name','College','Dept / Year','Email','Events','Date','Actions'].map(h => (
-                    <th key={h} className={`px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 ${h === 'Actions' ? 'text-center' : ''}`}>{h}</th>
+                  {['Reg ID','Name','College','Dept / Year','Email','Events','Payment','Date','Actions'].map(h => (
+                    <th key={h} className={`px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 ${h === 'Actions' || h === 'Payment' ? 'text-center' : ''}`}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -289,6 +289,21 @@ const Dashboard = ({ token, onLogout }: { token: string; onLogout: () => void })
                             <span key={e.name} className="px-2 py-0.5 bg-brand-primary/20 text-brand-primary rounded text-[10px] font-bold whitespace-nowrap">{e.name}</span>
                           ))}
                         </div>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        {r.payment_screenshot ? (
+                          <a 
+                            href={r.payment_screenshot} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex p-2 text-brand-secondary hover:text-white bg-brand-secondary/10 hover:bg-brand-secondary rounded-lg transition-all border border-brand-secondary/20"
+                            title="View Payment Proof"
+                          >
+                            <Eye size={16} />
+                          </a>
+                        ) : (
+                          <span className="text-slate-600 text-[10px] uppercase font-bold">No Proof</span>
+                        )}
                       </td>
                       <td className="px-6 py-4 text-slate-500 text-xs whitespace-nowrap">
                         {r.created_at ? new Date(r.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : 'N/A'}

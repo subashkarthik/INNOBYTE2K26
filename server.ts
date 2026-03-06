@@ -226,7 +226,19 @@ app.post("/api/register", upload.single("paymentScreenshot"), async (req: Reques
     let parsedEvents: any[] = [];
     try { parsedEvents = JSON.parse(events); } catch { parsedEvents = []; }
 
-    const paymentScreenshot = req.file ? `/uploads/${req.file.filename}` : null;
+    const isMemory = !!(req.file && 'buffer' in req.file);
+    let paymentScreenshot = null;
+
+    if (req.file) {
+      if (isMemory) {
+        // Vercel / Memory Storage mode
+        paymentScreenshot = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+      } else {
+        // Disk Storage mode
+        paymentScreenshot = `/uploads/${req.file.filename}`;
+      }
+    }
+
     const regId = `INN26-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
     // 1 — Save to PostgreSQL
