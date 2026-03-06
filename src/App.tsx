@@ -449,10 +449,30 @@ const RegistrationForm = () => {
       data.append('events', JSON.stringify(eventsToSend));
       if (paymentScreenshot) data.append('paymentScreenshot', paymentScreenshot);
       const res = await fetch('/api/register', { method: 'POST', body: data });
-      const result = await res.json();
-      if (result.success) { setRegId(result.regId); setStatus('success'); }
-      else { setStatus('error'); setErrMsg(result.message || 'Server returned an error.'); alert("Registration failed: " + (result.message || "Unknown error")); }
-    } catch (error: any) { setStatus('error'); setErrMsg(error.message || 'Network error.'); alert("Registration crashed: " + (error.message || "Network error")); }
+      
+      const text = await res.text();
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch (e) {
+        console.error("Non-JSON response:", text);
+        const snippet = text.length > 100 ? text.substring(0, 100) + "..." : text;
+        throw new Error(`Server returned non-JSON response: ${snippet}`);
+      }
+
+      if (result.success) { 
+        setRegId(result.regId); 
+        setStatus('success'); 
+      } else { 
+        setStatus('error'); 
+        setErrMsg(result.message || 'Server returned an error.'); 
+        alert("Registration failed: " + (result.message || "Unknown error")); 
+      }
+    } catch (error: any) { 
+      setStatus('error'); 
+      setErrMsg(error.message || 'Network error.'); 
+      alert("Registration crashed: " + (error.message || "Network error")); 
+    }
   };
 
   if (status === 'success') {

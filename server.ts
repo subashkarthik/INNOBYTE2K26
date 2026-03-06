@@ -166,15 +166,23 @@ async function appendToSheet(row: Record<string, string>) {
 }
 
 // ─── File Uploads ─────────────────────────────────────────────────────────────
-const uploadDir = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadDir),
-  filename: (_req, file, cb) => {
-    const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(null, `${file.fieldname}-${unique}${path.extname(file.originalname)}`);
-  },
-});
+const isVercel = !!process.env.VERCEL;
+const uploadDir = isVercel ? "/tmp/uploads" : path.join(__dirname, "uploads");
+
+// Use memoryStorage on Vercel to avoid filesystem issues
+const storage = isVercel 
+  ? multer.memoryStorage() 
+  : multer.diskStorage({
+      destination: (_req, _file, cb) => {
+        if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+        cb(null, uploadDir);
+      },
+      filename: (_req, file, cb) => {
+        const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+        cb(null, `${file.fieldname}-${unique}${path.extname(file.originalname)}`);
+      },
+    });
+
 const upload = multer({ storage });
 
 // ─── Server ───────────────────────────────────────────────────────────────────
@@ -371,6 +379,16 @@ if (process.env.NODE_ENV === "production" && !process.env.VITE_DEV) {
     res.sendFile(path.join(__dirname, "dist", "index.html"));
   });
 }
+
+// Global Error Handler (Ensures all errors return JSON)
+app.use((err: any, _req: Request, res: Response, _next: any) => {
+  console.error("💥 Server Error:", err);
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+    error: process.env.NODE_ENV === "development" ? err.stack : undefined
+  });
+});
 
 async function startServer() {
   const PORT = Number(process.env.PORT) || 3000;
