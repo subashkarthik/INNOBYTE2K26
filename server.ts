@@ -1,4 +1,4 @@
-import "dotenv/config";
+// import "dotenv/config"; // Vercel handles env vars, local uses -r dotenv/config or tsx
 import express, { Request, Response } from "express";
 import { createServer as createViteServer } from "vite";
 import pg from "pg";
@@ -431,15 +431,8 @@ app.post("/api/admin/broadcast", requireAuth, async (req: Request, res: Response
   }
 });
 
-// Vite (dev) / static (prod)
-// Move this to top level too
-if (process.env.NODE_ENV === "production" && !process.env.VITE_DEV) {
-  app.use(express.static(path.join(__dirname, "dist")));
-  app.get("*", (req, res, next) => {
-    if (req.path.startsWith('/api')) return next();
-    res.sendFile(path.join(__dirname, "dist", "index.html"));
-  });
-}
+// Deployment note: Static serving is handled via vercel.json rewrites.
+// We only keep the local development createViteServer in startServer.
 
 // Global Error Handler (Ensures all errors return JSON)
 app.use((err: any, _req: Request, res: Response, _next: any) => {
