@@ -16,12 +16,12 @@ const __dirname = path.dirname(__filename);
 // ─── PostgreSQL Database ──────────────────────────────────────────────────────
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL?.includes('supabase') || process.env.DATABASE_URL?.includes('neon') || process.env.DATABASE_URL?.includes('aiven')
+  ssl: process.env.DATABASE_URL && (process.env.DATABASE_URL.includes('supabase') || process.env.DATABASE_URL.includes('neon') || process.env.DATABASE_URL.includes('aiven'))
     ? { rejectUnauthorized: false } 
     : false,
-  connectionTimeoutMillis: 5000, // 5 seconds to connect
-  idleTimeoutMillis: 10000,     // 10 seconds idle
-  max: 10,                      // max connections
+  connectionTimeoutMillis: 5000,
+  idleTimeoutMillis: 10000,
+  max: 10,
 });
 
 // Initialize Table
@@ -217,14 +217,19 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 // No more /uploads static route - images are served as Base64 from DB
 
-// ─── Health check ─────────────────────────────────────────────────────────────
+// ─── Health checks ────────────────────────────────────────────────────────────
+// Basic ping to verify function is alive
+app.get("/api/ping", (_req, res) => res.json({ status: "ok", time: new Date().toISOString() }));
+
 app.get("/api/health", async (_req, res) => {
   try {
     const start = Date.now();
+    if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL missing");
     await pool.query("SELECT 1");
     res.json({ status: "ok", db: "connected", latency: `${Date.now() - start}ms` });
   } catch (err: any) {
-    res.status(500).json({ status: "error", message: err.message });
+    console.error("Health check error:", err.message);
+    res.status(500).json({ status: "error", message: err.message, env: !!process.env.DATABASE_URL });
   }
 });
 
