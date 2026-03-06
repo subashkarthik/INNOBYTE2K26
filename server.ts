@@ -15,9 +15,12 @@ const __dirname = path.dirname(__filename);
 // ─── PostgreSQL Database ──────────────────────────────────────────────────────
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DATABASE_URL?.includes('supabase') || process.env.DATABASE_URL?.includes('neon') 
+  ssl: process.env.DATABASE_URL?.includes('supabase') || process.env.DATABASE_URL?.includes('neon') || process.env.DATABASE_URL?.includes('aiven')
     ? { rejectUnauthorized: false } 
-    : false
+    : false,
+  connectionTimeoutMillis: 5000, // 5 seconds to connect
+  idleTimeoutMillis: 10000,     // 10 seconds idle
+  max: 10,                      // max connections
 });
 
 // Initialize Table
@@ -44,6 +47,10 @@ const initDB = async () => {
   }
 };
 initDB();
+
+pool.on('error', (err) => {
+  console.error('💥 Unexpected error on idle PostgreSQL client:', err.message);
+});
 
 // ─── Resend (Email) ───────────────────────────────────────────────────────────
 // Get free API key → https://resend.com  (3000 emails/month free)
@@ -192,6 +199,17 @@ export default app;
 app.use(express.json());
 app.use("/uploads", express.static(uploadDir));
 
+// ─── Health check ─────────────────────────────────────────────────────────────
+app.get("/api/health", async (_req, res) => {
+  try {
+    const start = Date.now();
+    await pool.query("SELECT 1");
+    res.json({ status: "ok", db: "connected", latency: `${Date.now() - start}ms` });
+  } catch (err: any) {
+    res.status(500).json({ status: "error", message: err.message });
+  }
+});
+
 // Admin Login
 app.post("/api/admin/login", (req: Request, res: Response) => {
   const { password } = req.body;
@@ -271,13 +289,18 @@ app.post("/api/register", upload.single("paymentScreenshot"), async (req: Reques
     sendEmails(fullName, regId, email, collegeName, department, year, phone, parsedEvents);
 
     // 4 — Append to Google Sheet via SheetDB (non-blocking)
+    // NOTE: We DO NOT send the Base64 screenshot to SheetDB 
+    // because it exceeds Google Sheets cell limits and request size.
     appendToSheet({
       reg_id:     regId,
       full_name:  fullName,
       college:    collegeName,
-      department, year, email, phone,
+      department,
+      year,
+      email,
+      phone,
       events:     parsedEvents.map((e: any) => e.name).join(", "),
-      payment:    paymentScreenshot || "",
+      payment:    paymentScreenshot ? "UPLOADED (View in Admin)" : "MISSING",
       timestamp:  new Date().toISOString(),
     });
 
