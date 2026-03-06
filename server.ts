@@ -6,7 +6,9 @@ import path from "path";
 import { fileURLToPath } from "url";
 import multer from "multer";
 import fs from "fs";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
+import { GoogleSpreadsheet } from "google-spreadsheet";
+import { JWT } from "google-auth-library";
 
 const { Pool } = pg;
 const __filename = fileURLToPath(import.meta.url);
@@ -52,14 +54,43 @@ pool.on('error', (err) => {
   console.error('💥 Unexpected error on idle PostgreSQL client:', err.message);
 });
 
-// ─── Resend (Email) ───────────────────────────────────────────────────────────
-// Get free API key → https://resend.com  (3000 emails/month free)
-const resendApiKey = process.env.RESEND_API_KEY || "";
-const resend = resendApiKey ? new Resend(resendApiKey) : null;
-const FROM_EMAIL   = process.env.FROM_EMAIL       || "onboarding@resend.dev";
-const ADMIN_EMAIL  = process.env.ADMIN_EMAIL       || "";
-if (resend) console.log("✅  Email (Resend) ready");
-else        console.log("⚠️   Resend not set — emails skipped (set RESEND_API_KEY)");
+// ─── Gmail (Nodemailer) ────────────────────────────────────────────────────────
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_APP_PASSWORD,
+  },
+});
+
+const FROM_EMAIL   = process.env.GMAIL_USER || "";
+const ADMIN_EMAIL  = process.env.COORDINATOR_EMAIL || "";
+console.log(process.env.GMAIL_USER ? "✅  Email (Gmail) ready" : "⚠️   Gmail not set");
+
+// ─── Google Sheets (google-spreadsheet) ───────────────────────────────────────
+const SHEET_ID = process.env.GOOGLE_SHEET_ID || "";
+let googleSheetDoc: GoogleSpreadsheet | null = null;
+
+async function initGoogleSheets() {
+  if (!SHEET_ID || !process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
+    console.log("⚠️   Google Sheets credentials missing");
+    return;
+  }
+  try {
+    const creds = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+    const auth = new JWT({
+      email: creds.client_email,
+      key: creds.private_key,
+      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+    });
+    googleSheetDoc = new GoogleSpreadsheet(SHEET_ID, auth);
+    await googleSheetDoc.loadInfo();
+    console.log("✅  Google Sheets ready:", googleSheetDoc.title);
+  } catch (err: any) {
+    console.error("❌  Google Sheets init failed:", err.message);
+  }
+}
+initGoogleSheets();
 
 // ─── SheetDB (Google Sheets, no code) ────────────────────────────────────────
 // Connect your Sheet → https://sheetdb.io  → copy the API URL
@@ -112,9 +143,9 @@ async function sendEmails(
 
   // Student confirmation email
   try {
-    const { data, error } = await resend.emails.send({
-      from: `INNOBYTE2K26 <${FROM_EMAIL}>`,
-      to: [email],
+    await transporter.sendMail({
+      from: `"INNOBYTE2K26" <${FROM_EMAIL}>`,
+      to: email,
       subject: `🎉 Registration Confirmed — ${regId} | INNOBYTE2K26`,
       html: `
         <div style="font-family:Inter,sans-serif;max-width:600px;margin:auto;background:#0f172a;color:#e2e8f0;border-radius:16px;overflow:hidden">
@@ -142,7 +173,6 @@ async function sendEmails(
           </div>
         </div>`,
     });
-    if (error) console.error("Student email error:", error);
   } catch (e: any) {
     console.error("Student email exception:", e?.message);
   }
@@ -151,9 +181,9 @@ async function sendEmails(
   if (ADMIN_EMAIL) {
     try {
       const eventNames = events.map((e: any) => e.name).join(", ");
-      await resend.emails.send({
-        from: `INNOBYTE Bot <${FROM_EMAIL}>`,
-        to: [ADMIN_EMAIL],
+      await transporter.sendMail({
+        from: `"INNOBYTE Bot" <${FROM_EMAIL}>`,
+        to: ADMIN_EMAIL,
         subject: `[New Registration] ${fullName} — ${regId}`,
         text: [
           "New Registration\n",
@@ -173,15 +203,12 @@ async function sendEmails(
 }
 
 async function appendToSheet(row: Record<string, string>) {
-  if (!SHEETDB_URL) return;
+  if (!googleSheetDoc) return;
   try {
-    await fetch(SHEETDB_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify({ data: row }),
-    });
+    const sheet = googleSheetDoc.sheetsByIndex[0];
+    await sheet.addRow(row);
   } catch (e: any) {
-    console.error("SheetDB append failed:", e?.message);
+    console.error("Google Sheets append failed:", e?.message);
   }
 }
 
@@ -399,7 +426,7 @@ app.get("/api/admin/trends", requireAuth, async (_req: Request, res: Response) =
 // Admin Broadcast (requires auth)
 app.post("/api/admin/broadcast", requireAuth, async (req: Request, res: Response) => {
   const { subject, message } = req.body;
-  if (!resend) return res.status(503).json({ success: false, message: "Email service not configured" });
+  if (!transporter) return res.status(503).json({ success: false, message: "Email service not configured" });
   if (!subject || !message) return res.status(400).json({ success: false, message: "Subject and message required" });
 
   try {
@@ -412,9 +439,9 @@ app.post("/api/admin/broadcast", requireAuth, async (req: Request, res: Response
     const batchSize = 50;
     for (let i = 0; i < emails.length; i += batchSize) {
       const batch = emails.slice(i, i + batchSize);
-      await resend.emails.send({
-        from: `INNOBYTE2K26 Admin <${FROM_EMAIL}>`,
-        to: batch,
+      await transporter.sendMail({
+        from: `"INNOBYTE2K26 Admin" <${FROM_EMAIL}>`,
+        to: batch.join(", "),
         subject: subject,
         html: `
           <div style="font-family:sans-serif;max-width:600px;margin:auto;padding:20px;border:1px solid #eee;border-radius:10px">
