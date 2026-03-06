@@ -1,0 +1,7 @@
+{
+  "name": "INNOBYTE2K26 Symposium",
+  "description": "A modern, responsive symposium website for the INNOBYTE2K26 technical event at ES College of Engineering and Technology.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

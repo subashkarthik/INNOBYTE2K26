@@ -1,0 +1,23 @@
+{
+  "name": "INNOBYTE 2K26 | Tech Symposium",
+  "short_name": "INNOBYTE",
+  "description": "The premier flagship technical symposium of ES College of Engineering and Technology.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#8b5cf6",
+  "icons": [
+    {
+      "src": "/Innobyte-Logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/Innobyte-Logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

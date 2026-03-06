@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #8b5cf6; /* Electric Violet */
+  --color-brand-secondary: #06b6d4; /* Cyan */
+  --color-brand-accent: #f43f5e; /* Rose */
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Outfit", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes pulse-slow {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  --animate-gradient: gradient 6s ease infinite;
+  --animate-pulse-slow: pulse-slow 8s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+}
+
+@layer base {
+  body {
+    @apply bg-[#020617] text-slate-200 antialiased selection:bg-brand-primary/30 selection:text-white;
+    font-feature-settings: "ss01", "ss02", "cv01";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight font-bold;
+  }
+}
+
+.glass-panel {
+  @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] shadow-2xl;
+}
+
+.glass-card {
+  @apply bg-white/[0.02] backdrop-blur-md border border-white/[0.05] hover:border-brand-primary/30 transition-all duration-500;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-primary via-brand-secondary to-brand-primary bg-[length:200%_auto] animate-gradient;
+}
+
+.neon-border {
+  @apply relative overflow-hidden;
+}
+
+.neon-border::after {
+  content: "";
+  @apply absolute inset-0 border border-brand-primary/20 rounded-[inherit] pointer-events-none;
+}
+
+.btn-primary {
+  @apply relative px-8 py-4 bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-bold rounded-xl 
+         hover:shadow-[0_0_30px_rgba(139,92,246,0.4)] transition-all duration-300 active:scale-95 overflow-hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-950;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-800 rounded-full hover:bg-slate-700 transition-colors;
+}
