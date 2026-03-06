@@ -383,6 +383,40 @@ const EventPickerCard = ({ ev, sel, onToggle, onUpdateEvt, pptTheme, setPptTheme
   </div>
 );
 
+const compressImage = (file: File): Promise<File> => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        const MAX_SIZE = 1200;
+        if (width > MAX_SIZE || height > MAX_SIZE) {
+          if (width > height) {
+            height = (height / width) * MAX_SIZE;
+            width = MAX_SIZE;
+          } else {
+            width = (width / height) * MAX_SIZE;
+            height = MAX_SIZE;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+        canvas.toBlob((blob) => {
+          if (blob) resolve(new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", { type: 'image/jpeg' }));
+          else resolve(file);
+        }, 'image/jpeg', 0.7);
+      };
+    };
+  });
+};
+
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
@@ -447,7 +481,12 @@ const RegistrationForm = () => {
           : ev
       );
       data.append('events', JSON.stringify(eventsToSend));
-      if (paymentScreenshot) data.append('paymentScreenshot', paymentScreenshot);
+      
+      if (paymentScreenshot) {
+        // Compress image if it's large to stay within Vercel's 4.5MB function limit
+        const compressed = await compressImage(paymentScreenshot);
+        data.append('paymentScreenshot', compressed);
+      }
       const res = await fetch('/api/register', { method: 'POST', body: data });
       
       const text = await res.text();
