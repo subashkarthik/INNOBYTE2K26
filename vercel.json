@@ -6,12 +6,8 @@
       "memory": 1024
     }
   },
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/index" },
-    { "src": "/assets/(.*)", "dest": "/assets/$1" },
-    { "src": "/Innobyte-Logo.png", "dest": "/Innobyte-Logo.png" },
-    { "src": "/favicon.ico", "dest": "/favicon.ico" },
-    { "src": "/manifest.json", "dest": "/manifest.json" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.ts" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

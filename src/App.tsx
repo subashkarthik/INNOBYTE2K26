@@ -407,7 +407,7 @@ const EventPickerCard = ({ ev, sel, onToggle, onUpdateEvt, pptTheme, setPptTheme
   </div>
 );
 
-const compressImage = (file: File): Promise<File> => {
+const compressImage = (file: File): Promise<string> => {
   return new Promise((resolve) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -432,10 +432,9 @@ const compressImage = (file: File): Promise<File> => {
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         ctx?.drawImage(img, 0, 0, width, height);
-        canvas.toBlob((blob) => {
-          if (blob) resolve(new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", { type: 'image/jpeg' }));
-          else resolve(file);
-        }, 'image/jpeg', 0.7);
+        // Using lower quality (0.6) for Base64 to stay within JSON limits
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
+        resolve(dataUrl);
       };
     };
   });
@@ -497,21 +496,26 @@ const RegistrationForm = () => {
     setStatus('loading');
     setErrMsg('');
     try {
-      const data = new FormData();
-      Object.entries(formData).forEach(([k, v]) => data.append(k, String(v)));
       const eventsToSend = selectedEvents.map(ev =>
         ev.name.includes('Paper Presentation') && formData.year === '1st' 
           ? { ...ev, name: `Paper Presentation (1st Year) (${pptTheme})`, pptTheme } 
           : ev
       );
-      data.append('events', JSON.stringify(eventsToSend));
       
+      let paymentScreenshotBase64 = '';
       if (paymentScreenshot) {
-        // Compress image if it's large to stay within Vercel's 4.5MB function limit
-        const compressed = await compressImage(paymentScreenshot);
-        data.append('paymentScreenshot', compressed);
+        paymentScreenshotBase64 = await compressImage(paymentScreenshot);
       }
-      const res = await fetch('/api/register', { method: 'POST', body: data });
+
+      const res = await fetch('/api/register', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          events: JSON.stringify(eventsToSend),
+          paymentScreenshot: paymentScreenshotBase64
+        }) 
+      });
       
       const text = await res.text();
       let result;
