@@ -111,65 +111,78 @@ async function sendEmails(
   ).join("");
 
   // Student confirmation email
-  resend.emails.send({
-    from: `INNOBYTE2K26 <${FROM_EMAIL}>`,
-    to: [email],
-    subject: `🎉 Registration Confirmed — ${regId} | INNOBYTE2K26`,
-    html: `
-      <div style="font-family:Inter,sans-serif;max-width:600px;margin:auto;background:#0f172a;color:#e2e8f0;border-radius:16px;overflow:hidden">
-        <div style="background:linear-gradient(135deg,#8b5cf6,#06b6d4);padding:32px;text-align:center">
-          <h1 style="margin:0;font-size:28px;color:#fff;letter-spacing:-1px">INNOBYTE<span>2K26</span></h1>
-          <p style="margin:8px 0 0;color:#e0e7ff;font-size:14px">ES College of Engineering and Technology</p>
-        </div>
-        <div style="padding:32px">
-          <h2 style="color:#a78bfa;margin-top:0">You're In, ${fullName}! 🚀</h2>
-          <p style="color:#94a3b8">Your registration for INNOBYTE2K26 on <b>27 March 2026</b> is confirmed.</p>
-          <div style="background:#1e293b;border:1px solid #334155;border-radius:12px;padding:24px;text-align:center;margin:24px 0">
-            <p style="margin:0;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#64748b">Your Registration ID</p>
-            <p style="margin:8px 0 0;font-size:36px;font-weight:900;font-family:monospace;color:#a78bfa">${regId}</p>
+  try {
+    const { data, error } = await resend.emails.send({
+      from: `INNOBYTE2K26 <${FROM_EMAIL}>`,
+      to: [email],
+      subject: `🎉 Registration Confirmed — ${regId} | INNOBYTE2K26`,
+      html: `
+        <div style="font-family:Inter,sans-serif;max-width:600px;margin:auto;background:#0f172a;color:#e2e8f0;border-radius:16px;overflow:hidden">
+          <div style="background:linear-gradient(135deg,#8b5cf6,#06b6d4);padding:32px;text-align:center">
+            <h1 style="margin:0;font-size:28px;color:#fff;letter-spacing:-1px">INNOBYTE<span>2K26</span></h1>
+            <p style="margin:8px 0 0;color:#e0e7ff;font-size:14px">ES College of Engineering and Technology</p>
           </div>
-          <h3 style="color:#e2e8f0;margin-bottom:8px">Events Registered:</h3>
-          <ul style="color:#94a3b8;padding-left:20px;line-height:2">${eventList}</ul>
-          <hr style="border:none;border-top:1px solid #334155;margin:24px 0">
-          <p style="color:#64748b;font-size:13px;text-align:center">
-            📅 <b style="color:#e2e8f0">27 March 2026</b> &nbsp;|&nbsp; 8:30 AM onwards<br>
-            📍 ES College of Engineering and Technology, Villupuram
-          </p>
-          <p style="color:#475569;font-size:12px;text-align:center;margin-top:16px">
-            Questions? Mail us at <a href="mailto:innobyte@escollege.edu.in" style="color:#a78bfa">innobyte@escollege.edu.in</a>
-          </p>
-        </div>
-      </div>`,
-  }).catch((e: any) => console.error("Student email failed:", e?.message));
+          <div style="padding:32px">
+            <h2 style="color:#a78bfa;margin-top:0">You're In, ${fullName}! 🚀</h2>
+            <p style="color:#94a3b8">Your registration for INNOBYTE2K26 on <b>27 March 2026</b> is confirmed.</p>
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:12px;padding:24px;text-align:center;margin:24px 0">
+              <p style="margin:0;font-size:11px;text-transform:uppercase;letter-spacing:3px;color:#64748b">Your Registration ID</p>
+              <p style="margin:8px 0 0;font-size:36px;font-weight:900;font-family:monospace;color:#a78bfa">${regId}</p>
+            </div>
+            <h3 style="color:#e2e8f0;margin-bottom:8px">Events Registered:</h3>
+            <ul style="color:#94a3b8;padding-left:20px;line-height:2">${eventList}</ul>
+            <hr style="border:none;border-top:1px solid #334155;margin:24px 0">
+            <p style="color:#64748b;font-size:13px;text-align:center">
+              📅 <b style="color:#e2e8f0">27 March 2026</b> &nbsp;|&nbsp; 8:30 AM onwards<br>
+              📍 ES College of Engineering and Technology, Villupuram
+            </p>
+            <p style="color:#475569;font-size:12px;text-align:center;margin-top:16px">
+              Questions? Mail us at <a href="mailto:innobyte@escollege.edu.in" style="color:#a78bfa">innobyte@escollege.edu.in</a>
+            </p>
+          </div>
+        </div>`,
+    });
+    if (error) console.error("Student email error:", error);
+  } catch (e: any) {
+    console.error("Student email exception:", e?.message);
+  }
 
   // Admin notification email
   if (ADMIN_EMAIL) {
-    const eventNames = events.map((e: any) => e.name).join(", ");
-    resend.emails.send({
-      from: `INNOBYTE Bot <${FROM_EMAIL}>`,
-      to: [ADMIN_EMAIL],
-      subject: `[New Registration] ${fullName} — ${regId}`,
-      text: [
-        "New Registration\n",
-        `Name:     ${fullName}`,
-        `Reg ID:   ${regId}`,
-        `College:  ${college}`,
-        `Dept:     ${dept} / ${year} Year`,
-        `Email:    ${email}`,
-        `Phone:    ${phone}`,
-        `Events:   ${eventNames}`,
-      ].join("\n"),
-    }).catch((e: any) => console.error("Admin email failed:", e?.message));
+    try {
+      const eventNames = events.map((e: any) => e.name).join(", ");
+      await resend.emails.send({
+        from: `INNOBYTE Bot <${FROM_EMAIL}>`,
+        to: [ADMIN_EMAIL],
+        subject: `[New Registration] ${fullName} — ${regId}`,
+        text: [
+          "New Registration\n",
+          `Name:     ${fullName}`,
+          `Reg ID:   ${regId}`,
+          `College:  ${college}`,
+          `Dept:     ${dept} / ${year} Year`,
+          `Email:    ${email}`,
+          `Phone:    ${phone}`,
+          `Events:   ${eventNames}`,
+        ].join("\n"),
+      });
+    } catch (e: any) {
+      console.error("Admin email exception:", e?.message);
+    }
   }
 }
 
 async function appendToSheet(row: Record<string, string>) {
   if (!SHEETDB_URL) return;
-  fetch(SHEETDB_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Accept": "application/json" },
-    body: JSON.stringify({ data: row }),
-  }).catch((e) => console.error("SheetDB append failed:", e?.message));
+  try {
+    await fetch(SHEETDB_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({ data: row }),
+    });
+  } catch (e: any) {
+    console.error("SheetDB append failed:", e?.message);
+  }
 }
 
 // ─── File Uploads ─────────────────────────────────────────────────────────────
@@ -196,7 +209,8 @@ const upload = multer({ storage });
 const app = express();
 export default app;
 
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use("/uploads", express.static(uploadDir));
 
 // ─── Health check ─────────────────────────────────────────────────────────────
@@ -285,13 +299,13 @@ app.post("/api/register", upload.single("paymentScreenshot"), async (req: Reques
     // 2 — Real-time SSE broadcast
     broadcastSSE({ type: "new_registration", regId, fullName, collegeName, department, year, events: parsedEvents, total, timestamp: new Date().toISOString() });
 
-    // 3 — Send emails (non-blocking)
-    sendEmails(fullName, regId, email, collegeName, department, year, phone, parsedEvents);
+    // 3 — Send emails (awaits for serverless reliability)
+    await sendEmails(fullName, regId, email, collegeName, department, year, phone, parsedEvents);
 
-    // 4 — Append to Google Sheet via SheetDB (non-blocking)
+    // 4 — Append to Google Sheet via SheetDB (awaits for serverless reliability)
     // NOTE: We DO NOT send the Base64 screenshot to SheetDB 
     // because it exceeds Google Sheets cell limits and request size.
-    appendToSheet({
+    await appendToSheet({
       reg_id:     regId,
       full_name:  fullName,
       college:    collegeName,
@@ -306,8 +320,10 @@ app.post("/api/register", upload.single("paymentScreenshot"), async (req: Reques
 
     res.json({ success: true, regId });
   } catch (error: any) {
-    console.error("Registration error:", error.message);
-    res.status(500).json({ success: false, message: "Registration failed. Please try again." });
+    console.error("💥 Registration fatal error:", error);
+    if (!res.headersSent) {
+      res.status(500).json({ success: false, message: `Server Error: ${error.message}` });
+    }
   }
 });
 
