@@ -206,15 +206,29 @@ app.post("/api/admin/login", (req: Request, res: Response) => {
   }
 });
 
-// SSE — real-time live feed
+// Stats — simpler endpoint for polling fallback
+app.get("/api/stats/total", async (_req: Request, res: Response) => {
+  try {
+    res.json({ success: true, total: await getTotal() });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Database error" });
+  }
+});
+
+// SSE — real-time live feed (Warning: limited support on Vercel)
 app.get("/api/events/stream", async (req: Request, res: Response) => {
-  res.setHeader("Content-Type", "text/event-stream");
-  res.setHeader("Cache-Control", "no-cache");
-  res.setHeader("Connection", "keep-alive");
-  res.flushHeaders();
-  res.write(`data: ${JSON.stringify({ type: "init", total: await getTotal() })}\n\n`);
-  sseClients.add(res);
-  req.on("close", () => sseClients.delete(res));
+  try {
+    res.setHeader("Content-Type", "text/event-stream");
+    res.setHeader("Cache-Control", "no-cache");
+    res.setHeader("Connection", "keep-alive");
+    res.flushHeaders();
+    res.write(`data: ${JSON.stringify({ type: "init", total: await getTotal() })}\n\n`);
+    sseClients.add(res);
+    req.on("close", () => sseClients.delete(res));
+  } catch (err) {
+    console.error("SSE init failed:", err);
+    if (!res.headersSent) res.status(500).end();
+  }
 });
 
 // Register — main endpoint

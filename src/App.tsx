@@ -89,17 +89,41 @@ const LiveFeed = () => {
   const [feed, setFeed] = useState<LiveActivity[]>([]);
 
   useEffect(() => {
-    const es = new EventSource('/api/events/stream');
-    es.onmessage = (ev) => {
-      const d = JSON.parse(ev.data) as any;
-      if (d.type === 'init') setCount(d.total);
-      else if (d.type === 'new_registration') {
-        setCount(d.total);
-        setFeed(prev => [d as LiveActivity, ...prev].slice(0, 6));
-      }
+    let es: EventSource | null = null;
+    let pollInterval: any = null;
+
+    const startPolling = () => {
+      pollInterval = setInterval(async () => {
+        try {
+          const res = await fetch('/api/stats/total');
+          const data = await res.json();
+          if (data.success) setCount(data.total);
+        } catch (_) {}
+      }, 30000); // 30s
     };
-    es.onerror = () => es.close();
-    return () => es.close();
+
+    try {
+      es = new EventSource('/api/events/stream');
+      es.onmessage = (ev) => {
+        const d = JSON.parse(ev.data) as any;
+        if (d.type === 'init') setCount(d.total);
+        else if (d.type === 'new_registration') {
+          setCount(d.total);
+          setFeed(prev => [d as LiveActivity, ...prev].slice(0, 6));
+        }
+      };
+      es.onerror = () => {
+        es?.close();
+        if (!pollInterval) startPolling();
+      };
+    } catch {
+      startPolling();
+    }
+
+    return () => {
+      es?.close();
+      if (pollInterval) clearInterval(pollInterval);
+    };
   }, []);
 
   return (
