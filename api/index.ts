@@ -66,16 +66,17 @@ async function getGoogleSheet() {
 }
 
 // ─── Admin Auth ───────────────────────────────────────────────────────────────
+import crypto from "crypto";
+
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "innobyte@admin2026";
-const validTokens = new Set<string>();
 
 const generateToken = () =>
-  Math.random().toString(36).substring(2) + Date.now().toString(36) + Math.random().toString(36).substring(2);
+  crypto.createHmac('sha256', ADMIN_PASSWORD).update('innobyte-admin-v1').digest('hex');
 
 const requireAuth = (req: Request, res: Response, next: any) => {
   const auth = req.headers.authorization || "";
   const token = auth.replace("Bearer ", "");
-  if (!token || !validTokens.has(token)) {
+  if (!token || token !== generateToken()) {
     res.status(401).json({ success: false, message: "Unauthorized or token expired" });
     return;
   }
@@ -180,8 +181,6 @@ app.post("/api/admin/login", (req, res) => {
   const { password } = req.body;
   if (password === ADMIN_PASSWORD) {
     const token = generateToken();
-    validTokens.add(token);
-    setTimeout(() => validTokens.delete(token), 8 * 60 * 60 * 1000);
     res.json({ success: true, token });
   } else {
     res.status(401).json({ success: false, message: "Invalid password" });
