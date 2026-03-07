@@ -352,7 +352,7 @@ const Dashboard = ({ token, onLogout }: { token: string; onLogout: () => void })
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10 text-left">
-                  {['Reg ID','Name','College','Dept / Year','Email','Events','Payment','Date','Actions'].map(h => (
+                  {['Reg ID','Name','College','Dept / Year','Email','Transaction ID','Events','Payment','Date','Actions'].map(h => (
                     <th key={h} className={`px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 ${h === 'Actions' || h === 'Payment' ? 'text-center' : ''}`}>{h}</th>
                   ))}
                 </tr>
@@ -372,6 +372,9 @@ const Dashboard = ({ token, onLogout }: { token: string; onLogout: () => void })
                       <td className="px-6 py-4 text-slate-400 max-w-[160px] truncate">{r.college_name}</td>
                       <td className="px-6 py-4 text-slate-400 whitespace-nowrap">{r.department} / {r.year}</td>
                       <td className="px-6 py-4 text-slate-400 text-xs">{r.email}</td>
+                      <td className="px-6 py-4 font-mono text-xs text-slate-300">
+                        {r.transaction_id || <span className="text-slate-600 italic">N/A</span>}
+                      </td>
                       <td className="px-6 py-4 max-w-[200px]">
                         <div className="flex flex-wrap gap-1">
                           {evts.map((e: any) => (

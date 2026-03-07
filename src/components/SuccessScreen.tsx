@@ -9,11 +9,12 @@ import html2canvas from 'html2canvas';
 interface SuccessScreenProps {
   regId: string;
   email: string;
+  transactionId?: string;
   selectedEvents: SelectedEvent[];
   onReset: () => void;
 }
 
-export default function SuccessScreen({ regId, email, selectedEvents, onReset }: SuccessScreenProps) {
+export default function SuccessScreen({ regId, email, transactionId, selectedEvents, onReset }: SuccessScreenProps) {
   const [copied, setCopied] = React.useState(false);
   const [isDownloading, setIsDownloading] = React.useState(false);
   const receiptRef = useRef<HTMLDivElement>(null);
@@ -134,6 +135,13 @@ export default function SuccessScreen({ regId, email, selectedEvents, onReset }:
           {copied ? <><Check size={14} className="text-green-400" /> Copied!</> : <><Copy size={14} /> Copy ID</>}
         </button>
       </div>
+
+      {transactionId && (
+        <div className="bg-white/2 rounded-xl p-4 mb-8 border border-white/5 flex flex-col items-center">
+          <span className="text-[9px] uppercase tracking-[0.2em] text-slate-500 mb-1">Transaction ID</span>
+          <span className="text-xl font-mono font-bold text-slate-300">{transactionId}</span>
+        </div>
+      )}
 
       <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl px-5 py-3 mb-8 text-amber-400 text-sm">
         📌 Save your Registration ID — you'll need it on <strong>27 March 2026</strong>

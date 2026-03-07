@@ -448,6 +448,7 @@ const RegistrationForm = () => {
     year: '1st' as Year,
     email: '',
     phone: '',
+    transactionId: '',
   });
   const [selectedEvents, setSelectedEvents] = useState<SelectedEvent[]>([]);
   const [pptTheme, setPptTheme] = useState('');
@@ -463,7 +464,9 @@ const RegistrationForm = () => {
     if (formData.collegeName.length > 0 && formData.collegeName.length < 3) e.collegeName = 'College name too short';
     if (formData.email.length > 0 && !/\S+@\S+\.\S+/.test(formData.email)) e.email = 'Invalid email address';
     if (formData.phone.length > 0 && !/^\d{10}$/.test(formData.phone)) e.phone = '10-digit number required';
+    if (formData.transactionId.length > 0 && !/^\d{12}$/.test(formData.transactionId)) e.transactionId = '12-digit Transaction ID required';
     if (selectedEvents.length === 0) e.events = 'Select at least one event';
+    if (!formData.transactionId) e.transactionId = 'Transaction ID is required';
     if (!paymentScreenshot) e.payment = 'Upload proof of payment';
     return e;
   }, [formData, selectedEvents, paymentScreenshot]);
@@ -554,6 +557,7 @@ const RegistrationForm = () => {
       <SuccessScreen
         regId={regId}
         email={formData.email}
+        transactionId={formData.transactionId}
         selectedEvents={enrichedEvents}
         onReset={() => { setStatus('idle'); setSelectedEvents([]); window.scrollTo({top: 0, behavior: 'smooth'}); }}
       />
@@ -677,8 +681,25 @@ const RegistrationForm = () => {
                 <img src="/qr.jpeg" alt="Payment QR Code" className="w-48 h-48" />
               </div>
             </div>
-            <div>
-              <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Upload Transaction Proof</label>
+            <div className="space-y-6">
+              <div>
+                <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Transaction ID (12 Digits)</label>
+                <input 
+                  required 
+                  type="text" 
+                  maxLength={12}
+                  className={inputCls('transactionId')} 
+                  placeholder="Enter 12-digit ID" 
+                  value={formData.transactionId} 
+                  onChange={e => {
+                    const val = e.target.value.replace(/[^0-9]/g, '');
+                    upd('transactionId', val);
+                  }} 
+                />
+                <ValidationError name="transactionId" />
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Upload Transaction Proof</label>
               <div className="relative group">
                 <input required type="file" accept="image/*" onChange={e => { setPaymentScreenshot(e.target.files?.[0] || null); setTouched(p => ({ ...p, payment: true })); }} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                 <div className={`w-full border-2 border-dashed rounded-2xl p-12 flex flex-col items-center justify-center transition-all duration-300 ${paymentScreenshot ? 'border-green-500/50 bg-green-500/5' : touched.payment && errors.payment ? 'border-red-500/50 bg-red-500/5' : 'border-white/10 bg-white/[0.03] group-hover:border-brand-primary/50 group-hover:bg-brand-primary/5'}`}>
@@ -696,11 +717,12 @@ const RegistrationForm = () => {
                     </>
                   )}
                 </div>
+                <ValidationError name="payment" />
               </div>
-              <ValidationError name="payment" />
             </div>
           </div>
         </div>
+      </div>
 
         <div className="max-w-7xl mx-auto glass-panel p-6 md:p-10 rounded-4xl flex flex-col md:flex-row items-center justify-between gap-10 border border-white/10 shadow-2xl">
           <div className="flex items-center gap-3 text-slate-500 text-sm bg-white/[0.03] px-6 py-3 rounded-full border border-white/5">

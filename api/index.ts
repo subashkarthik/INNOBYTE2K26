@@ -145,7 +145,7 @@ async function sendEmails(
         from: `"INNOBYTE Bot" <${FROM_EMAIL}>`,
         to: ADMIN_EMAIL,
         subject: `[New Registration] ${fullName}`,
-        text: `New Registration: ${fullName} (${regId})\nCollege: ${college}\nDept: ${dept}\nEvents: ${events.map(e => e.name).join(", ")}`,
+        text: `New Registration: ${fullName} (${regId})\nCollege: ${college}\nDept: ${dept}\nTransaction ID: ${regId.includes('INN26') ? '(See Details)' : 'N/A'}\nEvents: ${events.map(e => e.name).join(", ")}`,
       });
     } catch (e: any) { console.error("Admin Email Error:", e.message); }
   }
@@ -209,7 +209,7 @@ app.get("/api/events/stream", async (req, res) => {
 // Register - JSON based, no Multer
 app.post("/api/register", async (req, res) => {
   try {
-    const { fullName, collegeName, department, year, email, phone, events, paymentScreenshot } = req.body;
+    const { fullName, collegeName, department, year, email, phone, events, paymentScreenshot, transactionId } = req.body;
     if (!events) return res.status(400).json({ success: false, message: "No events selected" });
 
     const parsedEvents = typeof events === 'string' ? JSON.parse(events) : events;
@@ -217,9 +217,9 @@ app.post("/api/register", async (req, res) => {
 
     // 1 — PostgreSQL
     await getPool().query(`
-      INSERT INTO registrations (reg_id, full_name, college_name, department, year, email, phone, events_json, payment_screenshot)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-    `, [regId, fullName, collegeName, department, year, email, phone, JSON.stringify(parsedEvents), paymentScreenshot]);
+      INSERT INTO registrations (reg_id, full_name, college_name, department, year, email, phone, events_json, payment_screenshot, transaction_id)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+    `, [regId, fullName, collegeName, department, year, email, phone, JSON.stringify(parsedEvents), paymentScreenshot, transactionId]);
 
     const total = await getTotal();
     broadcastSSE({ type: "new_registration", regId, fullName, collegeName, department, year, events: parsedEvents, total, timestamp: new Date().toISOString() });
@@ -234,6 +234,7 @@ app.post("/api/register", async (req, res) => {
       year,
       email,
       phone,
+      transaction_id: transactionId,
       events: parsedEvents.map((e: any) => e.name).join(", "),
       payment: paymentScreenshot ? "UPLOADED (View in Admin)" : "MISSING",
       timestamp: new Date().toISOString(),

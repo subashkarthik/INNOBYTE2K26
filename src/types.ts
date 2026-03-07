@@ -14,6 +14,7 @@ export interface Registration {
   year: string;
   email: string;
   phone: string;
+  transaction_id: string;
   events_json: string; // JSON string of SelectedEvent[]
   payment_screenshot?: string;
   created_at: string;
