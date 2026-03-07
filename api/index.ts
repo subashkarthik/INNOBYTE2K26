@@ -76,7 +76,9 @@ const generateToken = () =>
 const requireAuth = (req: Request, res: Response, next: any) => {
   const auth = req.headers.authorization || "";
   const token = auth.replace("Bearer ", "");
-  if (!token || token !== generateToken()) {
+  const expected = generateToken();
+  if (!token || token !== expected) {
+    console.error(`🔒 Auth Failure: Received ${token ? 'valid-format-token' : 'no-token'}, Expected ${expected.substring(0, 5)}...`);
     res.status(401).json({ success: false, message: "Unauthorized or token expired" });
     return;
   }

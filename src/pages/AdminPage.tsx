@@ -219,7 +219,10 @@ const Dashboard = ({ token, onLogout }: { token: string; onLogout: () => void })
       <div className="glass-panel border-b border-white/10 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
         <div className="flex items-center gap-4">
           <img src="/Innobyte-Logo.png" alt="INNOBYTE 2K26" className="h-8" />
-          <span className="text-xs font-bold uppercase tracking-widest text-slate-500">Admin Dashboard</span>
+          <div className="flex flex-col">
+            <span className="text-xs font-bold uppercase tracking-widest text-slate-500">Admin Dashboard</span>
+            <span className="text-[8px] uppercase tracking-widest text-slate-600 font-black">Build v2.1.0-Stateless</span>
+          </div>
         </div>
         <div className="flex items-center gap-4">
           <button onClick={fetchData} className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors">
