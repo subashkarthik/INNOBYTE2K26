@@ -1126,9 +1126,10 @@ function HomePage() {
                 </h3>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {[
-                    { name: 'D. Santhagiri', phone: '9597846484' },
+                    { name: 'Ravichandran', phone: '9025110028' },
                     { name: 'K. Subash', phone: '8680065944' },
                     { name: 'K. Kishore', phone: '6379807387' },
+                    { name: 'D. Santhagiri', phone: '9597846484' },
                     { name: 'S. Rajesh', phone: '9342768855' },
                     { name: 'S. Fakrudeen', phone: '8608382856' }
                   ].map(student => (
