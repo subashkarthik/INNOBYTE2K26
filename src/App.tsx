@@ -778,10 +778,13 @@ function HomePage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="flex items-center gap-4 mb-4 bg-white/5 border border-white/10 px-6 py-2 rounded-full backdrop-blur-md"
+              className="flex flex-col md:flex-row items-center gap-6 mb-6 bg-white/10 border border-white/20 px-10 py-6 rounded-[2rem] backdrop-blur-xl shadow-[0_0_50px_rgba(255,255,255,0.1)]"
             >
-              <img src="/college-logo.png" alt="ES Logo" className="h-6 w-auto" />
-              <span className="text-xs md:text-sm font-black text-white uppercase tracking-[0.3em]">ES College of Engineering and Technology</span>
+              <img src="/college-logo.png" alt="ES Logo" className="h-16 md:h-20 w-auto drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
+              <div className="text-center md:text-left">
+                <span className="text-lg md:text-2xl font-black text-white uppercase tracking-[0.2em] leading-tight block">ES College of Engineering and Technology</span>
+                <span className="text-[10px] md:text-xs font-bold text-brand-primary uppercase tracking-[0.5em] mt-1 block">Approved by AICTE & Affiliated to Anna University</span>
+              </div>
             </motion.div>
             <div className="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] text-brand-primary animate-float">
               A National Level Technical Symposium
@@ -1142,15 +1145,18 @@ function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-20 px-6 border-t border-white/5 text-center relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] bg-brand-primary/5 rounded-full blur-[100px]" />
+      <footer className="py-24 px-6 border-t border-white/5 text-center relative overflow-hidden bg-[#010413]">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-brand-primary/20 to-transparent" />
         <div className="relative z-10">
-          <div className="flex flex-col items-center gap-4 mb-10">
-            <div className="flex items-center gap-3 bg-white/5 border border-white/10 px-12 py-10 rounded-full backdrop-blur-md">
-              <img src="/college-logo.png" alt="ES Logo" className="h-5 w-auto" />
-              <span className="text-xs font-black text-white uppercase tracking-[0.4em]">ES College of Engineering and Technology</span>
+          <div className="flex flex-col items-center gap-8 mb-16">
+            <div className="flex flex-col md:flex-row items-center gap-6 bg-white/5 border border-white/10 px-10 py-8 rounded-[2rem] backdrop-blur-md">
+              <img src="/college-logo.png" alt="ES Logo" className="h-12 w-auto" />
+              <div className="text-center md:text-left">
+                <span className="text-base md:text-xl font-black text-white uppercase tracking-wider block">ES College of Engineering and Technology</span>
+                <span className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.4em] block mt-1 text-center md:text-left">NH 45, Villupuram, Tamil Nadu</span>
+              </div>
             </div>
-            <img src="/Innobyte-Logo.png" alt="INNOBYTE2K26" className="h-14 opacity-80" />
+            <img src="/Innobyte-Logo.png" alt="INNOBYTE2K26" className="h-16 opacity-90 drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]" />
           </div>
           <p className="text-slate-500 text-sm mb-6">© 2026 ES College of Engineering and Technology. All rights reserved.</p>
           <div className="flex justify-center gap-8 text-slate-500 mb-10">
