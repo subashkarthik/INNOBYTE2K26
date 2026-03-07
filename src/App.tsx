@@ -1146,7 +1146,7 @@ function HomePage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] bg-brand-primary/5 rounded-full blur-[100px]" />
         <div className="relative z-10">
           <div className="flex flex-col items-center gap-4 mb-10">
-            <div className="flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
+            <div className="flex items-center gap-3 bg-white/5 border border-white/10 px-12 py-10 rounded-full backdrop-blur-md">
               <img src="/college-logo.png" alt="ES Logo" className="h-5 w-auto" />
               <span className="text-xs font-black text-white uppercase tracking-[0.4em]">ES College of Engineering and Technology</span>
             </div>
