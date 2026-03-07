@@ -76,7 +76,7 @@ const requireAuth = (req: Request, res: Response, next: any) => {
   const auth = req.headers.authorization || "";
   const token = auth.replace("Bearer ", "");
   if (!token || !validTokens.has(token)) {
-    res.status(410).json({ success: false, message: "Unauthorized or token expired" });
+    res.status(401).json({ success: false, message: "Unauthorized or token expired" });
     return;
   }
   next();

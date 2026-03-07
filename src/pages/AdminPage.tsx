@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Lock, LogOut, Shield, Download, Search, RefreshCw, Users, Trophy, Calendar, BarChart2, Eye, EyeOff, Trash2 } from 'lucide-react';
+import { Lock, LogOut, Shield, Download, Search, RefreshCw, Users, Trophy, Calendar, BarChart2, Eye, EyeOff, Trash2, PieChart as PieChartIcon, TrendingUp, BarChart3, AlertCircle } from 'lucide-react';
+import { 
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
+  PieChart, Pie, Cell, LineChart, Line 
+} from 'recharts';
 import { Registration } from '../types';
 
 const ADMIN_TOKEN_KEY = 'innobyte_admin_token';
@@ -113,21 +117,44 @@ const AdminLogin = ({ onLogin }: { onLogin: (token: string) => void }) => {
 const Dashboard = ({ token, onLogout }: { token: string; onLogout: () => void }) => {
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [stats, setStats] = useState<any>(null);
+  const [trends, setTrends] = useState<any[]>([]);
   const [filter, setFilter] = useState({ search: '', year: '', dept: '' });
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const headers = { Authorization: `Bearer ${token}` };
 
   const fetchData = async () => {
     setLoading(true);
+    setError('');
     try {
+      const tokenToUse = token || localStorage.getItem(ADMIN_TOKEN_KEY);
+      const authHeaders = { Authorization: `Bearer ${tokenToUse}` };
+      
       const [regRes, statsRes] = await Promise.all([
-        fetch('/api/registrations', { headers }),
-        fetch('/api/stats', { headers }),
+        fetch('/api/registrations', { headers: authHeaders }),
+        fetch('/api/stats', { headers: authHeaders }),
       ]);
+      
       if (regRes.status === 401) { onLogout(); return; }
-      setRegistrations(await regRes.json());
-      setStats(await statsRes.json());
+      
+      const regs = await regRes.json();
+      const statsData = await statsRes.json();
+      
+      setRegistrations(Array.isArray(regs) ? regs : []);
+      setStats(statsData);
+
+      // Generate simple trends from registration dates
+      const dailyCounts: Record<string, number> = {};
+      regs.forEach((r: any) => {
+        const date = new Date(r.created_at).toLocaleDateString();
+        dailyCounts[date] = (dailyCounts[date] || 0) + 1;
+      });
+      setTrends(Object.entries(dailyCounts).map(([date, count]) => ({ date, count })).reverse().slice(0, 7).reverse());
+
+    } catch (err: any) {
+      console.error("Dashboard error:", err);
+      setError('Failed to connect to server. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -184,6 +211,8 @@ const Dashboard = ({ token, onLogout }: { token: string; onLogout: () => void })
     { label: 'Event Date', value: '27 Mar', icon: <Calendar size={20} />, color: 'text-green-400' },
   ];
 
+  const COLORS = ['#8b5cf6', '#06b6d4', '#f43f5e', '#10b981', '#f59e0b'];
+
   return (
     <div className="min-h-screen bg-[#020617] text-white">
       {/* Top bar */}
@@ -215,20 +244,69 @@ const Dashboard = ({ token, onLogout }: { token: string; onLogout: () => void })
           ))}
         </div>
 
-        {/* Event Breakdown */}
-        {stats?.byEvent?.length > 0 && (
-          <div className="glass-panel rounded-2xl p-6 border border-white/5 mb-8">
-            <h3 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-6">Registrations Per Event</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {stats.byEvent.map((e: any) => (
-                <div key={e.event_name} className="bg-white/3 rounded-xl p-4">
-                  <div className="text-2xl font-black text-gradient mb-1">{e.count}</div>
-                  <div className="text-xs text-slate-400 font-medium truncate">{e.event_name}</div>
-                </div>
-              ))}
-            </div>
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+          {/* Trend Chart */}
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+            className="glass-panel p-8 rounded-3xl border border-white/5 h-[400px]">
+            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2 mb-8">
+              <TrendingUp size={16} className="text-brand-primary" /> Registration Trends
+            </h3>
+            <ResponsiveContainer width="100%" height="80%">
+              <LineChart data={trends}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
+                <XAxis dataKey="date" stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis stroke="#64748b" fontSize={10} tickLine={false} axisLine={false} />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '12px' }}
+                  itemStyle={{ color: '#8b5cf6', fontWeight: 'bold' }}
+                />
+                <Line type="monotone" dataKey="count" stroke="#8b5cf6" strokeWidth={4} dot={{ fill: '#8b5cf6', strokeWidth: 2, r: 4 }} activeDot={{ r: 6, strokeWidth: 0 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </motion.div>
+
+          {/* Dept & Event Charts */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              className="glass-panel p-8 rounded-3xl border border-white/5">
+              <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-400 mb-8 flex items-center gap-2">
+                <PieChartIcon size={16} className="text-brand-secondary" /> Departments
+              </h3>
+              <div className="h-[200px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={stats?.byDept || []} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value" nameKey="name">
+                      {(stats?.byDept || []).map((_: any, index: number) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip contentStyle={{ backgroundColor: '#0f172a', border: 'none', borderRadius: '8px' }} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              className="glass-panel p-8 rounded-3xl border border-white/5">
+              <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-400 mb-8 flex items-center gap-2">
+                <BarChart3 size={16} className="text-brand-accent" /> Events
+              </h3>
+              <div className="h-[200px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={(stats?.byEvent || []).slice(0, 5)}>
+                    <Bar dataKey="value" radius={[4, 4, 0, 0]} name="Count">
+                      {(stats?.byEvent || []).map((_: any, index: number) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Bar>
+                    <Tooltip cursor={{fill: 'transparent'}} contentStyle={{ backgroundColor: '#0f172a', border: 'none', borderRadius: '8px' }} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </motion.div>
           </div>
-        )}
+        </div>
 
         {/* Table Controls */}
         <div className="flex flex-col md:flex-row gap-4 mb-6">
@@ -256,6 +334,13 @@ const Dashboard = ({ token, onLogout }: { token: string; onLogout: () => void })
             <Download size={14} /> Export CSV ({filtered.length})
           </button>
         </div>
+
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-4 mb-6 flex items-center gap-3 text-red-400 text-sm">
+            <AlertCircle size={18} />
+            {error}
+          </div>
+        )}
 
         {/* Table */}
         <div className="glass-panel rounded-2xl border border-white/5 overflow-hidden">
