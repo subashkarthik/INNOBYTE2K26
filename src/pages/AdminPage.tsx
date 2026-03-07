@@ -121,6 +121,7 @@ const Dashboard = ({ token, onLogout }: { token: string; onLogout: () => void })
   const [filter, setFilter] = useState({ search: '', year: '', dept: '' });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const headers = { Authorization: `Bearer ${token}` };
 
@@ -380,15 +381,13 @@ const Dashboard = ({ token, onLogout }: { token: string; onLogout: () => void })
                       </td>
                       <td className="px-6 py-4 text-center">
                         {r.payment_screenshot ? (
-                          <a 
-                            href={r.payment_screenshot} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
+                          <button 
+                            onClick={() => setPreviewImage(r.payment_screenshot || null)}
                             className="inline-flex p-2 text-brand-secondary hover:text-white bg-brand-secondary/10 hover:bg-brand-secondary rounded-lg transition-all border border-brand-secondary/20"
                             title="View Payment Proof"
                           >
                             <Eye size={16} />
-                          </a>
+                          </button>
                         ) : (
                           <span className="text-slate-600 text-[10px] uppercase font-bold">No Proof</span>
                         )}
@@ -409,6 +408,60 @@ const Dashboard = ({ token, onLogout }: { token: string; onLogout: () => void })
           </div>
         </div>
       </div>
+
+      {/* Image Preview Modal */}
+      <AnimatePresence>
+        {previewImage && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8">
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }}
+              onClick={() => setPreviewImage(null)}
+              className="absolute inset-0 bg-slate-950/90 backdrop-blur-md"
+            />
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0 }} 
+              animate={{ scale: 1, opacity: 1 }} 
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative z-10 max-w-5xl w-full max-h-[90vh] glass-panel rounded-3xl overflow-hidden border border-white/10 shadow-3xl flex flex-col"
+            >
+              <div className="p-4 border-b border-white/5 flex items-center justify-between bg-white/2">
+                <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Payment Proof Preview</span>
+                <button 
+                  onClick={() => setPreviewImage(null)}
+                  className="p-2 hover:bg-white/5 rounded-full transition-colors text-slate-400 hover:text-white"
+                >
+                  <EyeOff size={20} />
+                </button>
+              </div>
+              <div className="flex-1 overflow-auto p-4 bg-black/40 flex items-center justify-center">
+                <img 
+                  src={previewImage} 
+                  alt="Payment Proof" 
+                  className="max-w-full h-auto rounded-lg shadow-2xl"
+                  onContextMenu={e => e.preventDefault()}
+                />
+              </div>
+              <div className="p-4 border-t border-white/5 bg-white/2 flex justify-end gap-4">
+                 <a 
+                   href={previewImage} 
+                   download="payment_proof.png"
+                   className="text-[10px] font-bold uppercase tracking-widest text-brand-secondary hover:underline"
+                 >
+                   Download Image
+                 </a>
+                 <button 
+                  onClick={() => setPreviewImage(null)}
+                  className="text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-white"
+                >
+                  Close Preview
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
