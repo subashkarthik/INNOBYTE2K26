@@ -449,6 +449,7 @@ const RegistrationForm = () => {
     email: '',
     phone: '',
     transactionId: '',
+    customDepartment: '',
   });
   const [selectedEvents, setSelectedEvents] = useState<SelectedEvent[]>([]);
   const [pptTheme, setPptTheme] = useState('');
@@ -465,6 +466,7 @@ const RegistrationForm = () => {
     if (formData.email.length > 0 && !/\S+@\S+\.\S+/.test(formData.email)) e.email = 'Invalid email address';
     if (formData.phone.length > 0 && !/^\d{10}$/.test(formData.phone)) e.phone = '10-digit number required';
     if (formData.transactionId.length > 0 && !/^\d{12}$/.test(formData.transactionId)) e.transactionId = '12-digit Transaction ID required';
+    if (formData.department === 'Other' && !formData.customDepartment) e.customDepartment = 'Please specify your department';
     if (selectedEvents.length === 0) e.events = 'Select at least one event';
     if (!formData.transactionId) e.transactionId = 'Transaction ID is required';
     if (!paymentScreenshot) e.payment = 'Upload proof of payment';
@@ -515,6 +517,7 @@ const RegistrationForm = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          department: formData.department === 'Other' ? formData.customDepartment : formData.department,
           events: JSON.stringify(eventsToSend),
           paymentScreenshot: paymentScreenshotBase64
         }) 
@@ -558,7 +561,7 @@ const RegistrationForm = () => {
         regId={regId}
         fullName={formData.fullName}
         collegeName={formData.collegeName}
-        department={formData.department}
+        department={formData.department === 'Other' ? formData.customDepartment : formData.department}
         year={formData.year}
         email={formData.email}
         transactionId={formData.transactionId}
@@ -611,6 +614,13 @@ const RegistrationForm = () => {
                 {DEPARTMENTS.map(d => <option key={d} value={d} className="bg-[#020617]">{d}</option>)}
               </select>
             </div>
+            {formData.department === 'Other' && (
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="overflow-hidden">
+                <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Specify Department</label>
+                <input required type="text" className={inputCls('customDepartment')} placeholder="Enter your department name" value={formData.customDepartment} onChange={e => upd('customDepartment', e.target.value)} />
+                <ValidationError name="customDepartment" />
+              </motion.div>
+            )}
             <div>
               <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Current Year</label>
               <select className={`${inputCls('year')} appearance-none`} value={formData.year} onChange={e => { upd('year', e.target.value); setSelectedEvents([]); }}>

@@ -152,5 +152,5 @@ export const EVENTS: Event[] = [
 ];
 
 export const PPT_THEMES = ['Tamil', 'English', 'Mathematics', 'Chemistry', 'Physics'];
-export const DEPARTMENTS = ['CSE', 'IT', 'AI & DS', 'ECE', 'S&H'];
+export const DEPARTMENTS = ['CSE', 'IT', 'AI & DS', 'ECE', 'S&H', 'Other'];
 export const YEARS = ['1st', '2nd', '3rd', '4th'];

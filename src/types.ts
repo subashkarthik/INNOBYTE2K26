@@ -32,7 +32,7 @@ export interface LiveActivity {
 }
 
 export type Year = '1st' | '2nd' | '3rd' | '4th';
-export type Department = 'CSE' | 'IT' | 'ECE' | 'EEE' | 'MECH' | 'CIVIL' | 'OTHER';
+export type Department = string;
 
 export interface Event {
   id: string;
