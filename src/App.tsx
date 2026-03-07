@@ -556,6 +556,10 @@ const RegistrationForm = () => {
     return (
       <SuccessScreen
         regId={regId}
+        fullName={formData.fullName}
+        collegeName={formData.collegeName}
+        department={formData.department}
+        year={formData.year}
         email={formData.email}
         transactionId={formData.transactionId}
         selectedEvents={enrichedEvents}

@@ -8,16 +8,24 @@ import html2canvas from 'html2canvas';
 
 interface SuccessScreenProps {
   regId: string;
+  fullName?: string;
+  collegeName?: string;
+  department?: string;
+  year?: string;
   email: string;
   transactionId?: string;
   selectedEvents: SelectedEvent[];
   onReset: () => void;
 }
 
-export default function SuccessScreen({ regId, email, transactionId, selectedEvents, onReset }: SuccessScreenProps) {
+export default function SuccessScreen({ 
+  regId, fullName, collegeName, department, year, 
+  email, transactionId, selectedEvents, onReset 
+}: SuccessScreenProps) {
   const [copied, setCopied] = React.useState(false);
   const [isDownloading, setIsDownloading] = React.useState(false);
   const receiptRef = useRef<HTMLDivElement>(null);
+  const printRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Fire confetti burst on mount
@@ -51,33 +59,44 @@ export default function SuccessScreen({ regId, email, transactionId, selectedEve
   };
 
   const downloadReceipt = async () => {
-    if (!receiptRef.current) return;
+    if (!printRef.current) return;
     setIsDownloading(true);
     try {
-      // Temporarily hide buttons for capture
-      const buttons = receiptRef.current.querySelectorAll('button');
-      buttons.forEach(btn => btn.style.display = 'none');
-      
-      const canvas = await html2canvas(receiptRef.current, {
-        scale: 2,
-        backgroundColor: '#020617', // Match dark theme background
+      // Ensure images are loaded
+      const images = printRef.current.querySelectorAll('img');
+      await Promise.all(Array.from(images).map(img => {
+        const image = img as HTMLImageElement;
+        if (image.complete) return Promise.resolve();
+        return new Promise(resolve => { image.onload = resolve; image.onerror = resolve; });
+      }));
+
+      // Set visibility for capture
+      printRef.current.style.display = 'block';
+      printRef.current.style.position = 'fixed';
+      printRef.current.style.left = '-9999px';
+      printRef.current.style.top = '0';
+
+      const canvas = await html2canvas(printRef.current, {
+        scale: 3, // High resolution
         useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff',
       });
       
-      buttons.forEach(btn => btn.style.display = ''); // Restore buttons
+      printRef.current.style.display = 'none'; // Hide after capture
       
-      const imgData = canvas.toDataURL('image/png');
+      const imgData = canvas.toDataURL('image/jpeg', 1.0);
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'px',
         format: [canvas.width, canvas.height]
       });
       
-      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+      pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
       pdf.save(`INNOBYTE2K26_Receipt_${regId}.pdf`);
     } catch (error) {
       console.error("Failed to generate PDF", error);
-      alert("Failed to download receipt currently. Please take a screenshot.");
+      alert("Failed to download receipt. Please try again or take a screenshot.");
     } finally {
       setIsDownloading(false);
     }
@@ -172,6 +191,95 @@ export default function SuccessScreen({ regId, email, transactionId, selectedEve
           <button onClick={onReset} className="btn-primary flex-1">
             Register Another Student
           </button>
+        </div>
+      </div>
+
+      {/* --- HIDDEN PROFESSIONAL PRINTABLE RECEIPT --- */}
+      <div ref={printRef} style={{ display: 'none', width: '800px', padding: '60px', backgroundColor: 'white', color: '#1e293b', fontFamily: 'sans-serif' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '4px solid #8b5cf6', paddingBottom: '30px', marginBottom: '40px' }}>
+          <div>
+            <img src="/college-logo.png" alt="ES Logo" style={{ height: '50px', marginBottom: '10px' }} />
+            <h1 style={{ margin: 0, fontSize: '18px', fontWeight: '900', color: '#1e293b', textTransform: 'uppercase', letterSpacing: '1px' }}>ES College of Engineering & Technology</h1>
+            <p style={{ margin: 0, fontSize: '12px', color: '#64748b' }}>NH 45, Villupuram, Tamil Nadu - 605 401</p>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <h2 style={{ margin: 0, fontSize: '32px', fontWeight: '900', color: '#8b5cf6' }}>INNOBYTE<span style={{ color: '#06b6d4' }}>2K26</span></h2>
+            <p style={{ margin: 0, fontSize: '12px', fontWeight: 'bold' }}>OFFICIAL REGISTRATION RECEIPT</p>
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', marginBottom: '40px' }}>
+          <div style={{ backgroundColor: '#f8fafc', padding: '25px', borderRadius: '15px', border: '1px solid #e2e8f0' }}>
+            <p style={{ margin: '0 0 5px', fontSize: '10px', fontWeight: '900', color: '#94a3b8', textTransform: 'uppercase' }}>Student Name</p>
+            <p style={{ margin: 0, fontSize: '18px', fontWeight: 'bold', color: '#1e293b' }}>{fullName || 'N/A'}</p>
+          </div>
+          <div style={{ backgroundColor: '#f8fafc', padding: '25px', borderRadius: '15px', border: '1px solid #e2e8f0' }}>
+            <p style={{ margin: '0 0 5px', fontSize: '10px', fontWeight: '900', color: '#94a3b8', textTransform: 'uppercase' }}>Registration ID</p>
+            <p style={{ margin: 0, fontSize: '24px', fontWeight: '900', color: '#8b5cf6', fontFamily: 'monospace' }}>{regId}</p>
+          </div>
+        </div>
+
+        <div style={{ marginBottom: '40px' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr>
+                <th style={{ textAlign: 'left', padding: '15px', borderBottom: '2px solid #e2e8f0', color: '#64748b', fontSize: '10px', textTransform: 'uppercase' }}>Registration Details</th>
+                <th style={{ textAlign: 'right', padding: '15px', borderBottom: '2px solid #e2e8f0', color: '#64748b', fontSize: '10px', textTransform: 'uppercase' }}>Information</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={{ padding: '15px', borderBottom: '1px solid #f1f5f9', fontSize: '14px', color: '#475569' }}>Institution</td>
+                <td style={{ padding: '15px', borderBottom: '1px solid #f1f5f9', fontSize: '14px', fontWeight: 'bold', textAlign: 'right' }}>{collegeName || 'ES College'}</td>
+              </tr>
+              <tr>
+                <td style={{ padding: '15px', borderBottom: '1px solid #f1f5f9', fontSize: '14px', color: '#475569' }}>Department / Year</td>
+                <td style={{ padding: '15px', borderBottom: '1px solid #f1f5f9', fontSize: '14px', fontWeight: 'bold', textAlign: 'right' }}>{department} / {year}</td>
+              </tr>
+              <tr>
+                <td style={{ padding: '15px', borderBottom: '1px solid #f1f5f9', fontSize: '14px', color: '#475569' }}>Email</td>
+                <td style={{ padding: '15px', borderBottom: '1px solid #f1f5f9', fontSize: '14px', fontWeight: 'bold', textAlign: 'right' }}>{email}</td>
+              </tr>
+              <tr>
+                <td style={{ padding: '15px', borderBottom: '1px solid #f1f5f9', fontSize: '14px', color: '#475569' }}>Transaction ID (G-Pay)</td>
+                <td style={{ padding: '15px', borderBottom: '1px solid #f1f5f9', fontSize: '14px', fontWeight: 'bold', textAlign: 'right', color: '#059669' }}>{transactionId || 'Verified'}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style={{ marginBottom: '40px' }}>
+          <h3 style={{ fontSize: '12px', fontWeight: '900', textTransform: 'uppercase', color: '#64748b', marginBottom: '15px' }}>Registered Events</h3>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+            {selectedEvents.map(e => (
+              <span key={e.name} style={{ padding: '8px 15px', backgroundColor: '#8b5cf610', color: '#8b5cf6', borderRadius: '8px', fontSize: '12px', fontWeight: 'bold', border: '1px solid #8b5cf630' }}>
+                {e.name}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '40px', paddingTop: '40px', borderTop: '2px dashed #e2e8f0' }}>
+          <div style={{ fontSize: '12px', color: '#64748b', lineHeight: '1.6' }}>
+            <p style={{ margin: '0 0 10px', color: '#1e293b', fontWeight: 'bold' }}>Instructions:</p>
+            <ul style={{ paddingLeft: '20px', margin: 0 }}>
+              <li>Please carry a physical copy of this receipt on <b>27th March 2026</b>.</li>
+              <li>Report to the registration desk by <b>08:30 AM</b>.</li>
+              <li>College ID card is mandatory for all participants.</li>
+              <li>For any queries, contact: +91 86800 65944</li>
+            </ul>
+          </div>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ marginBottom: '20px' }}>
+              <img src="/Innobyte-Logo.png" alt="Stamp" style={{ height: '60px', opacity: 0.1, marginBottom: '-40px' }} />
+              <p style={{ margin: 0, fontSize: '14px', fontWeight: 'bold', color: '#1e293b' }}>Authorized Committee</p>
+              <p style={{ margin: 0, fontSize: '10px', color: '#94a3b8' }}>INNOBYTE2K26 Secretariat</p>
+            </div>
+          </div>
+        </div>
+        
+        <div style={{ marginTop: '50px', textAlign: 'center', fontSize: '9px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '2px' }}>
+          Generated by INNOBYTE 2K26 Digital Portal • {new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
         </div>
       </div>
     </motion.div>
