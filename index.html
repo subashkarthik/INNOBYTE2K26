@@ -38,5 +38,19 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Active Kill Switch for stale Service Workers
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then(registrations => {
+          for (const registration of registrations) {
+            registration.unregister().then(() => {
+              console.log('✅ Stale SW Unregistered');
+              // Optional: Force a one-time reload if a SW was found and killed
+              // window.location.reload(); 
+            });
+          }
+        });
+      }
+    </script>
   </body>
 </html>
