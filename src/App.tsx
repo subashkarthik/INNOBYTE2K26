@@ -63,10 +63,9 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md"
+            className="w-full max-w-sm px-4"
           >
-            <img src="/college-logo.png" alt="ES College" className="h-6 w-auto" />
-            <span className="text-sm font-black text-white uppercase tracking-[0.4em]">ES College</span>
+            <img src="/ES%20Eng%20Clg.png" alt="ES College" className="w-full h-auto drop-shadow-[0_0_15px_rgba(139,92,246,0.3)] rounded-xl" />
           </motion.div>
           <img src="/Innobyte-Logo.png" alt="Logo" className="h-16 md:h-24 object-contain drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]" />
         </div>
@@ -188,12 +187,8 @@ const Navbar: React.FC<{ onAdminClick: () => void }> = ({ onAdminClick }) => {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-slate-950/80 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-8'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <div className="flex items-center gap-3 md:gap-4 group cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-          <div className="flex items-center gap-2 md:gap-3 bg-white/5 border border-white/10 px-3 py-1.5 rounded-xl group-hover:border-brand-primary/50 transition-all">
-            <img src="/college-logo.png" alt="ESCT" className="h-5 w-auto" />
-            <div className="flex flex-col border-l border-white/10 pl-2">
-              <span className="text-[10px] font-black text-white leading-tight uppercase tracking-tighter">ESCT</span>
-              <span className="text-[7px] text-slate-500 font-bold uppercase tracking-widest -mt-0.5">ESTD 2007</span>
-            </div>
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 group-hover:drop-shadow-[0_0_15px_rgba(139,92,246,0.5)] transition-all">
+            <img src="/ES%20Eng%20Clg.png" alt="ESCT" className="h-6 md:h-8 lg:h-10 w-auto rounded-md md:rounded-lg" />
           </div>
           <img src="/Innobyte-Logo.png" alt="INNOBYTE 2K26" className="h-6 md:h-8 object-contain group-hover:drop-shadow-[0_0_15px_rgba(139,92,246,0.5)] transition-all" />
         </div>
@@ -845,13 +840,9 @@ function HomePage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="flex flex-col md:flex-row items-center gap-6 mb-8 bg-white/5 border border-white/10 px-8 py-5 rounded-[2rem] backdrop-blur-xl shadow-[0_0_50px_rgba(255,255,255,0.05)] hover:bg-white/10 transition-colors"
+              className="mb-8 w-full max-w-2xl px-4"
             >
-              <img src="/college-logo.png" alt="ES Logo" className="h-14 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
-              <div className="text-center md:text-left">
-                <span className="text-base md:text-xl font-black text-white uppercase tracking-[0.2em] leading-tight block">ES College of Engineering and Technology</span>
-                <span className="text-[9px] md:text-[10px] font-bold text-brand-primary uppercase tracking-[0.4em] mt-1 block">Approved by AICTE & Affiliated to Anna University</span>
-              </div>
+              <img src="/ES%20Eng%20Clg.png" alt="ES College" className="w-full h-auto drop-shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:drop-shadow-[0_0_50px_rgba(139,92,246,0.6)] transition-all rounded-[2rem]" />
             </motion.div>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -1254,12 +1245,8 @@ function HomePage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-brand-primary/20 to-transparent" />
         <div className="relative z-10">
           <div className="flex flex-col items-center gap-8 mb-16">
-            <div className="flex flex-col md:flex-row items-center gap-6 bg-white/5 border border-white/10 px-10 py-8 rounded-[2rem] backdrop-blur-md">
-              <img src="/college-logo.png" alt="ES Logo" className="h-12 w-auto" />
-              <div className="text-center md:text-left">
-                <span className="text-base md:text-xl font-black text-white uppercase tracking-wider block">ES College of Engineering and Technology</span>
-                <span className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.4em] block mt-1 text-center md:text-left">NH 45, Villupuram, Tamil Nadu</span>
-              </div>
+            <div className="w-full max-w-xl px-4">
+              <img src="/ES%20Eng%20Clg.png" alt="ES College" className="w-full h-auto rounded-[1.5rem] drop-shadow-[0_0_30px_rgba(139,92,246,0.2)]" />
             </div>
             <img src="/Innobyte-Logo.png" alt="INNOBYTE2K26" className="h-16 opacity-90 drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]" />
           </div>
