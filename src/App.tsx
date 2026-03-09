@@ -289,15 +289,17 @@ const Countdown = () => {
 };
 
 const EventCard: React.FC<{ event: Event }> = ({ event }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   return (
-    <motion.div 
-      whileHover={{ y: -8, scale: 1.02 }}
-      transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-      className="glass-card rounded-[2.5rem] p-8 flex flex-col h-full group relative overflow-hidden"
+    <motion.div
+      layout
+      onClick={() => setIsExpanded(!isExpanded)}
+      className={`glass-card p-6 md:p-8 flex flex-col cursor-pointer overflow-hidden relative group transition-all duration-500 ${isExpanded ? 'col-span-1 md:col-span-2 row-span-2 rounded-[2rem]' : 'col-span-1 rounded-[2.5rem] h-full'}`}
     >
-      <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/5 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-brand-primary/20 transition-all duration-700" />
+      <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-brand-primary/30 transition-all duration-700 pointer-events-none" />
       
-      <div className="flex justify-between items-start mb-8 relative z-10">
+      <motion.div layout="position" className="flex justify-between items-start mb-6 relative z-10">
         <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] border ${event.category === 'Technical' ? 'bg-brand-primary/10 text-brand-primary border-brand-primary/20' : 'bg-brand-accent/10 text-brand-accent border-brand-accent/20'}`}>
           {event.category}
         </div>
@@ -305,37 +307,54 @@ const EventCard: React.FC<{ event: Event }> = ({ event }) => {
           <Users size={12} />
           <span>TEAM {event.maxParticipants}</span>
         </div>
-      </div>
+      </motion.div>
       
-      <h3 className="text-2xl md:text-3xl font-bold mb-4 group-hover:text-brand-primary transition-colors relative z-10 leading-tight">
+      <motion.h3 layout="position" className="text-2xl font-bold mb-3 group-hover:text-brand-primary transition-colors relative z-10 leading-tight">
         {event.name}
-      </h3>
-      <p className="text-sm text-slate-400 mb-10 flex-grow leading-relaxed relative z-10 font-medium">
-        {event.description}
-      </p>
+      </motion.h3>
       
-      <div className="space-y-8 relative z-10 mt-auto">
-        <div>
-          <h4 className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-600 mb-4">Guidelines</h4>
-          <ul className="text-[11px] space-y-3 text-slate-400">
-            {event.rules.slice(0, 3).map((rule, i) => (
-              <li key={i} className="flex gap-3 leading-tight">
-                <span className="text-brand-primary animate-pulse w-1.5 h-1.5 rounded-full bg-brand-primary shrink-0 mt-1" />
-                {rule}
-              </li>
-            ))}
-            {event.rules.length > 3 && <li className="text-[10px] text-slate-600 italic">+ more rules inside...</li>}
-          </ul>
+      <motion.p layout="position" className={`text-sm text-slate-400 font-medium relative z-10 ${isExpanded ? 'mb-8' : 'line-clamp-3 mb-4'}`}>
+        {event.description}
+      </motion.p>
+      
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="space-y-6 relative z-10 border-t border-white/10 pt-6 mt-2"
+          >
+            <div>
+              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white flex items-center gap-2 mb-4">
+                <span className="w-4 h-4 rounded bg-brand-primary/20 flex items-center justify-center text-brand-primary">
+                  <CheckCircle2 size={10} />
+                </span>
+                Guidelines
+              </h4>
+              <ul className="text-xs space-y-3 text-slate-400 grid md:grid-cols-2 gap-x-4">
+                {event.rules.map((rule, i) => (
+                  <li key={i} className="flex gap-3 leading-tight bg-white/[0.02] p-3 rounded-xl border border-white/5">
+                    <span className="text-brand-primary shrink-0 mt-0.5">•</span>
+                    {rule}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      <motion.div layout="position" className="mt-auto pt-6 flex justify-between items-center relative z-10">
+        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest group-hover:text-slate-300 transition-colors">
+          {isExpanded ? 'Click to close' : 'Click to read rules'}
+        </span>
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${isExpanded ? 'bg-white/10 text-white' : 'bg-brand-primary/10 text-brand-primary group-hover:bg-brand-primary group-hover:text-white'}`}>
+          <motion.div animate={{ rotate: isExpanded ? 45 : 0 }}>
+            <ChevronRight size={20} className={isExpanded ? '' : "group-hover:translate-x-0.5 transition-transform"} />
+          </motion.div>
         </div>
-        
-        <div className="pt-8 border-t border-white/10 flex justify-between items-center">
-          <div className="space-y-1">
-          </div>
-          <a href="#register" className="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary group/link hover:bg-brand-primary hover:text-white transition-all duration-300">
-            <ChevronRight size={20} className="group-hover/link:translate-x-0.5 transition-transform" />
-          </a>
-        </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 };
@@ -351,60 +370,75 @@ const EventPickerCard = ({ ev, sel, onToggle, onUpdateEvt, pptTheme, setPptTheme
   year: string; 
   accent: string;
 }) => (
-  <div className={`rounded-2xl border transition-all duration-200 overflow-hidden ${sel ? (accent === 'primary' ? 'border-brand-primary/50 bg-brand-primary/5' : 'border-brand-accent/50 bg-brand-accent/5') : 'border-white/10 bg-white/[0.02] hover:border-white/20'}`}>
-    <button type="button" onClick={onToggle} className="w-full p-4 text-left">
-      <div className="flex items-start justify-between gap-2">
+  <motion.div 
+    layout 
+    className={`rounded-[2rem] border transition-all duration-300 overflow-hidden relative group ${sel ? (accent === 'primary' ? 'border-brand-primary/50 shadow-[0_0_30px_rgba(139,92,246,0.15)] bg-brand-primary/10' : 'border-brand-accent/50 shadow-[0_0_30px_rgba(244,63,94,0.15)] bg-brand-accent/10') : 'border-white/10 bg-white/[0.02] hover:border-white/20 hover:bg-white/[0.04]'}`}
+  >
+    {sel && <div className={`absolute inset-0 bg-gradient-to-br opacity-20 ${(accent === 'primary' ? 'from-brand-primary' : 'from-brand-accent')} to-transparent pointer-events-none`} />}
+    
+    <button type="button" onClick={onToggle} className="w-full p-5 text-left relative z-10">
+      <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="font-bold text-sm text-slate-200">{ev.name}</div>
+          <div className="font-bold text-sm text-slate-200 group-hover:text-white transition-colors">{ev.name}</div>
         </div>
-        <div className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-all ${sel ? (accent === 'primary' ? 'bg-brand-primary border-brand-primary' : 'bg-brand-accent border-brand-accent') : 'border-white/20'}`}>
-          {sel && <CheckCircle2 size={12} className="text-white" />}
-        </div>
+        <motion.div 
+          animate={sel ? { scale: [0.8, 1.2, 1] } : { scale: 1 }}
+          className={`w-6 h-6 rounded-lg border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-300 ${sel ? (accent === 'primary' ? 'bg-brand-primary border-brand-primary' : 'bg-brand-accent border-brand-accent') : 'border-white/20 bg-black/20 group-hover:border-white/40'}`}
+        >
+          {sel && <CheckCircle2 size={14} className="text-white" />}
+        </motion.div>
       </div>
     </button>
-    {sel && (
-      <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} className="overflow-hidden">
-        {ev.maxParticipants > 1 && (
-          <div className="px-4 pb-4 border-t border-white/10 pt-3 grid grid-cols-2 gap-3">
-            <div>
-              <label className="text-[9px] uppercase tracking-widest text-slate-500 block mb-1">Team Name</label>
-              <input type="text" className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-brand-primary/50 transition-all" placeholder="Optional" value={sel.teamName || ''} onChange={e => onUpdateEvt('teamName', e.target.value)} />
+    <AnimatePresence>
+      {sel && (
+        <motion.div 
+          initial={{ height: 0, opacity: 0 }} 
+          animate={{ height: 'auto', opacity: 1 }} 
+          exit={{ height: 0, opacity: 0 }}
+          className="overflow-hidden relative z-10"
+        >
+          {ev.maxParticipants > 1 && (
+            <div className="px-5 pb-5 border-t border-white/5 pt-4 grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">Team Name</label>
+                <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-brand-primary/50 focus:bg-white/5 transition-all" placeholder="Optional" value={sel.teamName || ''} onChange={e => onUpdateEvt('teamName', e.target.value)} />
+              </div>
+              <div>
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">
+                  Size <span className={`lowercase tracking-normal px-1.5 py-0.5 rounded text-[8px] bg-white/10 ml-1`}>Max: {ev.maxParticipants}</span>
+                </label>
+                <input 
+                  type="text" 
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-brand-primary/50 focus:bg-white/5 transition-all text-center" 
+                  value={sel.count} 
+                  onChange={e => {
+                    const valStr = e.target.value.replace(/[^0-9]/g, '');
+                    if (valStr === '') {
+                      onUpdateEvt('count', '');
+                    } else {
+                      const num = parseInt(valStr);
+                      onUpdateEvt('count', isNaN(num) ? '' : Math.min(num, ev.maxParticipants));
+                    }
+                  }} 
+                />
+              </div>
             </div>
-            <div>
-              <label className="text-[9px] uppercase tracking-widest text-slate-500 block mb-1">
-                Team Size <span className="text-brand-primary lowercase tracking-normal">(Max: {ev.maxParticipants})</span>
-              </label>
-              <input 
-                type="text" 
-                inputMode="numeric"
-                pattern="[0-9]*"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-brand-primary/50 transition-all" 
-                value={sel.count} 
-                onChange={e => {
-                  const valStr = e.target.value.replace(/[^0-9]/g, '');
-                  if (valStr === '') {
-                    onUpdateEvt('count', '');
-                  } else {
-                    const num = parseInt(valStr);
-                    onUpdateEvt('count', isNaN(num) ? '' : Math.min(num, ev.maxParticipants));
-                  }
-                }} 
-              />
+          )}
+          {(ev.id === 'paper-pres-cat2' || ev.name.includes('Paper Presentation (1st Year)')) && year === '1st' && (
+            <div className="px-5 pb-5">
+              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">PPT Theme</label>
+              <select required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-brand-primary/50 focus:bg-white/5 appearance-none transition-all cursor-pointer" value={pptTheme} onChange={e => setPptTheme(e.target.value)}>
+                <option value="" className="bg-[#020617] text-slate-500">Select presentation theme...</option>
+                {PPT_THEMES.map(t => <option key={t} value={t} className="bg-[#020617] text-white">{t}</option>)}
+              </select>
             </div>
-          </div>
-        )}
-        {(ev.id === 'paper-pres-cat2' || ev.name.includes('Paper Presentation (1st Year)')) && year === '1st' && (
-          <div className="px-4 pb-4">
-            <label className="text-[9px] uppercase tracking-widest text-slate-500 block mb-1">PPT Theme</label>
-            <select required className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-brand-primary/50 appearance-none transition-all" value={pptTheme} onChange={e => setPptTheme(e.target.value)}>
-              <option value="" className="bg-[#020617]">Select theme</option>
-              {PPT_THEMES.map(t => <option key={t} value={t} className="bg-[#020617]">{t}</option>)}
-            </select>
-          </div>
-        )}
-      </motion.div>
-    )}
-  </div>
+          )}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  </motion.div>
 );
 
 const compressImage = (file: File): Promise<string> => {
@@ -581,59 +615,61 @@ const RegistrationForm = () => {
 
   return (
     <motion.div 
-      id="register"
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
-      className="glass-panel rounded-4xl p-8 md:p-20 max-w-6xl mx-auto relative overflow-hidden my-32"
+      className="glass-panel rounded-[3rem] p-8 md:p-16 max-w-6xl mx-auto relative overflow-hidden my-32 shadow-[0_30px_100px_rgba(0,0,0,0.4)]"
     >
-      <div className="absolute top-0 right-0 w-64 h-64 bg-brand-primary/5 rounded-full blur-[100px] -mr-32 -mt-32" />
-      <form onSubmit={handleSubmit} className="space-y-12 relative z-10">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-brand-primary/10 rounded-full blur-[120px] -mr-32 -mt-32 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-brand-secondary/5 rounded-full blur-[120px] -ml-32 -mb-32 pointer-events-none" />
+      
+      <form onSubmit={handleSubmit} className="space-y-16 relative z-10">
 
         {/* 01 Personal Info */}
-        <div>
-          <h3 className="text-xl font-bold flex items-center gap-3 mb-8">
-            <span className="w-8 h-8 rounded-lg bg-brand-primary/20 text-brand-primary flex items-center justify-center text-sm font-black">01</span>
-            Personal Information
+        <div className="relative">
+          <div className="absolute -left-8 md:-left-16 top-0 bottom-0 w-1 bg-gradient-to-b from-brand-primary/50 to-transparent rounded-r" />
+          <h3 className="text-2xl font-black flex items-center gap-4 mb-10 text-white tracking-tight">
+            <span className="w-10 h-10 rounded-xl bg-brand-primary/20 text-brand-primary flex items-center justify-center text-sm shadow-[0_0_20px_rgba(139,92,246,0.3)] border border-brand-primary/30">01</span>
+            Intake Protocol
           </h3>
-          <div className="grid lg:grid-cols-2 gap-6">
+          <div className="grid lg:grid-cols-2 gap-x-8 gap-y-6">
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Full Name</label>
+              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Full Name</label>
               <input required type="text" className={inputCls('fullName')} placeholder="Enter your full name" value={formData.fullName} onChange={e => upd('fullName', e.target.value)} />
               <ValidationError name="fullName" />
             </div>
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">College Name</label>
+              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">College Name</label>
               <input required type="text" className={inputCls('collegeName')} placeholder="Your institution name" value={formData.collegeName} onChange={e => upd('collegeName', e.target.value)} />
               <ValidationError name="collegeName" />
             </div>
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Department</label>
-              <select className={`${inputCls('department')} appearance-none`} value={formData.department} onChange={e => { upd('department', e.target.value); setSelectedEvents([]); }}>
+              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Department</label>
+              <select className={`${inputCls('department')} appearance-none cursor-pointer`} value={formData.department} onChange={e => { upd('department', e.target.value); setSelectedEvents([]); }}>
                 {DEPARTMENTS.map(d => <option key={d} value={d} className="bg-[#020617]">{d}</option>)}
               </select>
             </div>
             {formData.department === 'Other' && (
               <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="overflow-hidden">
-                <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Specify Department</label>
+                <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Specify Department</label>
                 <input required type="text" className={inputCls('customDepartment')} placeholder="Enter your department name" value={formData.customDepartment} onChange={e => upd('customDepartment', e.target.value)} />
                 <ValidationError name="customDepartment" />
               </motion.div>
             )}
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Current Year</label>
-              <select className={`${inputCls('year')} appearance-none`} value={formData.year} onChange={e => { upd('year', e.target.value); setSelectedEvents([]); }}>
+              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Current Year</label>
+              <select className={`${inputCls('year')} appearance-none cursor-pointer`} value={formData.year} onChange={e => { upd('year', e.target.value); setSelectedEvents([]); }}>
                 {YEARS.map(y => <option key={y} value={y} className="bg-[#020617]">{y}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Email Address</label>
+              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Email Address</label>
               <input required type="email" className={inputCls('email')} placeholder="name@example.com" value={formData.email} onChange={e => upd('email', e.target.value)} />
               <ValidationError name="email" />
             </div>
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Phone Number</label>
+              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Phone Number</label>
               <input required type="tel" className={inputCls('phone')} placeholder="10-digit number" value={formData.phone} onChange={e => upd('phone', e.target.value)} />
               <ValidationError name="phone" />
             </div>
@@ -641,24 +677,27 @@ const RegistrationForm = () => {
         </div>
 
         {/* 02 Event Selection */}
-        <div>
-          <h3 className="text-xl font-bold flex items-center gap-3 mb-2">
-            <span className="w-8 h-8 rounded-lg bg-brand-primary/20 text-brand-primary flex items-center justify-center text-sm font-black">02</span>
-            Choose Your Events
+        <div className="pt-12 border-t border-white/5 relative">
+          <div className="absolute -left-8 md:-left-16 top-12 bottom-0 w-1 bg-gradient-to-b from-brand-secondary/50 to-transparent rounded-r" />
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
+            <h3 className="text-2xl font-black flex items-center gap-4 text-white tracking-tight">
+              <span className="w-10 h-10 rounded-xl bg-brand-secondary/20 text-brand-secondary flex items-center justify-center text-sm shadow-[0_0_20px_rgba(6,182,212,0.3)] border border-brand-secondary/30">02</span>
+              Event Assignment
+            </h3>
             {selectedEvents.length > 0 && (
-              <span className="ml-auto text-xs bg-brand-primary/20 text-brand-primary px-3 py-1 rounded-full font-bold">
-                {selectedEvents.length} event{selectedEvents.length > 1 ? 's' : ''} selected
-              </span>
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-xs bg-brand-primary text-white px-4 py-2 rounded-xl font-bold border border-white/20 shadow-[0_0_20px_rgba(139,92,246,0.5)]">
+                {selectedEvents.length} Event{selectedEvents.length > 1 ? 's' : ''} Selected
+              </motion.div>
             )}
-          </h3>
-          <p className="text-slate-500 text-xs mb-8 ml-11">Pick any number of events filtered for your year &amp; department.</p>
+          </div>
+          <p className="text-slate-500 text-xs mb-8 md:ml-14 max-w-lg leading-relaxed">System has automatically filtered events based on your academic year and department specifications.</p>
 
-          <div className="mb-6">
-            <div className="flex items-center gap-4 mb-4">
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-primary whitespace-nowrap">Technical</span>
+          <div className="mb-8 md:ml-14">
+            <div className="flex items-center gap-4 mb-6">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-primary whitespace-nowrap bg-brand-primary/10 px-3 py-1.5 rounded-lg border border-brand-primary/20">Technical Series</span>
               <div className="h-px flex-grow bg-white/5" />
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {availableEvents.filter(e => e.category === 'Technical').map(ev => (
                 <EventPickerCard key={ev.id} ev={ev} sel={selectedEvents.find(s => s.name === ev.name)}
                   onToggle={() => toggleEvent(ev)} onUpdateEvt={(k, v) => updEvt(ev.name, k, v)}
@@ -667,12 +706,12 @@ const RegistrationForm = () => {
             </div>
           </div>
 
-          <div>
-            <div className="flex items-center gap-4 mb-4">
-              <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-brand-accent whitespace-nowrap">Non-Technical</span>
+          <div className="md:ml-14">
+            <div className="flex items-center gap-4 mb-6">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-accent whitespace-nowrap bg-brand-accent/10 px-3 py-1.5 rounded-lg border border-brand-accent/20">Non-Technical Series</span>
               <div className="h-px flex-grow bg-white/5" />
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {availableEvents.filter(e => e.category === 'Non-Technical').map(ev => (
                 <EventPickerCard key={ev.id} ev={ev} sel={selectedEvents.find(s => s.name === ev.name)}
                   onToggle={() => toggleEvent(ev)} onUpdateEvt={(k, v) => updEvt(ev.name, k, v)}
@@ -683,21 +722,22 @@ const RegistrationForm = () => {
         </div>
 
         {/* 03 Payment */}
-        <div className="pt-12 border-t border-white/10">
-          <h3 className="text-xl font-bold flex items-center gap-3 mb-8">
-            <span className="w-8 h-8 rounded-lg bg-brand-primary/20 text-brand-primary flex items-center justify-center text-sm font-black">03</span>
-            Payment Confirmation
+        <div className="pt-12 border-t border-white/5 relative">
+          <div className="absolute -left-8 md:-left-16 top-12 bottom-0 w-1 bg-gradient-to-b from-green-500/50 to-transparent rounded-r" />
+          <h3 className="text-2xl font-black flex items-center gap-4 mb-10 text-white tracking-tight">
+            <span className="w-10 h-10 rounded-xl bg-green-500/20 text-green-500 flex items-center justify-center text-sm shadow-[0_0_20px_rgba(34,197,94,0.3)] border border-green-500/30">03</span>
+            Access Verification
           </h3>
-          <div className="grid lg:grid-cols-2 gap-12 items-center bg-white/[0.02] p-8 md:p-12 rounded-3xl border border-white/10">
+          <div className="grid lg:grid-cols-2 gap-12 items-center bg-white/[0.01] p-8 md:p-12 rounded-[2.5rem] border border-white/5 md:ml-14 shadow-inner">
             <div className="text-center lg:text-left">
-              <p className="text-sm font-bold mb-6 text-slate-300">Scan to Pay (Registration Fee: ₹200 PER MEMBER)</p>
-              <div className="bg-white p-6 rounded-2xl inline-block mb-6 shadow-2xl">
-                <img src="/qr.jpeg" alt="Payment QR Code" className="w-48 h-48" />
+              <p className="text-sm font-black mb-6 text-slate-300 uppercase tracking-widest">Entry Fee: ₹200 / Member</p>
+              <div className="bg-white p-6 rounded-3xl inline-block mb-6 shadow-[0_0_50px_rgba(255,255,255,0.1)] hover:scale-105 transition-transform duration-500">
+                <img src="/qr.jpeg" alt="Payment QR Code" className="w-48 h-48 rounded-xl mix-blend-multiply" />
               </div>
             </div>
             <div className="space-y-6">
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Transaction ID (12 Digits)</label>
+                <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Transaction ID (12 Digits)</label>
                 <input 
                   required 
                   type="text" 
@@ -713,21 +753,21 @@ const RegistrationForm = () => {
                 <ValidationError name="transactionId" />
               </div>
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 mb-3">Upload Transaction Proof</label>
+                <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Upload Transaction Proof</label>
               <div className="relative group">
                 <input required type="file" accept="image/*" onChange={e => { setPaymentScreenshot(e.target.files?.[0] || null); setTouched(p => ({ ...p, payment: true })); }} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                <div className={`w-full border-2 border-dashed rounded-2xl p-12 flex flex-col items-center justify-center transition-all duration-300 ${paymentScreenshot ? 'border-green-500/50 bg-green-500/5' : touched.payment && errors.payment ? 'border-red-500/50 bg-red-500/5' : 'border-white/10 bg-white/[0.03] group-hover:border-brand-primary/50 group-hover:bg-brand-primary/5'}`}>
+                <div className={`w-full border-2 border-dashed rounded-[1.5rem] p-12 flex flex-col items-center justify-center transition-all duration-300 ${paymentScreenshot ? 'border-green-500/50 bg-green-500/10 shadow-[0_0_30px_rgba(34,197,94,0.1)]' : touched.payment && errors.payment ? 'border-red-500/50 bg-red-500/5' : 'border-white/10 bg-white/[0.02] group-hover:border-brand-primary/50 group-hover:bg-brand-primary/5'}`}>
                   {paymentScreenshot ? (
                     <>
-                      <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mb-4"><CheckCircle2 className="text-green-500" /></div>
+                      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-4"><CheckCircle2 className="text-green-500" /></motion.div>
                       <span className="text-sm font-bold text-green-500">{paymentScreenshot.name}</span>
-                      <span className="text-[10px] text-green-500/50 mt-1 uppercase tracking-widest">Ready to submit</span>
+                      <span className="text-[10px] text-green-500/50 mt-1.5 uppercase tracking-widest font-bold">Verification ready</span>
                     </>
                   ) : (
                     <>
-                      <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform"><Download className="text-slate-500 group-hover:text-brand-primary transition-colors" /></div>
-                      <span className="text-sm font-medium text-slate-400">Click or drag screenshot here</span>
-                      <span className="text-[10px] text-slate-600 mt-2 uppercase tracking-widest">Supports JPG, PNG</span>
+                      <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-brand-primary/20 transition-all duration-300"><Download className="text-slate-400 group-hover:text-brand-primary transition-colors" /></div>
+                      <span className="text-sm font-medium text-slate-300">Click or drag receipt here</span>
+                      <span className="text-[10px] text-slate-500 mt-2 uppercase tracking-widest font-black">JPG/PNG Support</span>
                     </>
                   )}
                 </div>
@@ -738,18 +778,34 @@ const RegistrationForm = () => {
         </div>
       </div>
 
-        <div className="max-w-7xl mx-auto glass-panel p-6 md:p-10 rounded-4xl flex flex-col md:flex-row items-center justify-between gap-10 border border-white/10 shadow-2xl">
-          <div className="flex items-center gap-3 text-slate-500 text-sm bg-white/[0.03] px-6 py-3 rounded-full border border-white/5">
-            <AlertCircle size={16} className="text-brand-accent" />
-            <span>Registration closes on <span className="text-slate-300 font-bold">25 March 2026</span></span>
+        <div className="glass-panel p-6 md:p-8 rounded-[2rem] flex flex-col lg:flex-row items-center justify-between gap-8 border border-brand-primary/20 shadow-[0_0_40px_rgba(139,92,246,0.1)] relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-brand-primary/10 to-transparent opacity-50 pointer-events-none" />
+          <div className="flex items-center gap-4 text-slate-400 text-sm bg-black/40 px-6 py-4 rounded-xl border border-white/5 relative z-10 w-full lg:w-auto">
+            <AlertCircle size={18} className="text-brand-accent shrink-0" />
+            <span className="font-medium">System lock initiates on <span className="text-white font-bold">25 March 2026</span></span>
           </div>
           
-          <div className="flex flex-col items-end gap-3 w-full md:w-auto">
-            {status === 'error' && <span className="text-red-400 text-sm font-bold">{errMsg}</span>}
+          <div className="flex flex-col items-center lg:items-end gap-3 w-full lg:w-auto relative z-10">
+            <AnimatePresence>
+              {status === 'error' && (
+                <motion.span initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-red-400 text-xs font-bold uppercase tracking-widest bg-red-500/10 px-4 py-2 rounded-lg border border-red-500/20">
+                  {errMsg}
+                </motion.span>
+              )}
+            </AnimatePresence>
             <button type="submit" disabled={status === 'loading' || selectedEvents.length === 0}
-              className="btn-primary w-full md:w-auto min-w-[240px] flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed">
-              {status === 'loading' ? 'Processing...' : `Submit Registration${selectedEvents.length > 0 ? ` (${selectedEvents.length})` : ''}`}
-              <ChevronRight size={20} />
+              className="btn-primary w-full lg:w-auto min-w-[300px] flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group">
+              {status === 'loading' ? (
+                <span className="flex items-center gap-3">
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  Initializing...
+                </span>
+              ) : (
+                <span className="flex items-center gap-3 uppercase tracking-widest text-sm">
+                  Initialize Registration{selectedEvents.length > 0 ? ` [${selectedEvents.length}]` : ''}
+                  <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                </span>
+              )}
             </button>
           </div>
         </div>
@@ -773,69 +829,107 @@ function HomePage() {
       <Navbar onAdminClick={() => window.location.href = '/admin'} />
 
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-6 pt-32 pb-20 overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-32 pb-20 overflow-hidden">
         {/* Background Glows */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl max-h-[600px] bg-brand-primary/10 rounded-full blur-[160px] animate-pulse-slow pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] bg-brand-primary/10 rounded-full blur-[160px] animate-pulse-slow pointer-events-none" />
         
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
-          className="relative z-10 w-full max-w-6xl mx-auto"
+          className="relative z-10 w-full max-w-6xl mx-auto flex flex-col items-center"
         >
-          <div className="flex flex-col items-center mb-12">
+          <div className="flex flex-col items-center mb-12 w-full">
             <motion.div 
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="flex flex-col md:flex-row items-center gap-6 mb-6 bg-white/10 border border-white/20 px-10 py-6 rounded-[2rem] backdrop-blur-xl shadow-[0_0_50px_rgba(255,255,255,0.1)]"
+              className="flex flex-col md:flex-row items-center gap-6 mb-8 bg-white/5 border border-white/10 px-8 py-5 rounded-[2rem] backdrop-blur-xl shadow-[0_0_50px_rgba(255,255,255,0.05)] hover:bg-white/10 transition-colors"
             >
-              <img src="/college-logo.png" alt="ES Logo" className="h-16 md:h-20 w-auto drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
+              <img src="/college-logo.png" alt="ES Logo" className="h-14 md:h-16 w-auto drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
               <div className="text-center md:text-left">
-                <span className="text-lg md:text-2xl font-black text-white uppercase tracking-[0.2em] leading-tight block">ES College of Engineering and Technology</span>
-                <span className="text-[10px] md:text-xs font-bold text-brand-primary uppercase tracking-[0.5em] mt-1 block">Approved by AICTE & Affiliated to Anna University</span>
+                <span className="text-base md:text-xl font-black text-white uppercase tracking-[0.2em] leading-tight block">ES College of Engineering and Technology</span>
+                <span className="text-[9px] md:text-[10px] font-bold text-brand-primary uppercase tracking-[0.4em] mt-1 block">Approved by AICTE & Affiliated to Anna University</span>
               </div>
             </motion.div>
-            <div className="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] text-brand-primary animate-float">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="inline-block px-5 py-2 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-[10px] font-black uppercase tracking-[0.4em] text-brand-primary shadow-[0_0_30px_rgba(139,92,246,0.2)] mb-8"
+            >
               A National Level Technical Symposium
-            </div>
+            </motion.div>
           </div>
           
-          <img
-            src="/Innobyte-Logo.png"
-            alt="INNOBYTE 2K26"
-            className="w-full max-w-[1000px] mx-auto mb-10 drop-shadow-[0_0_80px_rgba(139,92,246,0.5)] hover:drop-shadow-[0_0_100px_rgba(139,92,246,0.8)] transition-all duration-700 select-none"
-          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 1 }}
+            className="w-full max-w-[1000px] mx-auto mb-10 relative group"
+          >
+            <div className="absolute inset-0 bg-brand-primary/20 blur-[100px] group-hover:bg-brand-primary/30 transition-all duration-700" />
+            <img
+              src="/Innobyte-Logo.png"
+              alt="INNOBYTE 2K26"
+              className="w-full relative z-10 drop-shadow-[0_0_40px_rgba(139,92,246,0.4)] group-hover:drop-shadow-[0_0_80px_rgba(139,92,246,0.6)] group-hover:scale-105 transition-all duration-700 select-none"
+            />
+          </motion.div>
           
           <motion.p 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="text-xl md:text-3xl text-slate-400 mb-16 max-w-3xl mx-auto font-medium leading-relaxed tracking-tight"
+            className="text-lg md:text-2xl text-slate-400 mb-16 max-w-3xl mx-auto font-medium leading-relaxed tracking-tight"
           >
             "Innovate <span className="text-white">💡</span> • Implement <span className="text-white">🖥️</span> • Inspire <span className="text-white">✨</span>"
           </motion.p>
           
-          <div className="flex flex-col items-center gap-20">
-            <Countdown />
+          <div className="grid lg:grid-cols-2 gap-8 w-full max-w-5xl">
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6 }}
+              className="glass-panel rounded-[2.5rem] p-8 flex flex-col justify-center items-center gap-8 border-brand-primary/20 shadow-[0_0_50px_rgba(139,92,246,0.1)] relative overflow-hidden group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <Countdown />
+            </motion.div>
             
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <a href="#register" className="btn-primary group">
-                <span className="flex items-center gap-2 uppercase tracking-[0.2em] font-black">
-                  Secure Your Spot <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                </span>
-              </a>
-              <div className="flex items-center gap-5 px-10 py-5 glass-panel rounded-2xl border border-white/10 group hover:border-brand-primary/50 transition-all">
-                <Calendar className="text-brand-primary group-hover:scale-110 transition-transform" />
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.7 }}
+              className="glass-panel flex flex-col justify-center gap-6 rounded-[2.5rem] p-8 overflow-hidden relative group"
+            >
+              <div className="absolute inset-0 bg-gradient-to-tl from-brand-secondary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
+              <div className="flex items-center gap-5 px-8 py-5 bg-white/[0.03] rounded-2xl border border-white/5 group-hover:border-brand-primary/30 transition-all relative z-10">
+                <div className="w-12 h-12 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary shrink-0"><Calendar size={24} /></div>
                 <div className="text-left">
-                  <span className="text-[9px] uppercase tracking-widest text-slate-500 block">Event Date</span>
-                  <span className="font-black text-white text-lg tracking-tight">27 March 2026</span>
+                  <span className="text-[10px] uppercase tracking-[0.3em] font-black text-slate-500 block mb-1">Symposium Date</span>
+                  <span className="font-black text-white text-xl tracking-tight">27 March 2026</span>
                 </div>
               </div>
-            </div>
-            
-            <LiveFeed />
+              
+              <a href="#register" className="btn-primary group/btn relative z-10 overflow-hidden">
+                <span className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 ease-out" />
+                <span className="relative flex items-center justify-center gap-3 uppercase tracking-[0.2em] font-black">
+                  Secure Your Spot <ChevronRight size={20} className="group-hover/btn:translate-x-1 transition-transform" />
+                </span>
+              </a>
+            </motion.div>
           </div>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="w-full mt-8"
+          >
+            <LiveFeed />
+          </motion.div>
         </motion.div>
       </section>
 
