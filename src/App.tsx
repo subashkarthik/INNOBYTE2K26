@@ -905,7 +905,7 @@ function HomePage() {
               transition={{ delay: 0.4 }}
               className="inline-block px-8 py-4 rounded-full bg-brand-primary/30 border-2 border-brand-primary/60 text-sm md:text-base font-black uppercase tracking-[0.4em] text-white shadow-[0_0_40px_rgba(139,92,246,0.8)] backdrop-blur-md drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] mb-8"
             >
-              A National Level Technical Symposium
+             “InnoByte 2K26 — Igniting Innovation, Connecting Creators, and Engineering Tomorrow.”
             </motion.div>
           </div>
           
