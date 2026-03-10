@@ -266,20 +266,38 @@ const Countdown = () => {
   }, []);
 
   return (
-    <div className="flex gap-4 md:gap-10">
+    <div className="flex items-center justify-center gap-3 md:gap-6 bg-slate-900/40 backdrop-blur-2xl p-5 md:p-8 rounded-[2rem] md:rounded-4xl border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.6)] relative overflow-hidden group">
+      <div className="absolute inset-0 bg-linear-to-r from-brand-primary/10 via-transparent to-brand-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
       {[
-        { label: 'Days', value: timeLeft.days },
-        { label: 'Hours', value: timeLeft.hours },
-        { label: 'Mins', value: timeLeft.minutes },
-        { label: 'Secs', value: timeLeft.seconds },
-      ].map((item) => (
-        <div key={item.label} className="flex flex-col items-center">
-          <div className="w-16 h-18 md:w-24 md:h-28 glass-panel rounded-2xl md:rounded-4xl flex items-center justify-center text-3xl md:text-5xl font-black text-gradient shadow-[0_0_40px_rgba(139,92,246,0.15)] relative overflow-hidden group">
-            <div className="absolute inset-0 bg-linear-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            {String(item.value).padStart(2, '0')}
+        { label: 'Days', value: timeLeft.days, color: 'text-brand-primary' },
+        { label: 'Hours', value: timeLeft.hours, color: 'text-brand-secondary' },
+        { label: 'Mins', value: timeLeft.minutes, color: 'text-brand-accent' },
+        { label: 'Secs', value: timeLeft.seconds, color: 'text-emerald-400' },
+      ].map((item, idx) => (
+        <React.Fragment key={item.label}>
+          <div className="flex flex-col items-center min-w-[3.5rem] md:min-w-[5.5rem] relative z-10">
+            <div className="h-16 md:h-24 w-full flex items-center justify-center relative overflow-hidden mb-2 bg-white/[0.03] rounded-2xl md:rounded-3xl border border-white/5 shadow-inner">
+              <AnimatePresence mode="popLayout">
+                <motion.div
+                  key={item.value}
+                  initial={{ y: 40, opacity: 0, scale: 0.8, filter: 'blur(4px)' }}
+                  animate={{ y: 0, opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                  exit={{ y: -40, opacity: 0, scale: 0.8, filter: 'blur(4px)' }}
+                  transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+                  className="absolute text-3xl md:text-5xl lg:text-6xl font-black bg-clip-text text-transparent bg-linear-to-b from-white to-white/40 tracking-tighter"
+                >
+                  {String(item.value).padStart(2, '0')}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            <span className={`text-[9px] md:text-[11px] uppercase tracking-[0.3em] mt-1 font-black ${item.color} drop-shadow-[0_0_10px_currentColor] opacity-80`}>{item.label}</span>
           </div>
-          <span className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] mt-4 text-slate-500 font-bold">{item.label}</span>
-        </div>
+          {idx < 3 && (
+            <div className="hidden md:flex flex-col justify-center pb-8 relative z-10">
+              <span className="text-2xl text-white/20 font-black relative top-1">:</span>
+            </div>
+          )}
+        </React.Fragment>
       ))}
     </div>
   );
