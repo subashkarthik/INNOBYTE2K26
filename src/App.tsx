@@ -1107,12 +1107,16 @@ function HomePage() {
           <div className="absolute left-6 md:left-1/2 top-4 bottom-4 w-px bg-white/5 md:-translate-x-1/2" />
           
           {[
-            { time: '08:30 AM', title: 'Registration & Kit Distribution', icon: <Users size={18} />, color: 'primary' },
-            { time: '09:30 AM', title: 'Grand Inauguration Ceremony', icon: <ChevronRight size={18} />, color: 'secondary' },
-            { time: '10:30 AM', title: 'Technical Battles - Phase I', icon: <ChevronRight size={18} />, color: 'primary' },
-            { time: '12:30 PM', title: 'Strategic Network (Lunch)', icon: <Clock size={18} />, color: 'accent' },
-            { time: '01:30 PM', title: 'Creative Challenges & Phase II', icon: <ChevronRight size={18} />, color: 'primary' },
-            { time: '03:45 PM', title: 'Grand Valedictory Ceremony', icon: <ChevronRight size={18} />, color: 'secondary' },
+            { time: '09:30 AM', title: 'Inauguration', icon: <Users size={18} />, color: 'primary' },
+            { time: '10:00 AM', title: 'Paper Presentation', icon: <ChevronRight size={18} />, color: 'secondary' },
+            { time: '11:00 AM', title: 'Tea Break', icon: <Clock size={18} />, color: 'accent' },
+            { time: '11:15 AM', title: 'Technical Quiz', icon: <ChevronRight size={18} />, color: 'primary' },
+            { time: '12:00 PM', title: 'Code Cracking / E-Sports', icon: <ChevronRight size={18} />, color: 'secondary' },
+            { time: '01:00 PM', title: 'Lunch', icon: <Clock size={18} />, color: 'accent' },
+            { time: '02:00 PM', title: 'Ad-Zap / AI-Animation', icon: <ChevronRight size={18} />, color: 'primary' },
+            { time: '03:00 PM', title: 'Tea Break', icon: <Clock size={18} />, color: 'accent' },
+            { time: '03:15 PM', title: 'Start Music / Short Film', icon: <ChevronRight size={18} />, color: 'secondary' },
+            { time: '04:00 PM', title: 'Valedictory & Prize Distribution', icon: <GraduationCap size={18} />, color: 'primary' },
           ].map((item, i) => (
             <motion.div 
               key={i}
