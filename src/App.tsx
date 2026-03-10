@@ -79,7 +79,7 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
             className="absolute top-0 bottom-0 w-1/2 bg-linear-to-r from-transparent via-brand-primary to-transparent"
           />
         </div>
-        <p className="mt-6 text-slate-500 font-display text-[10px] uppercase tracking-[0.4em] font-bold">Initializing Innovation</p>
+        <p className="mt-6 text-slate-300 font-display text-xs uppercase tracking-[0.4em] font-bold">Initializing Innovation</p>
       </motion.div>
     </motion.div>
   );
@@ -136,9 +136,9 @@ const LiveFeed = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500" />
             </span>
-            <span className="text-xs font-bold text-green-400 uppercase tracking-widest">Live</span>
+            <span className="text-sm font-bold text-green-400 uppercase tracking-widest">Live</span>
           </div>
-          <span className="text-sm text-slate-400">
+          <span className="text-base text-slate-200">
             <span className="text-gradient text-xl font-black">{count}</span> <span className="font-bold text-white">students registered</span>
           </span>
         </div>
@@ -151,7 +151,7 @@ const LiveFeed = () => {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0 }}
-                  className={`text-xs flex items-center gap-1.5 flex-wrap ${i === 0 ? 'text-slate-200' : 'text-slate-500'}`}
+                  className={`text-sm flex items-center gap-1.5 flex-wrap ${i === 0 ? 'text-slate-200' : 'text-slate-300'}`}
                 >
                   <span className="text-brand-primary">●</span>
                   <span className="font-semibold text-slate-200 truncate max-w-[100px]">{a.fullName}</span>
@@ -190,7 +190,7 @@ const Navbar: React.FC<{ onAdminClick: () => void }> = ({ onAdminClick }) => {
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <div className="flex items-center gap-3 md:gap-4 group cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
           <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 bg-white/95 px-3 py-1.5 md:px-4 md:py-2 rounded-xl transition-all shadow-[0_0_15px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] group-hover:bg-white overflow-hidden">
-            <img src="/ES%20Eng%20Clg.png" alt="ESCT" className="h-6 md:h-8 lg:h-10 w-auto" />
+            <img src="/ES%20Eng%20Clg.png" alt="ESCET" className="h-6 md:h-8 lg:h-10 w-auto" />
           </div>
           <img src="/Innobyte-Logo.png" alt="INNOBYTE 2K26" className="h-6 md:h-8 object-contain group-hover:drop-shadow-[0_0_15px_rgba(139,92,246,0.5)] transition-all" />
         </div>
@@ -198,11 +198,11 @@ const Navbar: React.FC<{ onAdminClick: () => void }> = ({ onAdminClick }) => {
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
-            <a key={link.name} href={link.href} className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400 hover:text-brand-primary transition-all hover:tracking-[0.3em]">
+            <a key={link.name} href={link.href} className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-200 hover:text-brand-primary transition-all hover:tracking-[0.3em]">
               {link.name}
             </a>
           ))}
-          <button onClick={onAdminClick} className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-slate-500 hover:text-brand-primary hover:border-brand-primary/50 transition-all">
+          <button onClick={onAdminClick} className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-slate-300 hover:text-brand-primary hover:border-brand-primary/50 transition-all">
             <Users size={16} />
           </button>
         </div>
@@ -341,7 +341,7 @@ const EventsCarousel: React.FC<{ events: Event[], side: 'left' | 'right' }> = ({
               <div className="absolute inset-0 flex items-center justify-center p-4">
                 <div className="flex flex-col items-center justify-center h-full w-full opacity-50 hover:opacity-100 transition-opacity">
                   <span 
-                    className="whitespace-nowrap font-bold text-white tracking-[0.2em] uppercase text-xs sm:text-sm origin-center" 
+                    className="whitespace-nowrap font-bold text-white tracking-[0.2em] uppercase text-sm sm:text-base origin-center" 
                     style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
                   >
                     {event.name}
@@ -358,7 +358,7 @@ const EventsCarousel: React.FC<{ events: Event[], side: 'left' | 'right' }> = ({
                 transition={{ duration: 0.4, delay: 0.2 }}
                 className="absolute inset-0 p-6 md:p-10 flex flex-col justify-end z-10"
               >
-                <div className={`self-start mb-4 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.3em] border backdrop-blur-md ${event.category === 'Technical' ? 'bg-brand-primary/20 text-brand-primary border-brand-primary/30' : 'bg-brand-accent/20 text-brand-accent border-brand-accent/30'}`}>
+                <div className={`self-start mb-4 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-[0.3em] border backdrop-blur-md ${event.category === 'Technical' ? 'bg-brand-primary/20 text-brand-primary border-brand-primary/30' : 'bg-brand-accent/20 text-brand-accent border-brand-accent/30'}`}>
                   {event.category}
                 </div>
                 
@@ -366,24 +366,24 @@ const EventsCarousel: React.FC<{ events: Event[], side: 'left' | 'right' }> = ({
                   {event.name}
                 </h3>
                 
-                <p className="text-slate-200 text-sm md:text-base mb-6 max-w-lg leading-relaxed drop-shadow-md">
+                <p className="text-slate-200 text-base md:text-base mb-6 max-w-lg leading-relaxed drop-shadow-md">
                   {event.description}
                 </p>
 
                 <div className="flex flex-wrap items-center gap-3 mb-6">
                   <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
                     <Users size={16} className="text-brand-primary" />
-                    <span className="text-xs font-bold text-white">Max <span className="text-brand-primary">{event.maxParticipants}</span></span>
+                    <span className="text-sm font-bold text-white">Max <span className="text-brand-primary">{event.maxParticipants}</span></span>
                   </div>
                   <div className="flex gap-2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
                     {event.years.map(year => (
-                      <span key={year} className="text-[10px] uppercase font-black tracking-wider text-slate-300">{year} Year</span>
+                      <span key={year} className="text-xs uppercase font-black tracking-wider text-slate-300">{year} Year</span>
                     ))}
                   </div>
                 </div>
 
                 <div className="bg-black/40 backdrop-blur-xl p-5 md:p-6 rounded-2xl border border-white/10 space-y-3">
-                  <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white flex items-center gap-2 mb-3">
+                  <h4 className="text-xs font-black uppercase tracking-[0.3em] text-white flex items-center gap-2 mb-3">
                     <span className="w-4 h-4 rounded bg-brand-primary/20 flex items-center justify-center text-brand-primary">
                       <CheckCircle2 size={10} />
                     </span>
@@ -391,7 +391,7 @@ const EventsCarousel: React.FC<{ events: Event[], side: 'left' | 'right' }> = ({
                   </h4>
                   <div className="grid md:grid-cols-2 gap-3">
                     {event.rules.map((rule, idx) => (
-                      <div key={idx} className="flex gap-3 text-xs text-slate-300">
+                      <div key={idx} className="flex gap-3 text-sm text-slate-300">
                         <span className="text-brand-primary font-bold shrink-0 mt-0.5">•</span>
                         <span className="leading-tight">{rule}</span>
                       </div>
@@ -427,7 +427,7 @@ const EventPickerCard = ({ ev, sel, onToggle, onUpdateEvt, pptTheme, setPptTheme
     <button type="button" onClick={onToggle} className="w-full p-5 text-left relative z-10">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="font-bold text-sm text-slate-200 group-hover:text-white transition-colors">{ev.name}</div>
+          <div className="font-bold text-base text-slate-200 group-hover:text-white transition-colors">{ev.name}</div>
         </div>
         <motion.div 
           animate={sel ? { scale: [0.8, 1.2, 1] } : { scale: 1 }}
@@ -448,18 +448,18 @@ const EventPickerCard = ({ ev, sel, onToggle, onUpdateEvt, pptTheme, setPptTheme
           {ev.maxParticipants > 1 && (
             <div className="px-5 pb-5 border-t border-white/5 pt-4 grid grid-cols-2 gap-4">
               <div>
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">Team Name</label>
-                <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-brand-primary/50 focus:bg-white/5 transition-all" placeholder="Optional" value={sel.teamName || ''} onChange={e => onUpdateEvt('teamName', e.target.value)} />
+                <label className="text-xs font-black uppercase tracking-widest text-slate-200 block mb-2">Team Name</label>
+                <input type="text" className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-primary/50 focus:bg-white/5 transition-all" placeholder="Optional" value={sel.teamName || ''} onChange={e => onUpdateEvt('teamName', e.target.value)} />
               </div>
               <div>
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">
+                <label className="text-xs font-black uppercase tracking-widest text-slate-200 block mb-2">
                   Size <span className={`lowercase tracking-normal px-1.5 py-0.5 rounded text-[8px] bg-white/10 ml-1`}>Max: {ev.maxParticipants}</span>
                 </label>
                 <input 
                   type="text" 
                   inputMode="numeric"
                   pattern="[0-9]*"
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-brand-primary/50 focus:bg-white/5 transition-all text-center" 
+                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-primary/50 focus:bg-white/5 transition-all text-center" 
                   value={sel.count} 
                   onChange={e => {
                     const valStr = e.target.value.replace(/[^0-9]/g, '');
@@ -476,9 +476,9 @@ const EventPickerCard = ({ ev, sel, onToggle, onUpdateEvt, pptTheme, setPptTheme
           )}
           {(ev.id === 'paper-pres-cat2' || ev.name.includes('Paper Presentation (1st Year)')) && year === '1st' && (
             <div className="px-5 pb-5">
-              <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">PPT Theme</label>
-              <select required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-brand-primary/50 focus:bg-white/5 appearance-none transition-all cursor-pointer" value={pptTheme} onChange={e => setPptTheme(e.target.value)}>
-                <option value="" className="bg-[#020617] text-slate-500">Select presentation theme...</option>
+              <label className="text-xs font-black uppercase tracking-widest text-slate-200 block mb-2">PPT Theme</label>
+              <select required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-primary/50 focus:bg-white/5 appearance-none transition-all cursor-pointer" value={pptTheme} onChange={e => setPptTheme(e.target.value)}>
+                <option value="" className="bg-[#020617] text-slate-300">Select presentation theme...</option>
                 {PPT_THEMES.map(t => <option key={t} value={t} className="bg-[#020617] text-white">{t}</option>)}
               </select>
             </div>
@@ -653,10 +653,10 @@ const RegistrationForm = () => {
     );
   }
 
-  const inputCls = (key: string) => `w-full bg-white/3 border ${touched[key] && errors[key] ? 'border-red-500/50 focus:border-red-500' : 'border-white/10 focus:border-brand-primary/50'} rounded-2xl px-6 py-4.5 text-sm focus:outline-none focus:bg-white/5 transition-all placeholder:text-slate-600 font-medium`;
+  const inputCls = (key: string) => `w-full bg-white/3 border ${touched[key] && errors[key] ? 'border-red-500/50 focus:border-red-500' : 'border-white/10 focus:border-brand-primary/50'} rounded-2xl px-6 py-4.5 text-base focus:outline-none focus:bg-white/5 transition-all placeholder:text-slate-600 font-medium`;
 
   const ValidationError = ({ name }: { name: string }) => touched[name] && errors[name] ? (
-    <motion.span initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-[10px] text-red-500 font-bold uppercase tracking-widest mt-2 block ml-2">
+    <motion.span initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-xs text-red-500 font-bold uppercase tracking-widest mt-2 block ml-2">
       {errors[name]}
     </motion.span>
   ) : null;
@@ -678,46 +678,46 @@ const RegistrationForm = () => {
         <div className="relative">
           <div className="absolute -left-8 md:-left-16 top-0 bottom-0 w-1 bg-gradient-to-b from-brand-primary/50 to-transparent rounded-r" />
           <h3 className="text-2xl font-black flex items-center gap-4 mb-10 text-white tracking-tight">
-            <span className="w-10 h-10 rounded-xl bg-brand-primary/20 text-brand-primary flex items-center justify-center text-sm shadow-[0_0_20px_rgba(139,92,246,0.3)] border border-brand-primary/30">01</span>
+            <span className="w-10 h-10 rounded-xl bg-brand-primary/20 text-brand-primary flex items-center justify-center text-base shadow-[0_0_20px_rgba(139,92,246,0.3)] border border-brand-primary/30">01</span>
             Intake Protocol
           </h3>
           <div className="grid lg:grid-cols-2 gap-x-8 gap-y-6">
             <div>
-              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Full Name</label>
+              <label className="block text-xs font-black uppercase tracking-[0.2em] text-slate-200 mb-3">Full Name</label>
               <input required type="text" className={inputCls('fullName')} placeholder="Enter your full name" value={formData.fullName} onChange={e => upd('fullName', e.target.value)} />
               <ValidationError name="fullName" />
             </div>
             <div>
-              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">College Name</label>
+              <label className="block text-xs font-black uppercase tracking-[0.2em] text-slate-200 mb-3">College Name</label>
               <input required type="text" className={inputCls('collegeName')} placeholder="Your institution name" value={formData.collegeName} onChange={e => upd('collegeName', e.target.value)} />
               <ValidationError name="collegeName" />
             </div>
             <div>
-              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Department</label>
+              <label className="block text-xs font-black uppercase tracking-[0.2em] text-slate-200 mb-3">Department</label>
               <select className={`${inputCls('department')} appearance-none cursor-pointer`} value={formData.department} onChange={e => { upd('department', e.target.value); setSelectedEvents([]); }}>
                 {DEPARTMENTS.map(d => <option key={d} value={d} className="bg-[#020617]">{d}</option>)}
               </select>
             </div>
             {formData.department === 'Other' && (
               <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="overflow-hidden">
-                <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Specify Department</label>
+                <label className="block text-xs font-black uppercase tracking-[0.2em] text-slate-200 mb-3">Specify Department</label>
                 <input required type="text" className={inputCls('customDepartment')} placeholder="Enter your department name" value={formData.customDepartment} onChange={e => upd('customDepartment', e.target.value)} />
                 <ValidationError name="customDepartment" />
               </motion.div>
             )}
             <div>
-              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Current Year</label>
+              <label className="block text-xs font-black uppercase tracking-[0.2em] text-slate-200 mb-3">Current Year</label>
               <select className={`${inputCls('year')} appearance-none cursor-pointer`} value={formData.year} onChange={e => { upd('year', e.target.value); setSelectedEvents([]); }}>
                 {YEARS.map(y => <option key={y} value={y} className="bg-[#020617]">{y}</option>)}
               </select>
             </div>
             <div>
-              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Email Address</label>
+              <label className="block text-xs font-black uppercase tracking-[0.2em] text-slate-200 mb-3">Email Address</label>
               <input required type="email" className={inputCls('email')} placeholder="name@example.com" value={formData.email} onChange={e => upd('email', e.target.value)} />
               <ValidationError name="email" />
             </div>
             <div>
-              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Phone Number</label>
+              <label className="block text-xs font-black uppercase tracking-[0.2em] text-slate-200 mb-3">Phone Number</label>
               <input required type="tel" className={inputCls('phone')} placeholder="10-digit number" value={formData.phone} onChange={e => upd('phone', e.target.value)} />
               <ValidationError name="phone" />
             </div>
@@ -729,20 +729,20 @@ const RegistrationForm = () => {
           <div className="absolute -left-8 md:-left-16 top-12 bottom-0 w-1 bg-gradient-to-b from-brand-secondary/50 to-transparent rounded-r" />
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
             <h3 className="text-2xl font-black flex items-center gap-4 text-white tracking-tight">
-              <span className="w-10 h-10 rounded-xl bg-brand-secondary/20 text-brand-secondary flex items-center justify-center text-sm shadow-[0_0_20px_rgba(6,182,212,0.3)] border border-brand-secondary/30">02</span>
+              <span className="w-10 h-10 rounded-xl bg-brand-secondary/20 text-brand-secondary flex items-center justify-center text-base shadow-[0_0_20px_rgba(6,182,212,0.3)] border border-brand-secondary/30">02</span>
               Event Assignment
             </h3>
             {selectedEvents.length > 0 && (
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-xs bg-brand-primary text-white px-4 py-2 rounded-xl font-bold border border-white/20 shadow-[0_0_20px_rgba(139,92,246,0.5)]">
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-sm bg-brand-primary text-white px-4 py-2 rounded-xl font-bold border border-white/20 shadow-[0_0_20px_rgba(139,92,246,0.5)]">
                 {selectedEvents.length} Event{selectedEvents.length > 1 ? 's' : ''} Selected
               </motion.div>
             )}
           </div>
-          <p className="text-slate-500 text-xs mb-8 md:ml-14 max-w-lg leading-relaxed">System has automatically filtered events based on your academic year and department specifications.</p>
+          <p className="text-slate-300 text-sm mb-8 md:ml-14 max-w-lg leading-relaxed">System has automatically filtered events based on your academic year and department specifications.</p>
 
           <div className="mb-8 md:ml-14">
             <div className="flex items-center gap-4 mb-6">
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-primary whitespace-nowrap bg-brand-primary/10 px-3 py-1.5 rounded-lg border border-brand-primary/20">Technical Series</span>
+              <span className="text-xs font-black uppercase tracking-[0.3em] text-brand-primary whitespace-nowrap bg-brand-primary/10 px-3 py-1.5 rounded-lg border border-brand-primary/20">Technical Series</span>
               <div className="h-px flex-grow bg-white/5" />
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -756,7 +756,7 @@ const RegistrationForm = () => {
 
           <div className="md:ml-14">
             <div className="flex items-center gap-4 mb-6">
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-accent whitespace-nowrap bg-brand-accent/10 px-3 py-1.5 rounded-lg border border-brand-accent/20">Non-Technical Series</span>
+              <span className="text-xs font-black uppercase tracking-[0.3em] text-brand-accent whitespace-nowrap bg-brand-accent/10 px-3 py-1.5 rounded-lg border border-brand-accent/20">Non-Technical Series</span>
               <div className="h-px flex-grow bg-white/5" />
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -773,19 +773,19 @@ const RegistrationForm = () => {
         <div className="pt-12 border-t border-white/5 relative">
           <div className="absolute -left-8 md:-left-16 top-12 bottom-0 w-1 bg-gradient-to-b from-green-500/50 to-transparent rounded-r" />
           <h3 className="text-2xl font-black flex items-center gap-4 mb-10 text-white tracking-tight">
-            <span className="w-10 h-10 rounded-xl bg-green-500/20 text-green-500 flex items-center justify-center text-sm shadow-[0_0_20px_rgba(34,197,94,0.3)] border border-green-500/30">03</span>
+            <span className="w-10 h-10 rounded-xl bg-green-500/20 text-green-500 flex items-center justify-center text-base shadow-[0_0_20px_rgba(34,197,94,0.3)] border border-green-500/30">03</span>
             Access Verification
           </h3>
           <div className="grid lg:grid-cols-2 gap-12 items-center bg-white/[0.01] p-8 md:p-12 rounded-[2.5rem] border border-white/5 md:ml-14 shadow-inner">
             <div className="text-center lg:text-left">
-              <p className="text-sm font-black mb-6 text-slate-300 uppercase tracking-widest">Entry Fee: ₹200 / Member</p>
+              <p className="text-base font-black mb-6 text-slate-300 uppercase tracking-widest">Entry Fee: ₹200 / Member</p>
               <div className="bg-white p-6 rounded-3xl inline-block mb-6 shadow-[0_0_50px_rgba(255,255,255,0.1)] hover:scale-105 transition-transform duration-500">
                 <img src="/qr.jpeg" alt="Payment QR Code" className="w-48 h-48 rounded-xl mix-blend-multiply" />
               </div>
             </div>
             <div className="space-y-6">
               <div>
-                <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Transaction ID (12 Digits)</label>
+                <label className="block text-xs font-black uppercase tracking-[0.2em] text-slate-200 mb-3">Transaction ID (12 Digits)</label>
                 <input 
                   required 
                   type="text" 
@@ -801,21 +801,21 @@ const RegistrationForm = () => {
                 <ValidationError name="transactionId" />
               </div>
               <div>
-                <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-3">Upload Transaction Proof</label>
+                <label className="block text-xs font-black uppercase tracking-[0.2em] text-slate-200 mb-3">Upload Transaction Proof</label>
               <div className="relative group">
                 <input required type="file" accept="image/*" onChange={e => { setPaymentScreenshot(e.target.files?.[0] || null); setTouched(p => ({ ...p, payment: true })); }} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                 <div className={`w-full border-2 border-dashed rounded-[1.5rem] p-12 flex flex-col items-center justify-center transition-all duration-300 ${paymentScreenshot ? 'border-green-500/50 bg-green-500/10 shadow-[0_0_30px_rgba(34,197,94,0.1)]' : touched.payment && errors.payment ? 'border-red-500/50 bg-red-500/5' : 'border-white/10 bg-white/[0.02] group-hover:border-brand-primary/50 group-hover:bg-brand-primary/5'}`}>
                   {paymentScreenshot ? (
                     <>
                       <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-4"><CheckCircle2 className="text-green-500" /></motion.div>
-                      <span className="text-sm font-bold text-green-500">{paymentScreenshot.name}</span>
-                      <span className="text-[10px] text-green-500/50 mt-1.5 uppercase tracking-widest font-bold">Verification ready</span>
+                      <span className="text-base font-bold text-green-500">{paymentScreenshot.name}</span>
+                      <span className="text-xs text-green-500/50 mt-1.5 uppercase tracking-widest font-bold">Verification ready</span>
                     </>
                   ) : (
                     <>
-                      <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-brand-primary/20 transition-all duration-300"><Download className="text-slate-400 group-hover:text-brand-primary transition-colors" /></div>
-                      <span className="text-sm font-medium text-slate-300">Click or drag receipt here</span>
-                      <span className="text-[10px] text-slate-500 mt-2 uppercase tracking-widest font-black">JPG/PNG Support</span>
+                      <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-brand-primary/20 transition-all duration-300"><Download className="text-slate-200 group-hover:text-brand-primary transition-colors" /></div>
+                      <span className="text-base font-medium text-slate-300">Click or drag receipt here</span>
+                      <span className="text-xs text-slate-300 mt-2 uppercase tracking-widest font-black">JPG/PNG Support</span>
                     </>
                   )}
                 </div>
@@ -828,7 +828,7 @@ const RegistrationForm = () => {
 
         <div className="glass-panel p-6 md:p-8 rounded-[2rem] flex flex-col lg:flex-row items-center justify-between gap-8 border border-brand-primary/20 shadow-[0_0_40px_rgba(139,92,246,0.1)] relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-brand-primary/10 to-transparent opacity-50 pointer-events-none" />
-          <div className="flex items-center gap-4 text-slate-400 text-sm bg-black/40 px-6 py-4 rounded-xl border border-white/5 relative z-10 w-full lg:w-auto">
+          <div className="flex items-center gap-4 text-slate-200 text-base bg-black/40 px-6 py-4 rounded-xl border border-white/5 relative z-10 w-full lg:w-auto">
             <AlertCircle size={18} className="text-brand-accent shrink-0" />
             <span className="font-medium">System lock initiates on <span className="text-white font-bold">25 March 2026</span></span>
           </div>
@@ -836,7 +836,7 @@ const RegistrationForm = () => {
           <div className="flex flex-col items-center lg:items-end gap-3 w-full lg:w-auto relative z-10">
             <AnimatePresence>
               {status === 'error' && (
-                <motion.span initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-red-400 text-xs font-bold uppercase tracking-widest bg-red-500/10 px-4 py-2 rounded-lg border border-red-500/20">
+                <motion.span initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-red-400 text-sm font-bold uppercase tracking-widest bg-red-500/10 px-4 py-2 rounded-lg border border-red-500/20">
                   {errMsg}
                 </motion.span>
               )}
@@ -849,7 +849,7 @@ const RegistrationForm = () => {
                   Initializing...
                 </span>
               ) : (
-                <span className="flex items-center gap-3 uppercase tracking-widest text-sm">
+                <span className="flex items-center gap-3 uppercase tracking-widest text-base">
                   Initialize Registration{selectedEvents.length > 0 ? ` [${selectedEvents.length}]` : ''}
                   <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </span>
@@ -903,7 +903,7 @@ function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="inline-block px-5 py-2 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-[10px] font-black uppercase tracking-[0.4em] text-brand-primary shadow-[0_0_30px_rgba(139,92,246,0.2)] mb-8"
+              className="inline-block px-8 py-4 rounded-full bg-brand-primary/30 border-2 border-brand-primary/60 text-sm md:text-base font-black uppercase tracking-[0.4em] text-white shadow-[0_0_40px_rgba(139,92,246,0.8)] backdrop-blur-md drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] mb-8"
             >
               A National Level Technical Symposium
             </motion.div>
@@ -927,7 +927,7 @@ function HomePage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="text-lg md:text-2xl text-slate-400 mb-16 max-w-3xl mx-auto font-medium leading-relaxed tracking-tight"
+            className="text-lg md:text-2xl text-slate-200 mb-16 max-w-3xl mx-auto font-medium leading-relaxed tracking-tight"
           >
             "Innovate <span className="text-white">💡</span> • Implement <span className="text-white">🖥️</span> • Inspire <span className="text-white">✨</span>"
           </motion.p>
@@ -954,7 +954,7 @@ function HomePage() {
               <div className="flex items-center gap-5 px-8 py-5 bg-white/[0.03] rounded-2xl border border-white/5 group-hover:border-brand-primary/30 transition-all relative z-10">
                 <div className="w-12 h-12 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary shrink-0"><Calendar size={24} /></div>
                 <div className="text-left">
-                  <span className="text-[10px] uppercase tracking-[0.3em] font-black text-slate-500 block mb-1">Symposium Date</span>
+                  <span className="text-xs uppercase tracking-[0.3em] font-black text-slate-300 block mb-1">Symposium Date</span>
                   <span className="font-black text-white text-xl tracking-tight">27 March 2026</span>
                 </div>
               </div>
@@ -983,12 +983,12 @@ function HomePage() {
           >
             <div className="flex items-center gap-4 mb-8">
               <div className="w-12 h-px bg-brand-primary/50" />
-              <span className="text-[10px] uppercase tracking-[0.5em] text-brand-primary font-black">About The Event</span>
+              <span className="text-xs uppercase tracking-[0.5em] text-brand-primary font-black">About The Event</span>
             </div>
             <h2 className="text-5xl md:text-7xl font-black mb-10 text-white leading-[1.1] tracking-tight">
               Igniting the <span className="text-gradient">Future</span> of Technology
             </h2>
-            <div className="space-y-10 text-slate-400 text-lg leading-relaxed font-medium">
+            <div className="space-y-10 text-slate-200 text-lg leading-relaxed font-medium">
               <p>
                 INNOBYTE2K26 is the premier flagship technical symposium organized by ES College of Engineering and Technology. 
               </p>
@@ -1036,7 +1036,7 @@ function HomePage() {
             <h2 className="text-5xl md:text-7xl font-black mb-8 text-white tracking-tight">
               Explore <span className="text-gradient">Events</span>
             </h2>
-            <p className="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
+            <p className="text-slate-200 text-lg max-w-2xl mx-auto font-medium">
               A curated selection of technical and creative challenges tailored specifically for your academic year.
             </p>
           </motion.div>
@@ -1049,7 +1049,7 @@ function HomePage() {
             className="mb-40"
           >
             <div className="flex items-center gap-8 mb-16">
-              <h3 className="text-xs font-black uppercase tracking-[0.5em] text-brand-primary whitespace-nowrap bg-brand-primary/10 px-4 py-2 rounded-lg border border-brand-primary/20">
+              <h3 className="text-sm font-black uppercase tracking-[0.5em] text-brand-primary whitespace-nowrap bg-brand-primary/10 px-4 py-2 rounded-lg border border-brand-primary/20">
                 Senior Category (2nd - 4th Year)
               </h3>
               <div className="h-px flex-grow bg-white/5" />
@@ -1065,7 +1065,7 @@ function HomePage() {
             className="mb-40"
           >
             <div className="flex items-center gap-8 mb-16">
-              <h3 className="text-xs font-black uppercase tracking-[0.5em] text-brand-accent whitespace-nowrap bg-brand-accent/10 px-4 py-2 rounded-lg border border-brand-accent/20">
+              <h3 className="text-sm font-black uppercase tracking-[0.5em] text-brand-accent whitespace-nowrap bg-brand-accent/10 px-4 py-2 rounded-lg border border-brand-accent/20">
                 Junior Category (1st Year)
               </h3>
               <div className="h-px flex-grow bg-white/5" />
@@ -1080,7 +1080,7 @@ function HomePage() {
             viewport={{ once: true }}
           >
             <div className="flex items-center gap-8 mb-16">
-              <h3 className="text-xs font-black uppercase tracking-[0.5em] text-slate-500 whitespace-nowrap bg-white/5 px-4 py-2 rounded-lg border border-white/10">
+              <h3 className="text-sm font-black uppercase tracking-[0.5em] text-slate-300 whitespace-nowrap bg-white/5 px-4 py-2 rounded-lg border border-white/10">
                 Open Showcase (Non-Technical)
               </h3>
               <div className="h-px flex-grow bg-white/5" />
@@ -1098,7 +1098,7 @@ function HomePage() {
           <h2 className="text-5xl md:text-7xl font-black mb-10 text-white tracking-tight">
             Event <span className="text-gradient">Timeline</span>
           </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
+          <p className="text-slate-200 text-lg max-w-2xl mx-auto font-medium">
             Precisely orchestrated sequences for a day of absolute innovation.
           </p>
         </div>
@@ -1127,7 +1127,7 @@ function HomePage() {
                 {item.icon}
               </div>
               <div className="flex-1 glass-panel p-6 rounded-2xl border border-white/5 group hover:border-brand-primary/30 transition-all">
-                <span className={`text-[10px] font-black uppercase tracking-[0.2em] mb-2 block ${item.color === 'primary' ? 'text-brand-primary' : item.color === 'secondary' ? 'text-brand-secondary' : 'text-brand-accent'}`}>
+                <span className={`text-xs font-black uppercase tracking-[0.2em] mb-2 block ${item.color === 'primary' ? 'text-brand-primary' : item.color === 'secondary' ? 'text-brand-secondary' : 'text-brand-accent'}`}>
                   {item.time}
                 </span>
                 <h3 className="text-lg font-bold text-white group-hover:text-brand-primary transition-colors leading-tight">
@@ -1144,7 +1144,7 @@ function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-24">
             <h2 className="text-5xl md:text-6xl font-black mb-6 text-white">Secure Your <span className="text-gradient">Spot</span></h2>
-            <p className="text-slate-400 text-lg">Join 1000+ students in the ultimate technical showdown.</p>
+            <p className="text-slate-200 text-lg">Join 1000+ students in the ultimate technical showdown.</p>
           </div>
           <RegistrationForm />
         </div>
@@ -1165,36 +1165,36 @@ function HomePage() {
                 <div className="flex gap-4">
                   <div className="w-12 h-12 glass-panel rounded-xl flex items-center justify-center text-brand-primary border border-white/10 shrink-0"><Users size={20} /></div>
                   <div>
-                    <h4 className="text-sm font-black text-white uppercase tracking-widest mb-1">Principal</h4>
-                    <p className="text-slate-400 text-sm">Dr. K. Indira</p>
+                    <h4 className="text-base font-black text-white uppercase tracking-widest mb-1">Principal</h4>
+                    <p className="text-slate-200 text-base">Dr. K. Indira</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <div className="w-12 h-12 glass-panel rounded-xl flex items-center justify-center text-brand-primary border border-white/10 shrink-0"><Users size={20} /></div>
                   <div>
-                    <h4 className="text-sm font-black text-white uppercase tracking-widest mb-1">HOD / CSE</h4>
-                    <p className="text-slate-400 text-sm">Mrs. J. Chandraleka</p>
+                    <h4 className="text-base font-black text-white uppercase tracking-widest mb-1">HOD / CSE</h4>
+                    <p className="text-slate-200 text-base">Mrs. J. Chandraleka</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <div className="w-12 h-12 glass-panel rounded-xl flex items-center justify-center text-brand-primary border border-white/10 shrink-0"><Users size={20} /></div>
                   <div>
-                    <h4 className="text-sm font-black text-white uppercase tracking-widest mb-1">HOD / ECE</h4>
-                    <p className="text-slate-400 text-sm">Mr. A. Arunagiri</p>
+                    <h4 className="text-base font-black text-white uppercase tracking-widest mb-1">HOD / ECE</h4>
+                    <p className="text-slate-200 text-base">Mr. A. Arunagiri</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
                   <div className="w-12 h-12 glass-panel rounded-xl flex items-center justify-center text-brand-primary border border-white/10 shrink-0"><Users size={20} /></div>
                   <div>
-                    <h4 className="text-sm font-black text-white uppercase tracking-widest mb-1">HOD / S&H</h4>
-                    <p className="text-slate-400 text-sm">Mr. A. Selvam</p>
+                    <h4 className="text-base font-black text-white uppercase tracking-widest mb-1">HOD / S&H</h4>
+                    <p className="text-slate-200 text-base">Mr. A. Selvam</p>
                   </div>
                 </div>
               </div>
 
               {/* Staff Coordinators */}
               <div>
-                <h3 className="text-xs font-black text-brand-primary uppercase tracking-[0.3em] mb-6 flex items-center gap-4">
+                <h3 className="text-sm font-black text-brand-primary uppercase tracking-[0.3em] mb-6 flex items-center gap-4">
                   Staff Coordinators <div className="h-px grow bg-brand-primary/20" />
                 </h3>
                 <div className="grid sm:grid-cols-2 gap-6">
@@ -1205,10 +1205,10 @@ function HomePage() {
                   ].map(staff => (
                     <div key={staff.phone} className="flex items-center justify-between p-4 glass-panel rounded-2xl border border-white/5 hover:border-brand-primary/30 transition-all group">
                       <div>
-                        <p className="text-sm font-bold text-slate-200">{staff.name}</p>
-                        <p className="text-[10px] text-slate-500 uppercase font-black">{staff.dept}</p>
+                        <p className="text-base font-bold text-slate-200">{staff.name}</p>
+                        <p className="text-xs text-slate-300 uppercase font-black">{staff.dept}</p>
                       </div>
-                      <a href={`tel:${staff.phone}`} className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-400 group-hover:bg-brand-primary/20 group-hover:text-brand-primary transition-all">
+                      <a href={`tel:${staff.phone}`} className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-slate-200 group-hover:bg-brand-primary/20 group-hover:text-brand-primary transition-all">
                         <Phone size={14} />
                       </a>
                     </div>
@@ -1218,7 +1218,7 @@ function HomePage() {
 
               {/* Student Coordinators */}
               <div>
-                <h3 className="text-xs font-black text-brand-secondary uppercase tracking-[0.3em] mb-6 flex items-center gap-4">
+                <h3 className="text-sm font-black text-brand-secondary uppercase tracking-[0.3em] mb-6 flex items-center gap-4">
                   Student Coordinators <div className="h-px grow bg-brand-secondary/20" />
                 </h3>
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -1231,8 +1231,8 @@ function HomePage() {
                     { name: 'S. Fakrudeen', phone: '8608382856' }
                   ].map(student => (
                     <div key={student.name} className="flex items-center justify-between p-3 glass-panel rounded-xl border border-white/5 hover:border-brand-secondary/30 transition-all group">
-                      <p className="text-xs font-bold text-slate-300">{student.name}</p>
-                      <a href={`tel:${student.phone}`} className="text-[10px] font-mono text-slate-500 group-hover:text-brand-secondary transition-colors">
+                      <p className="text-sm font-bold text-slate-300">{student.name}</p>
+                      <a href={`tel:${student.phone}`} className="text-xs font-mono text-slate-300 group-hover:text-brand-secondary transition-colors">
                         {student.phone}
                       </a>
                     </div>
@@ -1264,15 +1264,15 @@ function HomePage() {
             </div>
             <img src="/Innobyte-Logo.png" alt="INNOBYTE2K26" className="h-16 opacity-90 drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]" />
           </div>
-          <p className="text-slate-500 text-sm mb-6">© 2026 ES College of Engineering and Technology. All rights reserved.</p>
-          <div className="flex justify-center gap-8 text-slate-500 mb-10">
+          <p className="text-slate-300 text-base mb-6">© 2026 ES College of Engineering and Technology. All rights reserved.</p>
+          <div className="flex justify-center gap-8 text-slate-300 mb-10">
             {['about','events','schedule','register','faq','contact'].map(id => (
-              <a key={id} href={`#${id}`} className="hover:text-brand-primary transition-colors text-xs uppercase tracking-widest font-bold capitalize">{id}</a>
+              <a key={id} href={`#${id}`} className="hover:text-brand-primary transition-colors text-sm uppercase tracking-widest font-bold capitalize">{id}</a>
             ))}
           </div>
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="mx-auto flex items-center gap-2 text-xs text-slate-500 hover:text-brand-primary transition-colors group"
+            className="mx-auto flex items-center gap-2 text-sm text-slate-300 hover:text-brand-primary transition-colors group"
           >
             <ArrowUp size={14} className="group-hover:-translate-y-1 transition-transform" /> Back to top
           </button>

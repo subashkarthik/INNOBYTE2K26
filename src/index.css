@@ -49,8 +49,12 @@
 }
 
 @layer base {
+  html {
+    font-size: 110%; /* Increases all relative rem font sizes */
+  }
+
   body {
-    @apply bg-[#020617] text-slate-200 antialiased selection:bg-brand-primary/30 selection:text-white;
+    @apply bg-[#020617] text-slate-100 antialiased selection:bg-brand-primary/30 selection:text-white;
     font-feature-settings: "ss01", "ss02", "cv01";
   }
 
