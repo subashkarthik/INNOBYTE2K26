@@ -316,7 +316,8 @@ const EventsCarousel: React.FC<{ events: Event[], side: 'left' | 'right' }> = ({
             key={event.id}
             layout
             onClick={() => setActiveId(event.id)}
-            className={`relative rounded-3xl md:rounded-[2.5rem] overflow-hidden cursor-pointer flex-shrink-0 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${isActive ? 'flex-grow min-w-[280px] md:min-w-[500px]' : 'w-16 md:w-24 bg-slate-900/40 border border-white/5 hover:bg-slate-800/60'}`}
+            onMouseEnter={() => setActiveId(event.id)}
+            className={`relative rounded-3xl md:rounded-[2.5rem] overflow-hidden cursor-pointer shrink-0 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${isActive ? 'grow min-w-[280px] md:min-w-[500px]' : 'w-16 md:w-24 bg-slate-900/40 border border-white/5 hover:bg-slate-800/60'}`}
           >
             {/* Background Image / Overlay */}
             {isActive && event.image ? (
@@ -331,7 +332,7 @@ const EventsCarousel: React.FC<{ events: Event[], side: 'left' | 'right' }> = ({
                   alt={event.name}
                   className="w-full h-full object-cover scale-105"
                 />
-                <div className={`absolute inset-0 bg-gradient-to-t ${event.category === 'Technical' ? 'from-slate-950 via-slate-950/80 to-brand-primary/20' : 'from-slate-950 via-slate-950/80 to-brand-accent/20'}`} />
+                <div className={`absolute inset-0 bg-linear-to-t ${event.category === 'Technical' ? 'from-slate-950 via-slate-950/80 to-brand-primary/20' : 'from-slate-950 via-slate-950/80 to-brand-accent/20'}`} />
               </motion.div>
             ) : null}
 

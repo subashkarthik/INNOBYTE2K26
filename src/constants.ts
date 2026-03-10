@@ -14,7 +14,7 @@ export const EVENTS: Event[] = [
     ],
     maxParticipants: 2,
     years: ['2nd', '3rd', '4th'],
-    image: 'https://images.unsplash.com/photo-1516322074411-19fd412cb92f?q=80&w=1470&auto=format&fit=crop' // Professional tech presentation
+    image: '/events/paper_pres.png'
   },
   {
     id: 'tech-quiz-cat1',
@@ -28,7 +28,7 @@ export const EVENTS: Event[] = [
     ],
     maxParticipants: 1,
     years: ['2nd', '3rd', '4th'],
-    image: 'https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?q=80&w=1470&auto=format&fit=crop' // Quiz/Test environment
+    image: '/events/tech_quiz.png'
   },
   {
     id: 'synth-vision',
@@ -42,7 +42,7 @@ export const EVENTS: Event[] = [
     ],
     maxParticipants: 2,
     years: ['2nd', '3rd', '4th'],
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1364&auto=format&fit=crop' // Abstract AI/animation
+    image: '/events/ai_animation.png'
   },
   {
     id: 'code-cracking',
@@ -56,7 +56,7 @@ export const EVENTS: Event[] = [
     ],
     maxParticipants: 1,
     years: ['2nd', '3rd', '4th'],
-    image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1470&auto=format&fit=crop' // Coding
+    image: '/events/code_cracking.png'
   },
   {
     id: 'circuit-cracking',
@@ -70,7 +70,7 @@ export const EVENTS: Event[] = [
     ],
     maxParticipants: 1,
     years: ['2nd', '3rd', '4th'],
-    image: 'https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?q=80&w=1469&auto=format&fit=crop' // Circuit board
+    image: '/events/circuit_cracking.png'
   },
 
   // Technical Events - Category 2 (1st Year)
@@ -86,7 +86,7 @@ export const EVENTS: Event[] = [
     ],
     maxParticipants: 2,
     years: ['1st'],
-    image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=1470&auto=format&fit=crop' // Desk study paper
+    image: '/events/paper_pres.png'
   },
   {
     id: 'tech-quiz-cat2',
@@ -100,7 +100,7 @@ export const EVENTS: Event[] = [
     ],
     maxParticipants: 1,
     years: ['1st'],
-    image: 'https://images.unsplash.com/photo-1633613286991-611fe299c4ba?q=80&w=1470&auto=format&fit=crop' // Neon question mark
+    image: '/events/tech_quiz.png'
   },
 
   // Non-Technical Events (Common)
@@ -116,7 +116,7 @@ export const EVENTS: Event[] = [
     ],
     maxParticipants: 4,
     years: ['1st', '2nd', '3rd', '4th'],
-    image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1470&auto=format&fit=crop' // Strategy/Ads
+    image: '/events/ads_up.png'
   },
   {
     id: 'start-music',
@@ -130,7 +130,7 @@ export const EVENTS: Event[] = [
     ],
     maxParticipants: 4,
     years: ['1st', '2nd', '3rd', '4th'],
-    image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1470&auto=format&fit=crop' // Music
+    image: '/events/start_music.png'
   },
   {
     id: 'e-sports',
@@ -144,7 +144,7 @@ export const EVENTS: Event[] = [
     ],
     maxParticipants: 4,
     years: ['1st', '2nd', '3rd', '4th'],
-    image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1470&auto=format&fit=crop' // Gaming setup
+    image: '/events/esports.png'
   },
   {
     id: 'short-film',
@@ -158,7 +158,7 @@ export const EVENTS: Event[] = [
     ],
     maxParticipants: 4,
     years: ['1st', '2nd', '3rd', '4th'],
-    image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=1459&auto=format&fit=crop' // Film reel
+    image: '/events/short_film.png'
   }
 ];
 
