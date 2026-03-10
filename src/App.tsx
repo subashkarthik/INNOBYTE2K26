@@ -1116,7 +1116,7 @@ function HomePage() {
             { time: '02:00 PM', title: 'Ad-Zap / AI-Animation', icon: <ChevronRight size={18} />, color: 'primary' },
             { time: '03:00 PM', title: 'Tea Break', icon: <Clock size={18} />, color: 'accent' },
             { time: '03:15 PM', title: 'Start Music / Short Film', icon: <ChevronRight size={18} />, color: 'secondary' },
-            { time: '04:00 PM', title: 'Valedictory & Prize Distribution', icon: <GraduationCap size={18} />, color: 'primary' },
+            { time: '04:00 PM', title: 'Validation & Prize Distribution', icon: <GraduationCap size={18} />, color: 'primary' },
           ].map((item, i) => (
             <motion.div 
               key={i}
