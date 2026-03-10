@@ -42,4 +42,5 @@ export interface Event {
   rules: string[];
   maxParticipants: number;
   years: Year[];
+  image?: string;
 }

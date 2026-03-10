@@ -303,74 +303,106 @@ const Countdown = () => {
   );
 };
 
-const EventCard: React.FC<{ event: Event }> = ({ event }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const EventsCarousel: React.FC<{ events: Event[], side: 'left' | 'right' }> = ({ events, side }) => {
+  const [activeId, setActiveId] = useState<string>(events[0]?.id);
 
   return (
-    <motion.div
-      layout
-      onClick={() => setIsExpanded(!isExpanded)}
-      className={`glass-card p-6 md:p-8 flex flex-col cursor-pointer overflow-hidden relative group transition-all duration-500 ${isExpanded ? 'col-span-1 md:col-span-2 row-span-2 rounded-[2rem]' : 'col-span-1 rounded-[2.5rem] h-full'}`}
-    >
-      <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-brand-primary/30 transition-all duration-700 pointer-events-none" />
-      
-      <motion.div layout="position" className="flex justify-between items-start mb-6 relative z-10">
-        <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] border ${event.category === 'Technical' ? 'bg-brand-primary/10 text-brand-primary border-brand-primary/20' : 'bg-brand-accent/10 text-brand-accent border-brand-accent/20'}`}>
-          {event.category}
-        </div>
-        <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500 bg-white/5 px-2.5 py-1 rounded-lg">
-          <Users size={12} />
-          <span>TEAM {event.maxParticipants}</span>
-        </div>
-      </motion.div>
-      
-      <motion.h3 layout="position" className="text-2xl font-bold mb-3 group-hover:text-brand-primary transition-colors relative z-10 leading-tight">
-        {event.name}
-      </motion.h3>
-      
-      <motion.p layout="position" className={`text-sm text-slate-400 font-medium relative z-10 ${isExpanded ? 'mb-8' : 'line-clamp-3 mb-4'}`}>
-        {event.description}
-      </motion.p>
-      
-      <AnimatePresence>
-        {isExpanded && (
+    <div className="flex h-[450px] md:h-[550px] gap-2 md:gap-4 w-full px-2 md:px-0 mt-8">
+      {events.map((event) => {
+        const isActive = activeId === event.id;
+        
+        return (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="space-y-6 relative z-10 border-t border-white/10 pt-6 mt-2"
+            key={event.id}
+            layout
+            onClick={() => setActiveId(event.id)}
+            className={`relative rounded-3xl md:rounded-[2.5rem] overflow-hidden cursor-pointer flex-shrink-0 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${isActive ? 'flex-grow min-w-[280px] md:min-w-[500px]' : 'w-16 md:w-24 bg-slate-900/40 border border-white/5 hover:bg-slate-800/60'}`}
           >
-            <div>
-              <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white flex items-center gap-2 mb-4">
-                <span className="w-4 h-4 rounded bg-brand-primary/20 flex items-center justify-center text-brand-primary">
-                  <CheckCircle2 size={10} />
-                </span>
-                Guidelines
-              </h4>
-              <ul className="text-xs space-y-3 text-slate-400 grid md:grid-cols-2 gap-x-4">
-                {event.rules.map((rule, i) => (
-                  <li key={i} className="flex gap-3 leading-tight bg-white/[0.02] p-3 rounded-xl border border-white/5">
-                    <span className="text-brand-primary shrink-0 mt-0.5">•</span>
-                    {rule}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {/* Background Image / Overlay */}
+            {isActive && event.image ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6 }}
+                className="absolute inset-0 w-full h-full"
+              >
+                <img 
+                  src={event.image}
+                  alt={event.name}
+                  className="w-full h-full object-cover scale-105"
+                />
+                <div className={`absolute inset-0 bg-gradient-to-t ${event.category === 'Technical' ? 'from-slate-950 via-slate-950/80 to-brand-primary/20' : 'from-slate-950 via-slate-950/80 to-brand-accent/20'}`} />
+              </motion.div>
+            ) : null}
+
+            {/* Collapsed State Content */}
+            {!isActive && (
+              <div className="absolute inset-0 flex items-center justify-center p-4">
+                <div className="flex flex-col items-center justify-center h-full w-full opacity-50 hover:opacity-100 transition-opacity">
+                  <span 
+                    className="whitespace-nowrap font-bold text-white tracking-[0.2em] uppercase text-xs sm:text-sm origin-center" 
+                    style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+                  >
+                    {event.name}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Expanded State Content */}
+            {isActive && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+                className="absolute inset-0 p-6 md:p-10 flex flex-col justify-end z-10"
+              >
+                <div className={`self-start mb-4 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.3em] border backdrop-blur-md ${event.category === 'Technical' ? 'bg-brand-primary/20 text-brand-primary border-brand-primary/30' : 'bg-brand-accent/20 text-brand-accent border-brand-accent/30'}`}>
+                  {event.category}
+                </div>
+                
+                <h3 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight leading-tight drop-shadow-lg">
+                  {event.name}
+                </h3>
+                
+                <p className="text-slate-200 text-sm md:text-base mb-6 max-w-lg leading-relaxed drop-shadow-md">
+                  {event.description}
+                </p>
+
+                <div className="flex flex-wrap items-center gap-3 mb-6">
+                  <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
+                    <Users size={16} className="text-brand-primary" />
+                    <span className="text-xs font-bold text-white">Max <span className="text-brand-primary">{event.maxParticipants}</span></span>
+                  </div>
+                  <div className="flex gap-2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
+                    {event.years.map(year => (
+                      <span key={year} className="text-[10px] uppercase font-black tracking-wider text-slate-300">{year} Year</span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-black/40 backdrop-blur-xl p-5 md:p-6 rounded-2xl border border-white/10 space-y-3">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white flex items-center gap-2 mb-3">
+                    <span className="w-4 h-4 rounded bg-brand-primary/20 flex items-center justify-center text-brand-primary">
+                      <CheckCircle2 size={10} />
+                    </span>
+                    Guidelines
+                  </h4>
+                  <div className="grid md:grid-cols-2 gap-3">
+                    {event.rules.map((rule, idx) => (
+                      <div key={idx} className="flex gap-3 text-xs text-slate-300">
+                        <span className="text-brand-primary font-bold shrink-0 mt-0.5">•</span>
+                        <span className="leading-tight">{rule}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </motion.div>
-        )}
-      </AnimatePresence>
-      
-      <motion.div layout="position" className="mt-auto pt-6 flex justify-between items-center relative z-10">
-        <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest group-hover:text-slate-300 transition-colors">
-          {isExpanded ? 'Click to close' : 'Click to read rules'}
-        </span>
-        <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${isExpanded ? 'bg-white/10 text-white' : 'bg-brand-primary/10 text-brand-primary group-hover:bg-brand-primary group-hover:text-white'}`}>
-          <motion.div animate={{ rotate: isExpanded ? 45 : 0 }}>
-            <ChevronRight size={20} className={isExpanded ? '' : "group-hover:translate-x-0.5 transition-transform"} />
-          </motion.div>
-        </div>
-      </motion.div>
-    </motion.div>
+        );
+      })}
+    </div>
   );
 };
 
@@ -1021,19 +1053,7 @@ function HomePage() {
               </h3>
               <div className="h-px flex-grow bg-white/5" />
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
-              {EVENTS.filter(e => e.years.includes('2nd') && e.category === 'Technical').map((event, idx) => (
-                <motion.div
-                  key={event.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                >
-                  <EventCard event={event} />
-                </motion.div>
-              ))}
-            </div>
+            <EventsCarousel events={EVENTS.filter(e => e.years.includes('2nd') && e.category === 'Technical')} side="left" />
           </motion.div>
 
           {/* Category 2: 1st Year */}
@@ -1049,19 +1069,7 @@ function HomePage() {
               </h3>
               <div className="h-px flex-grow bg-white/5" />
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
-              {EVENTS.filter(e => e.years.length === 1 && e.years[0] === '1st' && e.category === 'Technical').map((event, idx) => (
-                <motion.div
-                  key={event.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                >
-                  <EventCard event={event} />
-                </motion.div>
-              ))}
-            </div>
+            <EventsCarousel events={EVENTS.filter(e => e.years.length === 1 && e.years[0] === '1st' && e.category === 'Technical')} side="right" />
           </motion.div>
 
           {/* Non-Technical Events */}
@@ -1076,19 +1084,7 @@ function HomePage() {
               </h3>
               <div className="h-px flex-grow bg-white/5" />
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
-              {EVENTS.filter(e => e.category === 'Non-Technical').map((event, idx) => (
-                <motion.div
-                  key={event.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                >
-                  <EventCard event={event} />
-                </motion.div>
-              ))}
-            </div>
+            <EventsCarousel events={EVENTS.filter(e => e.category === 'Non-Technical')} side="left" />
           </motion.div>
         </div>
       </section>
