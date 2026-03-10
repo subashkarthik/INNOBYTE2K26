@@ -266,8 +266,8 @@ const Countdown = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center gap-3 md:gap-6 bg-slate-900/40 backdrop-blur-2xl p-5 md:p-8 rounded-[2rem] md:rounded-4xl border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.6)] relative overflow-hidden group">
-      <div className="absolute inset-0 bg-linear-to-r from-brand-primary/10 via-transparent to-brand-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+    <div className="flex items-center justify-between gap-1 sm:gap-3 md:gap-4 lg:gap-5 w-full bg-slate-900/60 backdrop-blur-2xl px-3 py-5 sm:p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.6)] relative group">
+      <div className="absolute inset-0 bg-linear-to-r from-brand-primary/10 via-transparent to-brand-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[2rem] md:rounded-[3rem]" />
       {[
         { label: 'Days', value: timeLeft.days, color: 'text-brand-primary' },
         { label: 'Hours', value: timeLeft.hours, color: 'text-brand-secondary' },
@@ -275,26 +275,26 @@ const Countdown = () => {
         { label: 'Secs', value: timeLeft.seconds, color: 'text-emerald-400' },
       ].map((item, idx) => (
         <React.Fragment key={item.label}>
-          <div className="flex flex-col items-center min-w-[3.5rem] md:min-w-[5.5rem] relative z-10">
-            <div className="h-16 md:h-24 w-full flex items-center justify-center relative overflow-hidden mb-2 bg-white/[0.03] rounded-2xl md:rounded-3xl border border-white/5 shadow-inner">
+          <div className="flex flex-col items-center flex-1 max-w-[4.5rem] sm:max-w-[5rem] lg:max-w-[6rem] relative z-10 shrink-0">
+            <div className="h-16 sm:h-20 lg:h-24 w-full flex items-center justify-center relative overflow-hidden mb-2 bg-white/[0.04] rounded-xl sm:rounded-2xl lg:rounded-3xl border border-white/10 shadow-[inset_0_0_20px_rgba(255,255,255,0.02)]">
               <AnimatePresence mode="popLayout">
                 <motion.div
                   key={item.value}
-                  initial={{ y: 40, opacity: 0, scale: 0.8, filter: 'blur(4px)' }}
+                  initial={{ y: 50, opacity: 0, scale: 0.5, filter: 'blur(8px)' }}
                   animate={{ y: 0, opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                  exit={{ y: -40, opacity: 0, scale: 0.8, filter: 'blur(4px)' }}
-                  transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
-                  className="absolute text-3xl md:text-5xl lg:text-6xl font-black bg-clip-text text-transparent bg-linear-to-b from-white to-white/40 tracking-tighter"
+                  exit={{ y: -50, opacity: 0, scale: 0.5, filter: 'blur(8px)' }}
+                  transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+                  className="absolute text-3xl sm:text-4xl lg:text-5xl font-black bg-clip-text text-transparent bg-linear-to-b from-white to-white/40 tracking-tighter"
                 >
                   {String(item.value).padStart(2, '0')}
                 </motion.div>
               </AnimatePresence>
             </div>
-            <span className={`text-[9px] md:text-[11px] uppercase tracking-[0.3em] mt-1 font-black ${item.color} drop-shadow-[0_0_10px_currentColor] opacity-80`}>{item.label}</span>
+            <span className={`text-[8px] sm:text-[9px] lg:text-[11px] uppercase tracking-[0.2em] lg:tracking-[0.3em] mt-1 font-black ${item.color} drop-shadow-[0_0_10px_currentColor] opacity-90`}>{item.label}</span>
           </div>
           {idx < 3 && (
-            <div className="hidden md:flex flex-col justify-center pb-8 relative z-10">
-              <span className="text-2xl text-white/20 font-black relative top-1">:</span>
+            <div className="flex flex-col justify-center pb-6 sm:pb-8 relative z-10 shrink-0 mx-[-0.25rem] sm:mx-0">
+              <span className="text-xl sm:text-2xl lg:text-3xl text-white/20 font-black relative top-0.5 sm:top-1">:</span>
             </div>
           )}
         </React.Fragment>
