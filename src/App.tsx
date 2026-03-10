@@ -65,7 +65,9 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
             transition={{ delay: 0.2 }}
             className="w-full max-w-sm px-4"
           >
-            <img src="/ES%20Eng%20Clg.png" alt="ES College" className="w-full h-auto drop-shadow-[0_0_15px_rgba(139,92,246,0.3)] rounded-xl" />
+            <div className="bg-white/95 backdrop-blur-md px-6 py-4 rounded-2xl shadow-[0_0_30px_rgba(255,255,255,0.15)] overflow-hidden">
+              <img src="/ES%20Eng%20Clg.png" alt="ES College" className="w-full h-auto" />
+            </div>
           </motion.div>
           <img src="/Innobyte-Logo.png" alt="Logo" className="h-16 md:h-24 object-contain drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]" />
         </div>
@@ -187,8 +189,8 @@ const Navbar: React.FC<{ onAdminClick: () => void }> = ({ onAdminClick }) => {
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-slate-950/80 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-8'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <div className="flex items-center gap-3 md:gap-4 group cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 group-hover:drop-shadow-[0_0_15px_rgba(139,92,246,0.5)] transition-all">
-            <img src="/ES%20Eng%20Clg.png" alt="ESCT" className="h-6 md:h-8 lg:h-10 w-auto rounded-md md:rounded-lg" />
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 bg-white/95 px-3 py-1.5 md:px-4 md:py-2 rounded-xl transition-all shadow-[0_0_15px_rgba(255,255,255,0.1)] group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] group-hover:bg-white overflow-hidden">
+            <img src="/ES%20Eng%20Clg.png" alt="ESCT" className="h-6 md:h-8 lg:h-10 w-auto" />
           </div>
           <img src="/Innobyte-Logo.png" alt="INNOBYTE 2K26" className="h-6 md:h-8 object-contain group-hover:drop-shadow-[0_0_15px_rgba(139,92,246,0.5)] transition-all" />
         </div>
@@ -842,7 +844,9 @@ function HomePage() {
               transition={{ delay: 0.2, duration: 0.8 }}
               className="mb-8 w-full max-w-2xl px-4"
             >
-              <img src="/ES%20Eng%20Clg.png" alt="ES College" className="w-full h-auto drop-shadow-[0_0_30px_rgba(139,92,246,0.4)] hover:drop-shadow-[0_0_50px_rgba(139,92,246,0.6)] transition-all rounded-[2rem]" />
+              <div className="bg-white/95 backdrop-blur-xl px-6 py-5 md:px-10 md:py-6 rounded-[2rem] shadow-[0_0_40px_rgba(255,255,255,0.15)] hover:shadow-[0_0_60px_rgba(255,255,255,0.25)] hover:-translate-y-1 transition-all duration-500 overflow-hidden border border-white/20">
+                <img src="/ES%20Eng%20Clg.png" alt="ES College" className="w-full h-auto" />
+              </div>
             </motion.div>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
@@ -1246,7 +1250,9 @@ function HomePage() {
         <div className="relative z-10">
           <div className="flex flex-col items-center gap-8 mb-16">
             <div className="w-full max-w-xl px-4">
-              <img src="/ES%20Eng%20Clg.png" alt="ES College" className="w-full h-auto rounded-[1.5rem] drop-shadow-[0_0_30px_rgba(139,92,246,0.2)]" />
+              <div className="bg-white/95 backdrop-blur-md px-6 py-5 md:px-8 md:py-6 rounded-[1.5rem] shadow-[0_0_30px_rgba(255,255,255,0.1)] overflow-hidden">
+                <img src="/ES%20Eng%20Clg.png" alt="ES College" className="w-full h-auto" />
+              </div>
             </div>
             <img src="/Innobyte-Logo.png" alt="INNOBYTE2K26" className="h-16 opacity-90 drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]" />
           </div>
