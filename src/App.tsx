@@ -935,14 +935,7 @@ function HomePage() {
             </motion.div>
           </div>
           
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="w-full mt-8"
-          >
-            <LiveFeed />
-          </motion.div>
+
         </motion.div>
       </section>
 
