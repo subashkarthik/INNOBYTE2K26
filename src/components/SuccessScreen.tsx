@@ -198,7 +198,7 @@ export default function SuccessScreen({
       <div ref={printRef} style={{ display: 'none', width: '800px', padding: '60px', backgroundColor: 'white', color: '#1e293b', fontFamily: 'sans-serif' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '4px solid #8b5cf6', paddingBottom: '30px', marginBottom: '40px' }}>
           <div>
-            <img src="/ES%20Eng%20Clg.png" alt="ES Logo" style={{ height: '60px' }} />
+            <img src="/college-logo.png" alt="ES Logo" style={{ height: '60px' }} />
           </div>
           <div style={{ textAlign: 'right' }}>
             <h2 style={{ margin: 0, fontSize: '32px', fontWeight: '900', color: '#8b5cf6' }}>INNOBYTE<span style={{ color: '#06b6d4' }}>2K26</span></h2>
