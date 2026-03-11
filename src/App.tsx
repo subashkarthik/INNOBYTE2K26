@@ -783,8 +783,8 @@ const RegistrationForm = () => {
                 <img src="/qr.jpeg" alt="Payment QR Code" className="w-48 h-48 rounded-xl mix-blend-multiply" />
               </div>
               <div className="text-slate-300 text-sm space-y-1 mt-2">
-                <p><span className="font-bold text-slate-200">Name:</span> [Account Holder Name]</p>
-                <p><span className="font-bold text-slate-200">UPI Id:</span> [UPI ID]</p>
+                <p><span className="font-bold text-slate-200">Name:</span> [Giri Santhagiri]</p>
+                <p><span className="font-bold text-slate-200">UPI Id:</span> [santhagirigiri@oksbi]</p>
               </div>
             </div>
             <div className="space-y-6">
