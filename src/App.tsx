@@ -66,7 +66,7 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
             className="w-full max-w-sm px-4 group"
           >
             <div className="px-2 py-2 transition-all duration-500 flex justify-center items-center">
-              <img src="/college-logo.png" alt="ES College" className="w-full h-auto brightness-200 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" />
+              <img src="/college-logo.png" alt="ES College" className="w-full h-auto brightness-200 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" style={{ clipPath: 'inset(2% 0 0 0)' }} />
             </div>
           </motion.div>
           <img src="/Innobyte-Logo.png" alt="Logo" className="h-16 md:h-24 object-contain drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]" />
