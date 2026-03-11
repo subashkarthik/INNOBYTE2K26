@@ -66,7 +66,7 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
             className="w-full max-w-sm px-4 group"
           >
             <div className="px-2 py-2 transition-all duration-500 flex justify-center items-center">
-              <img src="/college-logo.png" alt="ES College" className="w-full h-auto brightness-200 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" style={{ clipPath: 'inset(2% 0 0 0)' }} />
+              <img src="/es_college_logo_4k.png" alt="ES College" className="w-full h-auto brightness-[2.5] drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]" />
             </div>
           </motion.div>
           <img src="/Innobyte-Logo.png" alt="Logo" className="h-16 md:h-24 object-contain drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]" />
@@ -1267,7 +1267,7 @@ function HomePage() {
           <div className="flex flex-col items-center gap-8 mb-16">
             <div className="w-full max-w-xl px-4 group flex justify-center">
               <div className="px-2 py-2 group-hover:scale-105 transition-all duration-500 flex justify-center">
-                <img src="/college-logo.png" alt="ES College" className="max-w-xs md:max-w-sm w-full h-auto brightness-200 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" />
+                <img src="/es_college_logo_4k.png" alt="ES College" className="max-w-xs md:max-w-sm w-full h-auto brightness-[2.5] drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]" />
               </div>
             </div>
             <img src="/Innobyte-Logo.png" alt="INNOBYTE2K26" className="h-16 opacity-90 drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]" />
