@@ -105,8 +105,8 @@ export const EVENTS: Event[] = [
 
   // Non-Technical Events (Common)
   {
-    id: 'ads-up',
-    name: 'Ads-up',
+    id: 'ad-zap',
+    name: 'Ad-Zap',
     category: 'Non-Technical',
     description: 'Create and perform a creative advertisement for a random product.',
     rules: [
