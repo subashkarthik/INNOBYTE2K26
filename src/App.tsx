@@ -899,8 +899,8 @@ function HomePage() {
               transition={{ delay: 0.2, duration: 0.8 }}
               className="mb-8 w-full max-w-2xl px-4 group/logo"
             >
-              <div className="bg-white px-6 py-5 md:px-10 md:py-6 rounded-[2rem] shadow-[0_0_60px_rgba(255,255,255,0.4)] group-hover/logo:shadow-[0_0_100px_rgba(255,255,255,0.7)] group-hover/logo:scale-105 transition-all duration-500 overflow-hidden border-2 border-white/40">
-                <img src="/ES%20Eng%20Clg.png" alt="ES College" className="w-full h-auto" />
+              <div className="px-6 py-5 md:px-10 md:py-6 rounded-[2rem] group-hover/logo:scale-105 transition-transform duration-500 overflow-hidden">
+                <img src="/es_college_logo_4k.png" alt="ES College" className="w-full h-auto drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] group-hover/logo:drop-shadow-[0_0_50px_rgba(255,255,255,0.6)] transition-all duration-500" />
               </div>
             </motion.div>
             <motion.div 
