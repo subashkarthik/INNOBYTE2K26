@@ -897,17 +897,17 @@ function HomePage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="mb-8 w-full max-w-2xl px-4 group/logo"
+              className="mb-6 w-full max-w-4xl px-4 group/logo"
             >
-              <div className="px-6 py-5 md:px-10 md:py-6 rounded-[2rem] group-hover/logo:scale-105 transition-transform duration-500 overflow-hidden">
-                <img src="/es_college_logo_4k.png" alt="ES College" className="w-full h-auto drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] group-hover/logo:drop-shadow-[0_0_50px_rgba(255,255,255,0.6)] transition-all duration-500" />
+              <div className="px-6 py-5 md:px-12 md:py-8 transition-transform duration-500 overflow-hidden flex justify-center">
+                <img src="/es_college_logo_4k.png" alt="ES College" className="w-full max-w-3xl h-auto drop-shadow-[0_0_40px_rgba(255,255,255,0.4)] group-hover/logo:drop-shadow-[0_0_60px_rgba(255,255,255,0.7)] group-hover/logo:scale-[1.02] transition-all duration-700" />
               </div>
             </motion.div>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="inline-block px-8 py-4 rounded-full bg-brand-primary/30 border-2 border-brand-primary/60 text-sm md:text-base font-black uppercase tracking-[0.4em] text-white shadow-[0_0_40px_rgba(139,92,246,0.8)] backdrop-blur-md drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] mb-8"
+              className="inline-block px-6 py-2.5 rounded-full bg-brand-primary/20 border border-brand-primary/40 text-[9px] md:text-[11px] font-black uppercase tracking-[0.3em] text-white/90 shadow-[0_0_30px_rgba(139,92,246,0.3)] backdrop-blur-md mb-10"
             >
              “InnoByte 2K26 — Igniting Innovation, Connecting Creators, and Engineering Tomorrow.”
             </motion.div>
