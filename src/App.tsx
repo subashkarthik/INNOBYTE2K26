@@ -782,6 +782,10 @@ const RegistrationForm = () => {
               <div className="bg-white p-6 rounded-3xl inline-block mb-6 shadow-[0_0_50px_rgba(255,255,255,0.1)] hover:scale-105 transition-transform duration-500">
                 <img src="/qr.jpeg" alt="Payment QR Code" className="w-48 h-48 rounded-xl mix-blend-multiply" />
               </div>
+              <div className="text-slate-300 text-sm space-y-1 mt-2">
+                <p><span className="font-bold text-slate-200">Name:</span> [Account Holder Name]</p>
+                <p><span className="font-bold text-slate-200">UPI Id:</span> [UPI ID]</p>
+              </div>
             </div>
             <div className="space-y-6">
               <div>
