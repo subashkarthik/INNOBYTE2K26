@@ -113,7 +113,7 @@ async function sendEmails(
   const ADMIN_EMAIL = process.env.COORDINATOR_EMAIL;
 
   const eventList = events.map((e: any) =>
-    `<li><b>${e.name}</b>${e.teamName ? ` — Team: <i>${e.teamName}</i>` : ""}${e.count > 1 ? ` (${e.count} members)` : ""}</li>`
+    `<li><b>${e.name}</b>${e.teamName ? ` — Team: <i>${e.teamName}</i>` : ""}${e.count > 1 ? ` (${e.count} members)` : ""}${e.pptTopic ? `<br/><span style="font-size:12px;color:#94a3b8">Topic: ${e.pptTopic}</span>` : ""}</li>`
   ).join("");
 
   try {

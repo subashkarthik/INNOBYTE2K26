@@ -56,22 +56,22 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 1.2 }}
-        className="relative z-10 flex flex-col items-center gap-8"
+        className="relative z-10 flex flex-col items-center gap-6 md:gap-8"
       >
         <div className="flex flex-col items-center gap-4">
           <motion.div 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="w-full max-w-sm px-4 group"
+            className="w-full max-w-[280px] md:max-w-sm px-4 group"
           >
             <div className="px-2 py-2 transition-all duration-500 flex justify-center items-center">
               <img src="/es_college_logo_4k.png" alt="ES College" className="w-full h-auto brightness-[2.5] drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]" />
             </div>
           </motion.div>
-          <img src="/Innobyte-Logo.png" alt="Logo" className="h-16 md:h-24 object-contain drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]" />
+          <img src="/Innobyte-Logo.png" alt="Logo" className="h-12 md:h-24 object-contain drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]" />
         </div>
-        <div className="w-64 h-1 bg-white/5 rounded-full overflow-hidden relative">
+        <div className="w-48 md:w-64 h-1 bg-white/5 rounded-full overflow-hidden relative">
           <motion.div
             initial={{ left: "-100%" }}
             animate={{ left: "100%" }}
@@ -79,7 +79,7 @@ const SplashScreen = ({ onComplete }: { onComplete: () => void }) => {
             className="absolute top-0 bottom-0 w-1/2 bg-linear-to-r from-transparent via-brand-primary to-transparent"
           />
         </div>
-        <p className="mt-6 text-slate-300 font-display text-xs uppercase tracking-[0.4em] font-bold">Initializing Innovation</p>
+        <p className="mt-4 md:mt-6 text-slate-300 font-display text-[10px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.4em] font-bold">Initializing Innovation</p>
       </motion.div>
     </motion.div>
   );
@@ -186,13 +186,13 @@ const Navbar: React.FC<{ onAdminClick: () => void }> = ({ onAdminClick }) => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-slate-950/80 backdrop-blur-xl border-b border-white/5 py-4' : 'bg-transparent py-8'}`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <div className="flex items-center gap-3 md:gap-4 group cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 px-1 py-1 transition-all group-hover:scale-105">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'bg-slate-950/80 backdrop-blur-xl border-b border-white/5 py-3 md:py-4' : 'bg-transparent py-6 md:py-8'}`}>
+      <div className="max-w-7xl mx-auto px-4 md:px-6 flex justify-between items-center">
+        <div className="flex items-center gap-2 md:gap-4 group cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+          <div className="flex items-center gap-2 px-1 py-1 transition-all group-hover:scale-105">
             <img src="/college-logo.png" alt="ESCET" className="h-6 md:h-8 lg:h-10 w-auto brightness-200 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" />
           </div>
-          <img src="/Innobyte-Logo.png" alt="INNOBYTE 2K26" className="h-6 md:h-8 object-contain group-hover:drop-shadow-[0_0_15px_rgba(139,92,246,0.5)] transition-all" />
+          <img src="/Innobyte-Logo.png" alt="INNOBYTE 2K26" className="h-5 md:h-8 object-contain group-hover:drop-shadow-[0_0_15px_rgba(139,92,246,0.5)] transition-all" />
         </div>
 
         {/* Desktop Nav */}
@@ -208,9 +208,14 @@ const Navbar: React.FC<{ onAdminClick: () => void }> = ({ onAdminClick }) => {
         </div>
 
         {/* Mobile Toggle */}
-        <button className="md:hidden text-white w-10 h-10 flex items-center justify-center glass-panel rounded-xl" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        <div className="flex items-center gap-3 md:hidden">
+          <button onClick={onAdminClick} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-slate-300">
+            <Users size={18} />
+          </button>
+          <button className="text-white w-10 h-10 flex items-center justify-center glass-panel rounded-xl" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Nav */}
@@ -266,8 +271,8 @@ const Countdown = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-between gap-1 sm:gap-3 md:gap-4 lg:gap-5 w-full bg-slate-900/60 backdrop-blur-2xl px-3 py-5 sm:p-6 md:p-8 rounded-[2rem] md:rounded-[3rem] border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.6)] relative group">
-      <div className="absolute inset-0 bg-linear-to-r from-brand-primary/10 via-transparent to-brand-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-[2rem] md:rounded-[3rem]" />
+    <div className="flex items-center justify-between gap-1 sm:gap-3 md:gap-4 lg:gap-5 w-full bg-slate-900/60 backdrop-blur-2xl px-2 py-4 sm:p-6 md:p-8 rounded-3xl md:rounded-[3rem] border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.6)] relative group">
+      <div className="absolute inset-0 bg-linear-to-r from-brand-primary/10 via-transparent to-brand-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-3xl md:rounded-[3rem]" />
       {[
         { label: 'Days', value: timeLeft.days, color: 'text-brand-primary' },
         { label: 'Hours', value: timeLeft.hours, color: 'text-brand-secondary' },
@@ -275,8 +280,8 @@ const Countdown = () => {
         { label: 'Secs', value: timeLeft.seconds, color: 'text-emerald-400' },
       ].map((item, idx) => (
         <React.Fragment key={item.label}>
-          <div className="flex flex-col items-center flex-1 max-w-[4.5rem] sm:max-w-[5rem] lg:max-w-[6rem] relative z-10 shrink-0">
-            <div className="h-16 sm:h-20 lg:h-24 w-full flex items-center justify-center relative overflow-hidden mb-2 bg-white/[0.04] rounded-xl sm:rounded-2xl lg:rounded-3xl border border-white/10 shadow-[inset_0_0_20px_rgba(255,255,255,0.02)]">
+          <div className="flex flex-col items-center flex-1 min-w-0 max-w-[4rem] sm:max-w-[5rem] lg:max-w-[6rem] relative z-10 shrink-0">
+            <div className="h-14 sm:h-20 lg:h-24 w-full flex items-center justify-center relative overflow-hidden mb-2 bg-white/[0.04] rounded-xl sm:rounded-2xl lg:rounded-3xl border border-white/10 shadow-[inset_0_0_20px_rgba(255,255,255,0.02)]">
               <AnimatePresence mode="popLayout">
                 <motion.div
                   key={item.value}
@@ -284,17 +289,17 @@ const Countdown = () => {
                   animate={{ y: 0, opacity: 1, scale: 1, filter: 'blur(0px)' }}
                   exit={{ y: -50, opacity: 0, scale: 0.5, filter: 'blur(8px)' }}
                   transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-                  className="absolute text-3xl sm:text-4xl lg:text-5xl font-black bg-clip-text text-transparent bg-linear-to-b from-white to-white/40 tracking-tighter"
+                  className="absolute text-xl sm:text-4xl lg:text-5xl font-black bg-clip-text text-transparent bg-linear-to-b from-white to-white/40 tracking-tighter"
                 >
                   {String(item.value).padStart(2, '0')}
                 </motion.div>
               </AnimatePresence>
             </div>
-            <span className={`text-[8px] sm:text-[9px] lg:text-[11px] uppercase tracking-[0.2em] lg:tracking-[0.3em] mt-1 font-black ${item.color} drop-shadow-[0_0_10px_currentColor] opacity-90`}>{item.label}</span>
+            <span className={`text-[7px] sm:text-[9px] lg:text-[11px] uppercase tracking-[0.2em] lg:tracking-[0.3em] mt-1 font-black ${item.color} drop-shadow-[0_0_10px_currentColor] opacity-90`}>{item.label}</span>
           </div>
           {idx < 3 && (
-            <div className="flex flex-col justify-center pb-6 sm:pb-8 relative z-10 shrink-0 mx-[-0.25rem] sm:mx-0">
-              <span className="text-xl sm:text-2xl lg:text-3xl text-white/20 font-black relative top-0.5 sm:top-1">:</span>
+            <div className="flex flex-col justify-center pb-5 sm:pb-8 relative z-10 shrink-0 mx-[-0.1rem] sm:mx-0">
+              <span className="text-sm sm:text-2xl lg:text-3xl text-white/20 font-black relative top-0.5 sm:top-1">:</span>
             </div>
           )}
         </React.Fragment>
@@ -307,7 +312,7 @@ const EventsCarousel: React.FC<{ events: Event[], side: 'left' | 'right' }> = ({
   const [activeId, setActiveId] = useState<string>(events[0]?.id);
 
   return (
-    <div className="flex h-[450px] md:h-[550px] gap-2 md:gap-4 w-full px-2 md:px-0 mt-8">
+    <div className="flex flex-col md:flex-row h-auto md:h-[550px] gap-4 md:gap-4 w-full px-4 md:px-0 mt-8">
       {events.map((event) => {
         const isActive = activeId === event.id;
         
@@ -316,8 +321,10 @@ const EventsCarousel: React.FC<{ events: Event[], side: 'left' | 'right' }> = ({
             key={event.id}
             layout
             onClick={() => setActiveId(event.id)}
-            onMouseEnter={() => setActiveId(event.id)}
-            className={`relative rounded-3xl md:rounded-[2.5rem] overflow-hidden cursor-pointer shrink-0 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${isActive ? 'grow min-w-[280px] md:min-w-[500px]' : 'w-16 md:w-24 bg-slate-900/40 border border-white/5 hover:bg-slate-800/60'}`}
+            onMouseEnter={() => {
+              if (window.innerWidth >= 768) setActiveId(event.id);
+            }}
+            className={`relative rounded-[2rem] md:rounded-[2.5rem] overflow-hidden cursor-pointer shrink-0 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${isActive ? 'grow min-h-[400px] md:min-w-[500px]' : 'h-20 md:h-full w-full md:w-24 bg-slate-900/40 border border-white/5 hover:bg-slate-800/60'}`}
           >
             {/* Background Image / Overlay */}
             {isActive && event.image ? (
@@ -338,10 +345,15 @@ const EventsCarousel: React.FC<{ events: Event[], side: 'left' | 'right' }> = ({
 
             {/* Collapsed State Content */}
             {!isActive && (
-              <div className="absolute inset-0 flex items-center justify-center p-4">
-                <div className="flex flex-col items-center justify-center h-full w-full opacity-50 hover:opacity-100 transition-opacity">
+              <div className="absolute inset-0 flex md:items-center justify-center p-4">
+                <div className="flex flex-row md:flex-col items-center justify-between md:justify-center h-full w-full opacity-60 hover:opacity-100 transition-opacity px-4 md:px-0">
+                  <span className="md:hidden font-bold text-white tracking-[0.1em] uppercase text-sm">{event.name}</span>
+                  <span className={`md:hidden px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${event.category === 'Technical' ? 'bg-brand-primary/20 text-brand-primary border-brand-primary/30' : 'bg-brand-accent/20 text-brand-accent border-brand-accent/30'}`}>
+                    {event.category}
+                  </span>
+                  
                   <span 
-                    className="whitespace-nowrap font-bold text-white tracking-[0.2em] uppercase text-sm sm:text-base origin-center" 
+                    className="hidden md:block whitespace-nowrap font-bold text-white tracking-[0.2em] uppercase text-base origin-center" 
                     style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
                   >
                     {event.name}
@@ -358,40 +370,42 @@ const EventsCarousel: React.FC<{ events: Event[], side: 'left' | 'right' }> = ({
                 transition={{ duration: 0.4, delay: 0.2 }}
                 className="absolute inset-0 p-6 md:p-10 flex flex-col justify-end z-10"
               >
-                <div className={`self-start mb-4 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-[0.3em] border backdrop-blur-md ${event.category === 'Technical' ? 'bg-brand-primary/20 text-brand-primary border-brand-primary/30' : 'bg-brand-accent/20 text-brand-accent border-brand-accent/30'}`}>
-                  {event.category}
+                <div className="flex items-center gap-3 mb-4">
+                  <div className={`px-4 py-1.5 rounded-full text-[10px] md:text-xs font-black uppercase tracking-[0.3em] border backdrop-blur-md ${event.category === 'Technical' ? 'bg-brand-primary/20 text-brand-primary border-brand-primary/30' : 'bg-brand-accent/20 text-brand-accent border-brand-accent/30'}`}>
+                    {event.category}
+                  </div>
                 </div>
                 
-                <h3 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight leading-tight drop-shadow-lg">
+                <h3 className="text-2xl md:text-4xl font-black text-white mb-2 md:mb-3 tracking-tight leading-tight drop-shadow-lg">
                   {event.name}
                 </h3>
                 
-                <p className="text-slate-200 text-base md:text-base mb-6 max-w-lg leading-relaxed drop-shadow-md">
+                <p className="text-slate-200 text-sm md:text-base mb-6 max-w-lg leading-relaxed drop-shadow-md line-clamp-3 md:line-clamp-none">
                   {event.description}
                 </p>
 
-                <div className="flex flex-wrap items-center gap-3 mb-6">
-                  <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
-                    <Users size={16} className="text-brand-primary" />
-                    <span className="text-sm font-bold text-white">Max <span className="text-brand-primary">{event.maxParticipants}</span></span>
+                <div className="flex flex-wrap items-center gap-2 md:gap-3 mb-6">
+                  <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 md:px-4 py-1.5 md:py-2 rounded-xl border border-white/10">
+                    <Users size={14} className="text-brand-primary md:w-4 md:h-4" />
+                    <span className="text-xs md:text-sm font-bold text-white">Max <span className="text-brand-primary">{event.maxParticipants}</span></span>
                   </div>
-                  <div className="flex gap-2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10">
+                  <div className="flex gap-2 bg-black/40 backdrop-blur-md px-3 md:px-4 py-1.5 md:py-2 rounded-xl border border-white/10">
                     {event.years.map(year => (
-                      <span key={year} className="text-xs uppercase font-black tracking-wider text-slate-300">{year} Year</span>
+                      <span key={year} className="text-[10px] md:text-xs uppercase font-black tracking-wider text-slate-300">{year} Year</span>
                     ))}
                   </div>
                 </div>
 
-                <div className="bg-black/40 backdrop-blur-xl p-5 md:p-6 rounded-2xl border border-white/10 space-y-3">
-                  <h4 className="text-xs font-black uppercase tracking-[0.3em] text-white flex items-center gap-2 mb-3">
-                    <span className="w-4 h-4 rounded bg-brand-primary/20 flex items-center justify-center text-brand-primary">
-                      <CheckCircle2 size={10} />
+                <div className="bg-black/40 backdrop-blur-xl p-4 md:p-6 rounded-2xl border border-white/10 space-y-2 md:space-y-3">
+                  <h4 className="text-[10px] md:text-xs font-black uppercase tracking-[0.3em] text-white flex items-center gap-2 mb-2 md:mb-3">
+                    <span className="w-3.5 h-3.5 md:w-4 md:h-4 rounded bg-brand-primary/20 flex items-center justify-center text-brand-primary">
+                      <CheckCircle2 size={8} className="md:w-2.5 md:h-2.5" />
                     </span>
                     Guidelines
                   </h4>
-                  <div className="grid md:grid-cols-2 gap-3">
-                    {event.rules.map((rule, idx) => (
-                      <div key={idx} className="flex gap-3 text-sm text-slate-300">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
+                    {event.rules.slice(0, window.innerWidth < 768 ? 4 : undefined).map((rule, idx) => (
+                      <div key={idx} className="flex gap-2 md:gap-3 text-[11px] md:text-sm text-slate-300">
                         <span className="text-brand-primary font-bold shrink-0 mt-0.5">•</span>
                         <span className="leading-tight">{rule}</span>
                       </div>
@@ -412,8 +426,8 @@ const EventPickerCard = ({ ev, sel, onToggle, onUpdateEvt, pptTheme, setPptTheme
   ev: Event; 
   sel?: SelectedEvent; 
   onToggle: () => void;
-  onUpdateEvt: (k: 'teamName' | 'count', v: any) => void;
-  pptTheme: string; 
+  onUpdateEvt: (k: keyof SelectedEvent, v: any) => void;
+  pptTheme: string;
   setPptTheme: (v: string) => void;
   year: string; 
   accent: string;
@@ -483,6 +497,19 @@ const EventPickerCard = ({ ev, sel, onToggle, onUpdateEvt, pptTheme, setPptTheme
               </select>
             </div>
           )}
+          {/* Conditional Topic and Abstract for ALL Paper Presentation versions */}
+          {ev.name.includes('Paper Presentation') && (
+            <div className="px-5 pb-5 space-y-4">
+              <div>
+                <label className="text-xs font-black uppercase tracking-widest text-slate-200 block mb-2">Presentation Topic</label>
+                <input required type="text" className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-primary/50 focus:bg-white/5 transition-all" placeholder="Enter your topic" value={sel.pptTopic || ''} onChange={e => onUpdateEvt('pptTopic', e.target.value)} />
+              </div>
+              <div>
+                <label className="text-xs font-black uppercase tracking-widest text-slate-200 block mb-2">Brief Abstract</label>
+                <textarea required className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-primary/50 focus:bg-white/5 transition-all min-h-[100px]" placeholder="Max 200 words" value={sel.pptAbstract || ''} onChange={e => onUpdateEvt('pptAbstract', e.target.value)} />
+              </div>
+            </div>
+          )}
         </motion.div>
       )}
     </AnimatePresence>
@@ -550,6 +577,15 @@ const RegistrationForm = () => {
     if (formData.transactionId.length > 0 && !/^\d{12}$/.test(formData.transactionId)) e.transactionId = '12-digit Transaction ID required';
     if (formData.department === 'Other' && !formData.customDepartment) e.customDepartment = 'Please specify your department';
     if (selectedEvents.length === 0) e.events = 'Select at least one event';
+    
+    // Validate Paper Presentation fields if selected
+    selectedEvents.forEach(ev => {
+      if (ev.name.includes('Paper Presentation')) {
+        if (!ev.pptTopic) e.pptTopic = 'Presentation topic is required';
+        if (!ev.pptAbstract) e.pptAbstract = 'Abstract is required';
+      }
+    });
+
     if (!formData.transactionId) e.transactionId = 'Transaction ID is required';
     if (!paymentScreenshot) e.payment = 'Upload proof of payment';
     return e;
@@ -574,7 +610,7 @@ const RegistrationForm = () => {
     });
   };
 
-  const updEvt = (name: string, k: 'teamName' | 'count', v: any) =>
+  const updEvt = (name: string, k: keyof SelectedEvent, v: any) =>
     setSelectedEvents(prev => prev.map(e => e.name === name ? { ...e, [k]: v } : e));
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -653,7 +689,7 @@ const RegistrationForm = () => {
     );
   }
 
-  const inputCls = (key: string) => `w-full bg-white/3 border ${touched[key] && errors[key] ? 'border-red-500/50 focus:border-red-500' : 'border-white/10 focus:border-brand-primary/50'} rounded-2xl px-6 py-4.5 text-base focus:outline-none focus:bg-white/5 transition-all placeholder:text-slate-600 font-medium`;
+  const inputCls = (key: string) => `w-full bg-white/3 border ${touched[key] && errors[key] ? 'border-red-500/50 focus:border-red-500' : 'border-white/10 focus:border-brand-primary/50'} rounded-2xl px-5 md:px-6 py-4 md:py-4.5 text-base focus:outline-none focus:bg-white/5 transition-all placeholder:text-slate-600 font-medium`;
 
   const ValidationError = ({ name }: { name: string }) => touched[name] && errors[name] ? (
     <motion.span initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-xs text-red-500 font-bold uppercase tracking-widest mt-2 block ml-2">
@@ -667,7 +703,7 @@ const RegistrationForm = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
-      className="glass-panel rounded-[3rem] p-8 md:p-16 max-w-6xl mx-auto relative overflow-hidden my-32 shadow-[0_30px_100px_rgba(0,0,0,0.4)]"
+      className="glass-panel rounded-[2.5rem] md:rounded-[3.3rem] p-6 sm:p-10 md:p-16 max-w-6xl mx-auto relative overflow-hidden my-12 md:my-32 shadow-[0_30px_100px_rgba(0,0,0,0.4)]"
     >
       <div className="absolute top-0 right-0 w-96 h-96 bg-brand-primary/10 rounded-full blur-[120px] -mr-32 -mt-32 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-brand-secondary/5 rounded-full blur-[120px] -ml-32 -mb-32 pointer-events-none" />
@@ -676,9 +712,9 @@ const RegistrationForm = () => {
 
         {/* 01 Personal Info */}
         <div className="relative">
-          <div className="absolute -left-8 md:-left-16 top-0 bottom-0 w-1 bg-gradient-to-b from-brand-primary/50 to-transparent rounded-r" />
-          <h3 className="text-2xl font-black flex items-center gap-4 mb-10 text-white tracking-tight">
-            <span className="w-10 h-10 rounded-xl bg-brand-primary/20 text-brand-primary flex items-center justify-center text-base shadow-[0_0_20px_rgba(139,92,246,0.3)] border border-brand-primary/30">01</span>
+          <div className="absolute -left-6 md:-left-16 top-0 bottom-0 w-1 bg-gradient-to-b from-brand-primary/50 to-transparent rounded-r" />
+          <h3 className="text-xl md:text-2xl font-black flex items-center gap-4 mb-8 md:mb-10 text-white tracking-tight">
+            <span className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-brand-primary/20 text-brand-primary flex items-center justify-center text-sm md:text-base shadow-[0_0_20px_rgba(139,92,246,0.3)] border border-brand-primary/30">01</span>
             Intake Protocol
           </h3>
           <div className="grid lg:grid-cols-2 gap-x-8 gap-y-6">
@@ -726,10 +762,10 @@ const RegistrationForm = () => {
 
         {/* 02 Event Selection */}
         <div className="pt-12 border-t border-white/5 relative">
-          <div className="absolute -left-8 md:-left-16 top-12 bottom-0 w-1 bg-gradient-to-b from-brand-secondary/50 to-transparent rounded-r" />
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
-            <h3 className="text-2xl font-black flex items-center gap-4 text-white tracking-tight">
-              <span className="w-10 h-10 rounded-xl bg-brand-secondary/20 text-brand-secondary flex items-center justify-center text-base shadow-[0_0_20px_rgba(6,182,212,0.3)] border border-brand-secondary/30">02</span>
+          <div className="absolute -left-6 md:-left-16 top-12 bottom-0 w-1 bg-gradient-to-b from-brand-secondary/50 to-transparent rounded-r" />
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 md:mb-10">
+            <h3 className="text-xl md:text-2xl font-black flex items-center gap-4 text-white tracking-tight">
+              <span className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-brand-secondary/20 text-brand-secondary flex items-center justify-center text-sm md:text-base shadow-[0_0_20px_rgba(6,182,212,0.3)] border border-brand-secondary/30">02</span>
               Event Assignment
             </h3>
             {selectedEvents.length > 0 && (
@@ -771,9 +807,9 @@ const RegistrationForm = () => {
 
         {/* 03 Payment */}
         <div className="pt-12 border-t border-white/5 relative">
-          <div className="absolute -left-8 md:-left-16 top-12 bottom-0 w-1 bg-gradient-to-b from-green-500/50 to-transparent rounded-r" />
-          <h3 className="text-2xl font-black flex items-center gap-4 mb-10 text-white tracking-tight">
-            <span className="w-10 h-10 rounded-xl bg-green-500/20 text-green-500 flex items-center justify-center text-base shadow-[0_0_20px_rgba(34,197,94,0.3)] border border-green-500/30">03</span>
+          <div className="absolute -left-6 md:-left-16 top-12 bottom-0 w-1 bg-gradient-to-b from-green-500/50 to-transparent rounded-r" />
+          <h3 className="text-xl md:text-2xl font-black flex items-center gap-4 mb-8 md:mb-10 text-white tracking-tight">
+            <span className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-green-500/20 text-green-500 flex items-center justify-center text-sm md:text-base shadow-[0_0_20px_rgba(34,197,94,0.3)] border border-green-500/30">03</span>
             Access Verification
           </h3>
           <div className="grid lg:grid-cols-2 gap-12 items-center bg-white/[0.01] p-8 md:p-12 rounded-[2.5rem] border border-white/5 md:ml-14 shadow-inner">
@@ -808,18 +844,18 @@ const RegistrationForm = () => {
                 <label className="block text-xs font-black uppercase tracking-[0.2em] text-slate-200 mb-3">Upload Transaction Proof</label>
               <div className="relative group">
                 <input required type="file" accept="image/*" onChange={e => { setPaymentScreenshot(e.target.files?.[0] || null); setTouched(p => ({ ...p, payment: true })); }} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                <div className={`w-full border-2 border-dashed rounded-[1.5rem] p-12 flex flex-col items-center justify-center transition-all duration-300 ${paymentScreenshot ? 'border-green-500/50 bg-green-500/10 shadow-[0_0_30px_rgba(34,197,94,0.1)]' : touched.payment && errors.payment ? 'border-red-500/50 bg-red-500/5' : 'border-white/10 bg-white/[0.02] group-hover:border-brand-primary/50 group-hover:bg-brand-primary/5'}`}>
+                <div className={`w-full border-2 border-dashed rounded-[1.5rem] p-8 md:p-12 flex flex-col items-center justify-center transition-all duration-300 ${paymentScreenshot ? 'border-green-500/50 bg-green-500/10 shadow-[0_0_30px_rgba(34,197,94,0.1)]' : touched.payment && errors.payment ? 'border-red-500/50 bg-red-500/5' : 'border-white/10 bg-white/[0.02] group-hover:border-brand-primary/50 group-hover:bg-brand-primary/5'}`}>
                   {paymentScreenshot ? (
                     <>
-                      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-4"><CheckCircle2 className="text-green-500" /></motion.div>
-                      <span className="text-base font-bold text-green-500">{paymentScreenshot.name}</span>
-                      <span className="text-xs text-green-500/50 mt-1.5 uppercase tracking-widest font-bold">Verification ready</span>
+                      <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-10 h-10 md:w-12 md:h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-4"><CheckCircle2 className="text-green-500" /></motion.div>
+                      <span className="text-sm md:text-base font-bold text-green-500 text-center px-4">{paymentScreenshot.name}</span>
+                      <span className="text-[10px] md:text-xs text-green-500/50 mt-1.5 uppercase tracking-widest font-bold">Verification ready</span>
                     </>
                   ) : (
                     <>
-                      <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-brand-primary/20 transition-all duration-300"><Download className="text-slate-200 group-hover:text-brand-primary transition-colors" /></div>
-                      <span className="text-base font-medium text-slate-300">Click or drag receipt here</span>
-                      <span className="text-xs text-slate-300 mt-2 uppercase tracking-widest font-black">JPG/PNG Support</span>
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-brand-primary/20 transition-all duration-300"><Download className="text-slate-200 group-hover:text-brand-primary transition-colors" /></div>
+                      <span className="text-sm md:text-base font-medium text-slate-300">Click or drag receipt here</span>
+                      <span className="text-[10px] md:text-xs text-slate-300 mt-2 uppercase tracking-widest font-black">JPG/PNG Support</span>
                     </>
                   )}
                 </div>
@@ -846,14 +882,14 @@ const RegistrationForm = () => {
               )}
             </AnimatePresence>
             <button type="submit" disabled={status === 'loading' || selectedEvents.length === 0}
-              className="btn-primary w-full lg:w-auto min-w-[300px] flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group">
+              className="btn-primary w-full lg:w-auto md:min-w-[300px] flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group py-5 md:py-4">
               {status === 'loading' ? (
                 <span className="flex items-center gap-3">
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   Initializing...
                 </span>
               ) : (
-                <span className="flex items-center gap-3 uppercase tracking-widest text-base">
+                <span className="flex items-center gap-3 uppercase tracking-widest text-sm md:text-base">
                   Initialize Registration{selectedEvents.length > 0 ? ` [${selectedEvents.length}]` : ''}
                   <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
                 </span>

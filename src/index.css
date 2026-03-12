@@ -50,12 +50,25 @@
 
 @layer base {
   html {
-    font-size: 110%; /* Increases all relative rem font sizes */
+    font-size: 100%; /* Default base */
+  }
+  
+  @media (min-width: 768px) {
+    html {
+      font-size: 105%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    html {
+      font-size: 110%;
+    }
   }
 
   body {
     @apply bg-[#020617] text-slate-100 antialiased selection:bg-brand-primary/30 selection:text-white;
     font-feature-settings: "ss01", "ss02", "cv01";
+    @apply overflow-x-hidden; /* Prevent horizontal scroll on mobile */
   }
 
   h1,

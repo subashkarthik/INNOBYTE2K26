@@ -53,16 +53,16 @@ const FAQItem = ({
   >
     <button
       onClick={onToggle}
-      className="w-full px-8 py-6 flex items-center justify-between gap-4 text-left hover:bg-white/[0.02] transition-colors"
+      className="w-full px-5 md:px-8 py-5 md:py-6 flex items-center justify-between gap-4 text-left hover:bg-white/[0.02] transition-colors"
     >
-      <span className="font-bold text-slate-200 text-lg">{q}</span>
+      <span className="font-bold text-slate-200 text-base md:text-lg leading-tight">{q}</span>
       <motion.div
         animate={{ rotate: isOpen ? 180 : 0 }}
         transition={{ duration: 0.2 }}
         className="shrink-0"
       >
         <ChevronDown
-          size={20}
+          size={18}
           className={isOpen ? "text-brand-primary" : "text-slate-500"}
         />
       </motion.div>
@@ -76,7 +76,7 @@ const FAQItem = ({
           transition={{ duration: 0.25, ease: "easeInOut" }}
           className="overflow-hidden"
         >
-          <p className="px-8 pb-6 text-slate-400 leading-relaxed border-t border-white/5 pt-4">
+          <p className="px-5 md:px-8 pb-5 md:pb-6 text-slate-400 text-sm md:text-base leading-relaxed border-t border-white/5 pt-4">
             {a}
           </p>
         </motion.div>
@@ -94,12 +94,12 @@ export default function FAQSection() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="text-center mb-20"
+        className="text-center mb-12 md:mb-20"
       >
-        <h2 className="text-5xl md:text-6xl font-black mb-6 text-white">
+        <h2 className="text-4xl md:text-6xl font-black mb-4 md:mb-6 text-white">
           Got <span className="text-gradient">Questions?</span>
         </h2>
-        <p className="text-slate-400 text-lg">
+        <p className="text-slate-400 text-base md:text-lg">
           Everything you need to know about INNOBYTE2K26.
         </p>
       </motion.div>

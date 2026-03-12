@@ -3,6 +3,8 @@ export interface SelectedEvent {
   teamName?: string;
   count: number | '';
   pptTheme?: string;
+  pptTopic?: string;
+  pptAbstract?: string;
 }
 
 export interface Registration {

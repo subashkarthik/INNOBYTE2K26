@@ -108,7 +108,7 @@ export default function SuccessScreen({
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-      className="glass-panel rounded-[2rem] p-12 text-center max-w-2xl mx-auto relative overflow-hidden"
+      className="glass-panel rounded-3xl md:rounded-[2rem] p-6 md:p-12 text-center max-w-2xl mx-auto relative overflow-hidden"
     >
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-primary to-brand-secondary" />
       <div className="absolute inset-0 bg-gradient-to-b from-brand-primary/5 to-transparent pointer-events-none" />
@@ -117,12 +117,12 @@ export default function SuccessScreen({
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-        className="w-24 h-24 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8 border border-green-500/20"
+        className="w-16 h-16 md:w-24 md:h-24 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8 border border-green-500/20"
       >
-        <CheckCircle2 size={48} />
+        <CheckCircle2 size={32} className="md:w-12 md:h-12" />
       </motion.div>
 
-      <h2 className="text-4xl font-black mb-3 text-white">You're In! 🎉</h2>
+      <h2 className="text-2xl md:text-4xl font-black mb-3 text-white">You're In! 🎉</h2>
       <p className="text-slate-400 mb-8">
         Registration confirmed for <span className="text-white font-semibold">{email}</span>
       </p>
@@ -130,23 +130,28 @@ export default function SuccessScreen({
       {/* Events badges */}
       <div className="flex flex-wrap gap-2 justify-center mb-10">
         {selectedEvents.map((e) => (
-          <motion.span
+          <motion.div
             key={e.name}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="px-4 py-1.5 bg-brand-primary/20 text-brand-primary rounded-full text-xs font-bold border border-brand-primary/20"
+            className="flex flex-col gap-1 items-center"
           >
-            {e.name}
-          </motion.span>
+            <span className="px-4 py-1.5 bg-brand-primary/20 text-brand-primary rounded-full text-xs font-bold border border-brand-primary/20">
+              {e.name}
+            </span>
+            {e.pptTopic && (
+              <span className="text-[10px] text-slate-500 font-medium italic">Topic: {e.pptTopic}</span>
+            )}
+          </motion.div>
         ))}
       </div>
 
       {/* Reg ID */}
-      <div className="bg-white/[0.03] rounded-2xl p-8 mb-8 border border-white/10 relative group">
+      <div className="bg-white/[0.03] rounded-2xl p-6 md:p-8 mb-6 md:mb-8 border border-white/10 relative group">
         <span className="text-[10px] uppercase tracking-[0.3em] text-slate-500 block mb-3">
           Your Registration ID
         </span>
-        <span className="text-5xl font-mono font-black text-gradient block mb-4">{regId}</span>
+        <span className="text-3xl md:text-5xl font-mono font-black text-gradient block mb-4">{regId}</span>
         <button
           onClick={copyId}
           className="flex items-center gap-2 mx-auto text-xs font-bold text-slate-400 hover:text-brand-primary transition-colors"
@@ -156,9 +161,9 @@ export default function SuccessScreen({
       </div>
 
       {transactionId && (
-        <div className="bg-white/2 rounded-xl p-4 mb-8 border border-white/5 flex flex-col items-center">
+        <div className="bg-white/2 rounded-xl p-3 md:p-4 mb-6 md:mb-8 border border-white/5 flex flex-col items-center">
           <span className="text-[9px] uppercase tracking-[0.2em] text-slate-500 mb-1">Transaction ID</span>
-          <span className="text-xl font-mono font-bold text-slate-300">{transactionId}</span>
+          <span className="text-lg md:text-xl font-mono font-bold text-slate-300">{transactionId}</span>
         </div>
       )}
 
@@ -250,9 +255,26 @@ export default function SuccessScreen({
           <h3 style={{ fontSize: '12px', fontWeight: '900', textTransform: 'uppercase', color: '#64748b', marginBottom: '15px' }}>Registered Events</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
             {selectedEvents.map(e => (
-              <span key={e.name} style={{ padding: '8px 15px', backgroundColor: '#8b5cf610', color: '#8b5cf6', borderRadius: '8px', fontSize: '12px', fontWeight: 'bold', border: '1px solid #8b5cf630' }}>
-                {e.name}
-              </span>
+              <div key={e.name} style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '10px', width: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <span style={{ padding: '8px 15px', backgroundColor: '#8b5cf610', color: '#8b5cf6', borderRadius: '8px', fontSize: '12px', fontWeight: 'bold', border: '1px solid #8b5cf630' }}>
+                    {e.name}
+                  </span>
+                  {e.teamName && <span style={{ fontSize: '11px', color: '#64748b' }}>Team: {e.teamName}</span>}
+                </div>
+                {e.pptTopic && (
+                  <div style={{ padding: '10px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', marginLeft: '10px' }}>
+                    <p style={{ margin: '0 0 5px', fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase' }}>Presentation Topic</p>
+                    <p style={{ margin: 0, fontSize: '13px', color: '#1e293b', fontWeight: 'bold' }}>{e.pptTopic}</p>
+                    {e.pptAbstract && (
+                      <div style={{ marginTop: '8px' }}>
+                        <p style={{ margin: '0 0 3px', fontSize: '9px', fontWeight: 'bold', color: '#94a3b8', textTransform: 'uppercase' }}>Abstract</p>
+                        <p style={{ margin: 0, fontSize: '11px', color: '#475569', fontStyle: 'italic' }}>{e.pptAbstract}</p>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </div>
