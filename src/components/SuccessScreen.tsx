@@ -142,6 +142,12 @@ export default function SuccessScreen({
             {e.pptTopic && (
               <span className="text-[10px] text-slate-500 font-medium italic">Topic: {e.pptTopic}</span>
             )}
+            {e.softwareRequest && (
+              <span className="text-[10px] text-slate-500 font-medium italic">Software: {e.softwareRequest}</span>
+            )}
+            {e.gameRequest && (
+              <span className="text-[10px] text-slate-500 font-medium italic">Game: {e.gameRequest}</span>
+            )}
           </motion.div>
         ))}
       </div>
@@ -272,6 +278,18 @@ export default function SuccessScreen({
                         <p style={{ margin: 0, fontSize: '11px', color: '#475569', fontStyle: 'italic' }}>{e.pptAbstract}</p>
                       </div>
                     )}
+                  </div>
+                )}
+                {e.softwareRequest && (
+                  <div style={{ padding: '10px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', marginLeft: '10px', marginTop: '5px' }}>
+                    <p style={{ margin: '0 0 5px', fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase' }}>Requested Software</p>
+                    <p style={{ margin: 0, fontSize: '13px', color: '#1e293b', fontWeight: 'bold' }}>{e.softwareRequest}</p>
+                  </div>
+                )}
+                {e.gameRequest && (
+                  <div style={{ padding: '10px', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', marginLeft: '10px', marginTop: '5px' }}>
+                    <p style={{ margin: '0 0 5px', fontSize: '10px', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase' }}>Wanted Game</p>
+                    <p style={{ margin: 0, fontSize: '13px', color: '#1e293b', fontWeight: 'bold' }}>{e.gameRequest}</p>
                   </div>
                 )}
               </div>

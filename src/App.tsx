@@ -497,9 +497,37 @@ const EventPickerCard = ({ ev, sel, onToggle, onUpdateEvt, pptTheme, setPptTheme
               </select>
             </div>
           )}
-          {/* Conditional Topic and Abstract for ALL Paper Presentation versions */}
+          {/* Conditional Software Request for Synth Vision Animation */}
+          {ev.id === 'synth-vision' && (
+            <div className="px-5 pb-5">
+              <label className="text-xs font-black uppercase tracking-widest text-slate-200 block mb-2">Requested Software</label>
+              <input 
+                type="text" 
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-primary/50 focus:bg-white/5 transition-all" 
+                placeholder="e.g. Blender, Maya, etc." 
+                value={sel.softwareRequest || ''} 
+                onChange={e => onUpdateEvt('softwareRequest', e.target.value)} 
+              />
+            </div>
+          )}
+
+          {/* Conditional Game Request for E-Sports */}
+          {ev.id === 'e-sports' && (
+            <div className="px-5 pb-5">
+              <label className="text-xs font-black uppercase tracking-widest text-slate-200 block mb-2">Wanted Game</label>
+              <input 
+                type="text" 
+                className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-primary/50 focus:bg-white/5 transition-all" 
+                placeholder="e.g. Valorant, Free Fire, etc." 
+                value={sel.gameRequest || ''} 
+                onChange={e => onUpdateEvt('gameRequest', e.target.value)} 
+              />
+            </div>
+          )}
+
           {ev.name.includes('Paper Presentation') && (
             <div className="px-5 pb-5 space-y-4">
+
               <div>
                 <label className="text-xs font-black uppercase tracking-widest text-slate-200 block mb-2">Presentation Topic</label>
                 <input required type="text" className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-primary/50 focus:bg-white/5 transition-all" placeholder="Enter your topic" value={sel.pptTopic || ''} onChange={e => onUpdateEvt('pptTopic', e.target.value)} />
@@ -995,7 +1023,7 @@ function HomePage() {
                 <div className="w-12 h-12 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary shrink-0"><Calendar size={24} /></div>
                 <div className="text-left">
                   <span className="text-xs uppercase tracking-[0.3em] font-black text-slate-300 block mb-1">Symposium Date</span>
-                  <span className="font-black text-white text-xl tracking-tight">27 March 2026</span>
+                  <span className="font-black text-white text-xl tracking-tight">27<sup>th</sup> March 2026</span>
                 </div>
               </div>
               

@@ -81,7 +81,7 @@ export const EVENTS: Event[] = [
     description: 'Present your ideas on fundamental science and engineering themes.',
     rules: [
       'Maximum 2 participants per team.',
-      'Themes: Tamil, English, Maths, Physics, Chemistry.',
+      'Subjects: Tamil, English, Maths, Physics, Chemistry.',
       'Time limit: 7 mins + 2 mins Q&A.'
     ],
     maxParticipants: 2,

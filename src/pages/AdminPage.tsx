@@ -378,8 +378,14 @@ const Dashboard = ({ token, onLogout }: { token: string; onLogout: () => void })
                       <td className="px-6 py-4 max-w-[200px]">
                         <div className="flex flex-wrap gap-1">
                           {evts.map((e: any) => (
-                            <span key={e.name} className="px-2 py-0.5 bg-brand-primary/20 text-brand-primary rounded text-[10px] font-bold whitespace-nowrap">{e.name}</span>
+                            <div key={e.name} className="flex flex-col gap-0.5 items-start">
+                              <span className="px-2 py-0.5 bg-brand-primary/20 text-brand-primary rounded text-[10px] font-bold whitespace-nowrap">{e.name}</span>
+                              {e.softwareRequest && <span className="text-[9px] text-slate-500 italic ml-1">SW: {e.softwareRequest}</span>}
+                              {e.gameRequest && <span className="text-[9px] text-slate-500 italic ml-1">G: {e.gameRequest}</span>}
+                              {e.pptTopic && <span className="text-[9px] text-slate-500 italic ml-1">T: {e.pptTopic}</span>}
+                            </div>
                           ))}
+
                         </div>
                       </td>
                       <td className="px-6 py-4 text-center">

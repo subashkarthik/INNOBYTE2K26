@@ -5,7 +5,10 @@ export interface SelectedEvent {
   pptTheme?: string;
   pptTopic?: string;
   pptAbstract?: string;
+  softwareRequest?: string;
+  gameRequest?: string;
 }
+
 
 export interface Registration {
   id: number;
