@@ -9,8 +9,8 @@ export const EVENTS: Event[] = [
     description: 'Showcase your research and technical findings to a panel of experts.',
     rules: [
       'Maximum 2 participants per team.',
-      'Time limit: 8 mins presentation + 2 mins Q&A.',
-      'Abstract must be submitted in advance.'
+      'Presentation: 8 mins + Q&A: 2 mins.',
+      'Abstract submission is mandatory in advance.'
     ],
     maxParticipants: 2,
     years: ['2nd', '3rd', '4th'],
